@@ -358,14 +358,11 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
 
         dias_totales = (datetime.now() - lead.fecha_hora_asignacion_asesor.replace(tzinfo=None)).days
 
-        if lead.tiempo_primer_contacto:
-            functions.verificar_primer_contacto(lead, prospecto)
-        
         tiempo_diferencia = int((datetime.now() - lead.fecha_hora_asignacion_asesor.replace(tzinfo=None)).seconds / 60)
-
-        print("tiempo_diferencia")
-        print(tiempo_diferencia)
-
+        
+        if lead.tiempo_primer_contacto or tiempo_diferencia:
+            functions.verificar_primer_contacto(lead, prospecto, tiempo_diferencia)
+        
         marcas_interes = eval(lead.marcas_interes)
         marcas = CatalogoModelo.objects.all().values("marca").distinct()
         etapas = CatalogoRespuestasByEtapa.objects.values("etapa").distinct()
@@ -721,10 +718,17 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
             if grupo.name == "Asesor":
                 calendario_general = False
 
-        leads_no_contactado = Lead.objects.filter(etapa="No contactado", activo=True, nombre_asesor__isnull=False)
-        leads_interaccion = Lead.objects.filter(etapa="Interaccion", activo=True, nombre_asesor__isnull=False)
-        leads_oportunidad = Lead.objects.filter(etapa="Oportunidad", activo=True, nombre_asesor__isnull=False)
-        leads_pedido = Lead.objects.filter(etapa="Pedido", activo=True, nombre_asesor__isnull=False)
+        if calendario_general == False:
+            leads_no_contactado = Lead.objects.filter(etapa="No contactado", activo=True, nombre_asesor=user.username)
+            leads_interaccion = Lead.objects.filter(etapa="Interaccion", activo=True, nombre_asesor=user.username)
+            leads_oportunidad = Lead.objects.filter(etapa="Oportunidad", activo=True, nombre_asesor=user.username)
+            leads_pedido = Lead.objects.filter(etapa="Pedido", activo=True, nombre_asesor=user.username)
+        else:
+
+            leads_no_contactado = Lead.objects.filter(etapa="No contactado", activo=True, nombre_asesor__isnull=False)
+            leads_interaccion = Lead.objects.filter(etapa="Interaccion", activo=True, nombre_asesor__isnull=False)
+            leads_oportunidad = Lead.objects.filter(etapa="Oportunidad", activo=True, nombre_asesor__isnull=False)
+            leads_pedido = Lead.objects.filter(etapa="Pedido", activo=True, nombre_asesor__isnull=False)
         respuestas = CatalogoRespuestasByEtapa.objects.all()
         estados = CatalogoRespuestasByEtapa.objects.all()
 

@@ -39,22 +39,6 @@
     <script src="https://unpkg.com/bootstrap-table@1.18.3/dist/extensions/filter-control/bootstrap-table-filter-control.min.js"></script>
     <script src="https://unpkg.com/bootstrap-table@1.20.2/dist/extensions/defer-url/bootstrap-table-defer-url.min.js"></script>
 
-
-
-
-
-
-
-
-
-
-
-    
-
-
-
-
-
     <script src="https://cdn.jsdelivr.net/npm/js-cookie@rc/dist/js.cookie.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
       integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
@@ -66,58 +50,7 @@
 
 </head>
 <body style="overflow-x: hidden;">
-    <nav class="navbar navbar-expand-lg sticky-top navbar-dark bg-dark">
-        <a class="navbar-brand">Reportes</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div id="navbarSupportedContent" class="collapse navbar-collapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Captura prospectos</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{% url 'dashboards:captura' %}">Venta</a>
-                        <a class="dropdown-item" href="/Compras/CompraCaptura">Compra</a>
-                    </div>
-                </li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Operativo Anfitrion</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="{% url 'dashboards:operativo_anfitrion' %}">Venta</a>
-                        <a class="dropdown-item" href="/Compras/OperativoAnfitrionCompras">Compra</a>
-                        <a class="dropdown-item" href="/SolicitudPeritaje/SeguimientoAnfitrion">Solicitudes de Peritaje</a>
-                    </div>
-                </li>
-
-                    <li><a class="nav-link" href="{% url 'dashboards:operativo_asesor' %}">Operativo Asesor</a></li>
-
-                    <li><a class="nav-link" href="/Compras/OperativoComprador">Operativo Comprador</a></li>
-                                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Reportes</a>
-                        <div class="dropdown-menu">
-                            <a class="dropdown-item" href="{% url 'dashboards:reportes' %}">Venta</a>
-                            <a class="dropdown-item" href="/Compras/ReportesCompras">Compra</a>
-                            <a class="dropdown-item" href="/SolicitudPeritaje/ReportesSolicitudesPeritaje">Solicitudes Peritaje</a>
-                            <a class="dropdown-item" href="{% url 'dashboards:tiempos' %}">Tiempos</a>
-                            <a class="dropdown-item" href="{% url 'dashboards:anulados' %}">Anulados</a>
-                            <a class="dropdown-item" href="{% url 'dashboards:reportes_eventos' %}">Eventos</a>
-                        </div>
-                    </li>
-                    <li><a class="nav-link" href="{% if calendario_general %}{% url 'dashboards:calendar' %}{% else %}{% url 'dashboards:calendar_detail' asesor_actual.pk %}{% endif %}">Calendario</a></li>
-                    <li><a class="nav-link" href="/Compras/OperativoPerito">Operativo Perito</a></li>
-                    <li><a class="nav-link" href="/Compras/OperativoTaller">Operativo Taller</a></li>
-                                    <li><a class="nav-link" href="http://capnet3.ddns.net:5007/" target="_blank">KPI's</a></li>
-            </ul>
-            <div class="form-inline">
-                <button type="button" style="margin-right: 30px; border: none transparent; background-color:transparent; color:white;" onClick="history.back();"><i class="material-icons">reply</i>Atras</button>
-                <form action="{% url 'dashboards:logout' %}" method="post">
-                    {% csrf_token %}
-                    <button type="submit" value="CerrarSesion" style="border: none transparent; background-color:transparent; color:white;"><i class="material-icons">exit_to_app</i>Salir</button>
-                </form>    
-            </div>
-            
-        </div>
-    </nav>
+    {% include 'nav.html' %}
     
     <div class="body-content">
         
@@ -245,10 +178,10 @@
                                                     </th>
                                                     <th data-field="Telefono" data-sortable="false">Leads sin eventos</th>
                                                     <th data-field="Correo" data-sortable="false">Eventos vencidos</th>
+                                                    <th data-field="Pendiente" data-sortable="false">Eventos pendientes</th>
                                                     <th data-field="Anfitrion" data-sortable="false">
                                                         Ir al calendario
                                                     </th>
-                                                    <th data-field="Pendiente" data-sortable="false">Eventos pendientes</th>
                                                 </tr>
                                             </thead>
                                             <tbody style="background-color:white;">
@@ -259,8 +192,8 @@
                                                         <td id="evento_hoy{{asesor.id}}">{% for evento in eventos_hoy %}{% if evento.asesor == asesor.pk %}{{evento.cantidad}}{% endif %}{% endfor %}</td>
                                                         <td>0</td>
                                                         <td>0</td>
-                                                        <td><a href="{% url 'dashboards:calendar_detail' asesor.id %}">Calendario</td>
                                                         <td id="evento_pendiente{{asesor.id}}">{% for evento in eventos_pendientes %}{% if evento.asesor == asesor.pk %}{{evento.cantidad}}{% endif %}{% endfor %}</td>
+                                                        <td><a href="{% url 'dashboards:calendar_detail' asesor.id %}">Calendario</td>
                                                     </tr>
                                                 {% endfor %}
                                             </tbody>

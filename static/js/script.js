@@ -30,6 +30,8 @@
                 var id = info.event.id
                 if (!!scheds[id]) {
                     _details.find('#title').text(scheds[id].title)
+                    _details.find('#cliente').text(scheds[id].cliente)
+                    _details.find('#tipo_evento').text(scheds[id].tipo_evento)
                     _details.find('#description').text(scheds[id].description)
                     _details.find('#start').text(scheds[id].sdate)
                     _details.find('#end').text(scheds[id].edate)

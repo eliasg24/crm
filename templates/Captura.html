@@ -55,6 +55,7 @@
     <div class="container container-fluid">
         <h4 style="margin:20px;">Venta - Captura Prospecto</h4>
         <div class="row mt-4">
+            {% if user.groups.get|stringformat:"s" != "Asesor" %}
             <div class="col-md-6">
                 <div class="card-counter danger">
                     <div class="form-row">
@@ -82,6 +83,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
         <div class="row mt-4">
             <div class="col-md-8">
@@ -216,8 +218,8 @@
                                         <h2>Sala: </h2>
                                         <select class="p" id="Sala" name="Sala" required onchange="filtrar_asesores();">
                                             <option disabled="disabled" selected>-- Sala --</option>
-                                            <option value="127">127</option>
-                                            <option value="Morato">Morato</option>
+                                            <option value="127" {% if asesor_actual.sala == "127" %}selected{% endif %}>127</option>
+                                            <option value="Morato" {% if asesor_actual.sala == "Morato" %}selected{% endif %}>Morato</option>
                                         </select>
                                         <span class="field-validation-valid text-danger" data-valmsg-for="Sala" data-valmsg-replace="true"></span>
                                     </div>
@@ -227,6 +229,9 @@
                                         <h2>Asesor</h2>
                                             <select name="Asesor" id="Asesor" required class="p">
                                                 <option disabled="disabled">-- Asesor --</option>
+                                                {% if user.groups.get|stringformat:"s" == "Asesor" %}
+                                                <option value="{{user.username}}" selected>{{user.username}}</option>
+                                                {% endif %}
                                             </select>
 <span class="field-validation-valid text-danger" data-valmsg-for="Asesor" data-valmsg-replace="true"></span>
                                     </div>
@@ -398,7 +403,7 @@
                     console.log(asesor)
                     console.log(asesor.nombre)
                     $("#Asesor").append(`
-                    <option value="${asesor.nombre}">${asesor.nombre} </option>
+            <option value="${asesor.nombre}">${asesor.nombre} </option>
                     `)
                 })
                 },

@@ -285,6 +285,10 @@ class CapturaReasignamientoView(LoginRequiredMixin, DetailView):
             lead.fecha_hora_asignacion_asesor = datetime.now()
             lead.fecha_hora_reasignacion = datetime.now()
             lead.tiempo_primer_contacto = None
+            lead.fecha_primer_contacto = None
+            lead.etapa = "No contactado"
+            lead.respuesta = "Sin contactar"
+            lead.estado = "No contactado"
             lead.save()
             
             print(lead)
@@ -358,8 +362,14 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
 
         dias_totales = (datetime.now() - lead.fecha_hora_asignacion_asesor.replace(tzinfo=None)).days
 
-        tiempo_diferencia = int((datetime.now() - lead.fecha_hora_asignacion_asesor.replace(tzinfo=None)).seconds / 60)
+        tiempo_diferencia = int((datetime.now() - lead.fecha_hora_asignacion_asesor.replace(tzinfo=None)).total_seconds() / 60)
         
+        print(datetime.now())
+        print(lead.fecha_hora_asignacion_asesor.replace(tzinfo=None))
+        print((datetime.now() - lead.fecha_hora_asignacion_asesor.replace(tzinfo=None)).total_seconds())
+        print(tiempo_diferencia)
+        print(lead.tiempo_primer_contacto)
+
         if lead.tiempo_primer_contacto or tiempo_diferencia:
             functions.verificar_primer_contacto(lead, prospecto, tiempo_diferencia)
         
@@ -428,9 +438,6 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
             m_lista = eval(lead.marcas_interes)["marcas"]
             print("aver")
             print(request.POST)
-            print(marcas_interes)
-            print(modelo)
-            print(color)
             
             for m in range(len(modelo)):
                 m_lista.append({"marca": marcas_interes[m],
@@ -444,9 +451,10 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
             marcas = {"marcas": m_lista}
 
             print(lead.marcas_interes)
-            print(marcas)
+            print(type(lead.marcas_interes))
+            print(type(marcas))
 
-            if lead.marcas_interes != marcas:
+            if str(lead.marcas_interes) != str(marcas):
                 lista_historial.append(f"Marcas Interes. (Se agregaron: {m_lista})")
             lead.marcas_interes = marcas
             lead.save()
@@ -496,12 +504,6 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
             if lead.nombre_anfitrion != request.POST.get("Lead_NombreAnfitrion"):
                 lista_historial.append("Anfitrión")
             lead.nombre_anfitrion = request.POST.get("Lead_NombreAnfitrion")
-            if lead.sala != request.POST.get("Lead_Sala"):
-                lista_historial.append("Sala")
-            lead.sala = request.POST.get("Lead_Sala")
-            if lead.nombre_asesor != request.POST.get("ProspectoAsesor"):
-                lista_historial.append("Asesor")
-            lead.nombre_asesor = request.POST.get("ProspectoAsesor")
             if lead.campania != request.POST.get("LeadCampania"):
                 lista_historial.append("Campaña")
             lead.campania = request.POST.get("LeadCampania")
@@ -676,10 +678,10 @@ class OperativoAnfitrionView(LoginRequiredMixin, TemplateView):
             if grupo.name == "Asesor":
                 calendario_general = False
 
-        leads_agendados = Lead.objects.filter(nombre_asesor__isnull=False, activo=True).exclude(etapa="Desistido")
-        leads_primer_contacto = Lead.objects.filter(nombre_asesor__isnull=True, activo=True)
+        leads_agendados = Lead.objects.filter(nombre_asesor__isnull=False, activo=True).exclude(etapa="Desistido").order_by("-id")
+        leads_primer_contacto = Lead.objects.filter(nombre_asesor__isnull=True, activo=True).order_by("-id")
 
-        verificaciones = HistorialVerificaciones.objects.select_related("lead")
+        verificaciones = HistorialVerificaciones.objects.select_related("lead").order_by("-id")
 
         mostrado_marcas = VehiculosInteresLead.objects.filter(mostrado=True).values("lead").distinct().values("lead", "marca", "modelo")
 
@@ -719,16 +721,16 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
                 calendario_general = False
 
         if calendario_general == False:
-            leads_no_contactado = Lead.objects.filter(etapa="No contactado", activo=True, nombre_asesor=user.username)
-            leads_interaccion = Lead.objects.filter(etapa="Interaccion", activo=True, nombre_asesor=user.username)
-            leads_oportunidad = Lead.objects.filter(etapa="Oportunidad", activo=True, nombre_asesor=user.username)
-            leads_pedido = Lead.objects.filter(etapa="Pedido", activo=True, nombre_asesor=user.username)
+            leads_no_contactado = Lead.objects.filter(etapa="No contactado", activo=True, nombre_asesor=user.username).order_by("-id")
+            leads_interaccion = Lead.objects.filter(etapa="Interaccion", activo=True, nombre_asesor=user.username).order_by("-id")
+            leads_oportunidad = Lead.objects.filter(etapa="Oportunidad", activo=True, nombre_asesor=user.username).order_by("-id")
+            leads_pedido = Lead.objects.filter(etapa="Pedido", activo=True, nombre_asesor=user.username).order_by("-id")
         else:
 
-            leads_no_contactado = Lead.objects.filter(etapa="No contactado", activo=True, nombre_asesor__isnull=False)
-            leads_interaccion = Lead.objects.filter(etapa="Interaccion", activo=True, nombre_asesor__isnull=False)
-            leads_oportunidad = Lead.objects.filter(etapa="Oportunidad", activo=True, nombre_asesor__isnull=False)
-            leads_pedido = Lead.objects.filter(etapa="Pedido", activo=True, nombre_asesor__isnull=False)
+            leads_no_contactado = Lead.objects.filter(etapa="No contactado", activo=True, nombre_asesor__isnull=False).order_by("-id")
+            leads_interaccion = Lead.objects.filter(etapa="Interaccion", activo=True, nombre_asesor__isnull=False).order_by("-id")
+            leads_oportunidad = Lead.objects.filter(etapa="Oportunidad", activo=True, nombre_asesor__isnull=False).order_by("-id")
+            leads_pedido = Lead.objects.filter(etapa="Pedido", activo=True, nombre_asesor__isnull=False).order_by("-id")
         respuestas = CatalogoRespuestasByEtapa.objects.all()
         estados = CatalogoRespuestasByEtapa.objects.all()
 
@@ -773,20 +775,20 @@ class ReportesView(LoginRequiredMixin, TemplateView):
             if grupo.name == "Asesor":
                 calendario_general = False
 
-        leads_agendados = Lead.objects.filter(nombre_asesor__isnull=False, activo=True)
+        leads_agendados = Lead.objects.filter(nombre_asesor__isnull=False, activo=True).order_by("-id")
         separados_y_facturados = VehiculosInteresLead.objects.filter(Q(separado=True) | Q(facturado=True)).values_list("lead").distinct()
         separados = VehiculosInteresLead.objects.filter(separado=True).values_list("lead").distinct()
         facturados = VehiculosInteresLead.objects.filter(facturado=True).values_list("lead").distinct()
-        leads_facturados = Lead.objects.filter(pk__in=facturados, activo=True)
-        leads_separados = Lead.objects.filter(pk__in=separados, activo=True)
-        leads_separados_y_facturados = Lead.objects.filter(pk__in=separados_y_facturados, activo=True)
-        leads_desistidos = Lead.objects.filter(etapa="Desistido", activo=True)
+        leads_facturados = Lead.objects.filter(pk__in=facturados, activo=True).order_by("-id")
+        leads_separados = Lead.objects.filter(pk__in=separados, activo=True).order_by("-id")
+        leads_separados_y_facturados = Lead.objects.filter(pk__in=separados_y_facturados, activo=True).order_by("-id")
+        leads_desistidos = Lead.objects.filter(etapa="Desistido", activo=True).order_by("-id")
 
         historial = Historial.objects.filter(lead__in=leads_agendados).values("lead").annotate(Max("fecha"))
 
         print(historial)
 
-        verificados = HistorialVerificaciones.objects.values("lead", "tipo_solicitud").distinct()
+        verificados = HistorialVerificaciones.objects.values("lead", "tipo_solicitud").distinct().order_by("-id")
 
         mostrado_marcas = VehiculosInteresLead.objects.filter(mostrado=True).values("lead").distinct().values("lead", "marca", "modelo", "codigo_vehiculo")
         separados_y_facturados_marcas = VehiculosInteresLead.objects.filter(mostrado=False).values("lead").distinct().values("lead", "marca", "modelo", "codigo_vehiculo")
@@ -833,10 +835,10 @@ class TiemposView(LoginRequiredMixin, TemplateView):
             if grupo.name == "Asesor":
                 calendario_general = False
 
-        leads_tiempos = Lead.objects.filter(tiempo_primer_contacto__isnull=False, activo=True)
-        leads_verificados = Lead.objects.filter(estado_llamada_verificacion__isnull=False, activo=True)
+        leads_tiempos = Lead.objects.filter(tiempo_primer_contacto__isnull=False, activo=True).order_by("-id")
+        leads_verificados = Lead.objects.filter(estado_llamada_verificacion__isnull=False, activo=True).order_by("-id")
 
-        verificados = HistorialVerificaciones.objects.values("lead", "tipo_solicitud").distinct()
+        verificados = HistorialVerificaciones.objects.values("lead", "tipo_solicitud").distinct().order_by("-id")
 
         mostrado_marcas = VehiculosInteresLead.objects.filter(mostrado=True).values("lead").distinct().values("lead", "marca", "modelo")
 
@@ -875,10 +877,10 @@ class AnuladosView(LoginRequiredMixin, TemplateView):
             if grupo.name == "Asesor":
                 calendario_general = False
 
-        leads_anulados = Lead.objects.filter(activo=False)
-        leads_verificados = Lead.objects.filter(estado_llamada_verificacion__isnull=False)
+        leads_anulados = Lead.objects.filter(activo=False).order_by("-id")
+        leads_verificados = Lead.objects.filter(estado_llamada_verificacion__isnull=False).order_by("-id")
 
-        verificados = HistorialVerificaciones.objects.values("lead", "tipo_solicitud").distinct()
+        verificados = HistorialVerificaciones.objects.values("lead", "tipo_solicitud").distinct().order_by("-id")
 
         mostrado_marcas = VehiculosInteresLead.objects.filter(mostrado=True).values("lead").distinct().values("lead", "marca", "modelo")
 
@@ -942,7 +944,10 @@ class ReportesEventosView(LoginRequiredMixin, TemplateView):
             if grupo.name == "Asesor":
                 calendario_general = False
 
+        leads_activos = Lead.objects.filter(activo=True)
         asesores = Asesor.objects.all()
+        asesores_127 = Asesor.objects.filter(sala="127")
+        asesores_morato = Asesor.objects.filter(sala="Morato")
         today_min = datetime.combine(timezone.now().date(), datetime.today().time().min)
         today_max = datetime.combine(timezone.now().date(), datetime.today().time().max)
         cantidad_hoy = Evento.objects.filter(fecha_hora__range=(today_min, today_max)).count()
@@ -959,11 +964,15 @@ class ReportesEventosView(LoginRequiredMixin, TemplateView):
 
         context["asesor_actual"] = asesor_actual
         context["asesores"] = asesores
+        context["asesores_127"] = asesores_127
+        context["asesores_morato"] = asesores_morato
         context["calendario_general"] = calendario_general
+        context["cantidad_activos"] = leads_activos.count()
         context["cantidad_hoy"] = cantidad_hoy
         context["cantidad_pendientes"] = cantidad_pendiente
         context["eventos_hoy"] = eventos_hoy
         context["eventos_pendientes"] = eventos_pendientes
+        context["leads_activos"] = leads_activos
         context["user"] = user
 
         return context
@@ -1066,7 +1075,13 @@ class CalendarView(LoginRequiredMixin, TemplateView):
                                            )
 
             return HttpResponseRedirect(reverse_lazy('dashboards:calendar'))
-        
+
+        if r.get("title", None):
+            nombre = r.get("title", None)
+            evento = Evento.objects.get(nombre=nombre)
+            evento.delete()
+
+            return HttpResponseRedirect(reverse_lazy('dashboards:calendar'))
 
 class CalendarDetailView(LoginRequiredMixin, DetailView):
     # Vista de Calendar Detail

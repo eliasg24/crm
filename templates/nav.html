@@ -9,7 +9,9 @@
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Captura prospectos</a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="{% url 'dashboards:captura' %}">Venta</a>
+                    {% if user.groups.get|stringformat:"s" != "Asesor" %}
                     <a class="dropdown-item" href="/Compras/CompraCaptura">Compra</a>
+                    {% endif %}
                 </div>
             </li>
             {% if user.groups.get|stringformat:"s" != "Asesor" %}

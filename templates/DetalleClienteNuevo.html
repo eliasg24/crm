@@ -61,7 +61,7 @@
                                                 <div class="card w-100 position-relative overflow-hidden mb-0">
                                                     <div class="card-body p-4">
                                                         <button class="btn btn-warning" style="float: right; margin: 5px;">Días totales: {{dias_totales}}</button>
-                                                        <button class="btn btn-success" style="float: right; margin: 5px;">Etapa: {{lead.etapa}} / Respuesta: {{lead.respuesta}}</button>
+                                                        <button class="btn btn-{% if lead.etapa == "No contactado" %}danger{% elif lead.etapa == "Interaccion" %}primary{% elif lead.etapa == "Oportunidad" %}warning{% elif lead.etapa == "Pedido" %}success{% elif lead.etapa == "Desistido" %}morado{% endif %}" style="float: right; margin: 5px;">Etapa: {{lead.etapa}} / Respuesta: {{lead.respuesta}}</button>
                                                         <h5 class="card-title fw-semibold" style="margin: 15px;">Detalle del Estado</h5>
                                                     </div>
                                                     <div class="card-body p-4">
@@ -178,7 +178,7 @@
                                             <p class="form-label fw-semibold" colspan="3">Marca {{carro.marca}}</p>
                                             <div class="col-lg-3 col-md-3">
                                                 <label for="exampleInputPassword1" class="form-label fw-semibold">Modelo Vehículo:</label>
-                                                <input type="email" class="form-control" id="exampleInputtext" placeholder="" value="{{carro.marca}}" readonly>
+                                                <input type="email" class="form-control" id="exampleInputtext" placeholder="" value="{{carro.modelo}}" readonly>
                                             </div>
                                             <div class="col-lg-3 col-md-3">
                                                 <label for="exampleInputPassword1" class="form-label fw-semibold">Color Vehículo:</label>
@@ -478,7 +478,9 @@
                                 <div class="modal-body small">
                                     <div class="form-group col-md-12">
                                         <table id="TableHistorialVenta"
+                                               {% if user.groups.get|stringformat:"s" != "Asesor" %}
                                                data-show-export="true"
+                                               {% endif %}
                                                data-toggle="table"
                                                data-height-max="300"
                                                data-sort-class="table-active"
@@ -557,8 +559,11 @@
                                                 <label for="EventoAsesor" class="col-form-label">Asesor:</label>
                                                 <select class="form-control" id="EventoAsesor" name="EventoAsesor"><option selected="selected" value="0">-- Asesor --</option>
                                                     {% for asesor in asesores %}
-                                                    <option value="{{asesor.nombre}}" {% if asesor.nombre == lead.prospecto.nombre_asesor %}{{lead.prospecto.nombre_asesor}}{% endif %}>{{asesor.nombre}}</option>
+                                                        {% if asesor.nombre == asesor_actual.nombre %}
+                                                        <option value="{{asesor.nombre}}" selected>{{asesor.nombre}}</option>
+                                                        {% endif %}
                                                     {% endfor %}
+
                                                 </select>
                                             </div>
                                         </div>
@@ -915,6 +920,15 @@
           }
         modelo.checked = true;
         console.log(modelo)
+    }
+
+    
+    function BorrarModelo(cont, temp) {
+
+        str = 'tr_' + cont.toString() + "_" + temp.toString();
+
+        tr = document.getElementById(str);
+        tr.remove();
     }
 
     function getval(sel)
@@ -1876,7 +1890,7 @@
         
         //var newInput = '<tr><td><select class="p" id="Marca_' + cont + 'Modelo' + temp + '" name="Marca.' + cont + 'Modelo' + temp + '"><option disabled selected>-- Modelo --</option>'+options+'</select></td><td><select id="Marca_' + cont + 'Color' + temp + '" name="Marca.' + cont + 'Color' + temp + '" class="p">'+colores+'</select></td><td><textarea style="width: 100%;" rows="2" id="Marca_' + cont + 'Comentario' + temp + '" name="Marca.' + cont + 'Comentario' + temp + '"></textarea></td></tr>';
         var string='<select class="p" id="Marca_' + cont + 'Modelo' + temp + '" name="Marca.' + cont + 'Modelo' + temp + '"><option disabled="disabled" value="0" selected>-- Modelo --</option></select>';
-        var newInput = '<tr><td><select class="p" id="Marca_' + cont + 'Modelo' + temp + '" name="Modelo"><option disabled="disabled" value="0" selected>-- Modelo --</option></select></td><td><input type="text" class="p" id="Color" name="Color"></td><td><input type="text" class="p" id="Codigo" name="Codigo"></td><td><input type="number" class="p" id="Precio" name="Precio"></td><td><button id="DeleteProspecto" type="button" class="btn btn-danger" onclick="BorrarLead(54928)"><i class="large material-icons r"> cancel</i></button></td></tr>';
+        var newInput = '<tr id="tr_' + cont + '_' + temp + '"><td><select class="p" id="Marca_' + cont + 'Modelo' + temp + '" name="Modelo"><option disabled="disabled" value="0" selected>-- Modelo --</option></select></td><td><input type="text" class="p" id="Color" name="Color"></td><td><input type="text" class="p" id="Codigo" name="Codigo"></td><td><input type="number" class="p" id="Precio" name="Precio"></td><td><button id="DeleteProspecto" type="button" class="btn btn-danger" onclick="BorrarModelo(' + cont + ',' + temp + ')"><i class="large material-icons r"> cancel</i></button></td></tr>';
         $("#table" + cont + " tbody").append(newInput);
         $("#NumLineaPrograma" + cont).val(temp);
         marca = document.getElementById("MarcasInteres").value;

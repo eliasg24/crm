@@ -386,7 +386,7 @@
                                                 <th data-field="FechaIngreso">Fecha de Ingreso</th>
                                                 <th data-field="Cliente">Cliente</th>
                                                 <th data-field="Telefono">Telefono</th>
-                                                <th data-field="Marca">Marca</th>
+                                                <th data-field="Mar ca">Marca</th>
                                                 <th data-field="Modelo">Modelo</th>
                                                 <th data-field="OrigenIngreso">Origen de Ingreso</th>
                                                 <th data-field="Respuesta">Respuesta Cliente</th>
@@ -402,8 +402,8 @@
                                                 <td>{{lead.fecha_apertura.date|date:'Y-m-d'}}</td>
                                                 <td>{{lead.prospecto.nombre}} {{lead.prospecto.apellido_paterno}} {{lead.prospecto.apellido_materno}}</td>
                                                 <td>{{lead.prospecto.celular}}</td>
-                                                <td>{% for retoma in retomas %}{% endfor %}</td>
-                                                <td></td>
+                                                <td>{% for mostrado in mostrado_marcas %}{% if mostrado.lead == lead.pk %}{{mostrado.marca}}{% endif %}{% endfor %}</td>
+                                                <td>{% for mostrado in mostrado_marcas %}{% if mostrado.lead == lead.pk %}{{mostrado.modelo}}{% endif %}{% endfor %}</td>
                                                 <td>{{lead.origen_lead}}</td>
                                                 <td>{{lead.respuesta}}</td>
                                                 <td>{{lead.estado}}</td>

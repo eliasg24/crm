@@ -67,7 +67,7 @@ class ProspectoAdmin(admin.ModelAdmin):
 @admin.register(Lead)
 class LeadAdmin(admin.ModelAdmin):
     # Admin del Lead
-    list_display = ('id', 'prospecto',)
+    list_display = ('id', 'prospecto', "nombre_asesor")
     list_filter = ('origen_lead',)
 
 @admin.register(Historial)

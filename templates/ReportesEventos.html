@@ -73,9 +73,9 @@
                                                 <div class="form-group col-md-12">
                                                     <i class="material-icons">announcement</i>
                                                     <span class="count-numbers">
-                                                        0                                                        
+                                                        {{cantidad_activos}}                                                        
                                                     </span>
-                                                    <a href="#Capturados" style="color: #ffffff;"><span class="count-name">Leads por asignar</span></a>
+                                                    <a href="#Capturados" style="color: #ffffff;"><span class="count-name">Leads activos</span></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -186,9 +186,9 @@
                                             </thead>
                                             <tbody style="background-color:white;">
                                                 {% for asesor in asesores %}
-                                                    <tr>
+                                                    <tr class="class_asesor">
                                                         <td><button id="DeleteProspecto" type="button" onclick="BorrarLead(54928)"><span class="material-symbols-outlined">account_circle</span></button></td>
-                                                        <td>{{asesor.nombre}}</td>
+                                                        <td id="nombre_asesor">{{asesor.nombre}}</td>
                                                         <td id="evento_hoy{{asesor.id}}">{% for evento in eventos_hoy %}{% if evento.asesor == asesor.pk %}{{evento.cantidad}}{% endif %}{% endfor %}</td>
                                                         <td>0</td>
                                                         <td>0</td>
@@ -820,17 +820,33 @@
     }
 
     function FiltrarCapturados() {
-        //var ini=$('#CapturaDesde').val();
-        //var fin = $('#CapturaHasta').val();
-
-        //var results = rango(ini, fin);
-        ////console.log("Capturadas:");
-        ////console.log(results);
-        //var array = new Array(results);
-        //$('#tableCapturados').bootstrapTable('filterBy', {
-        //    FechaIngreso: results
-        //})
-        getData(1, 10);
+        var sala = document.getElementById("Capturados_Sala")
+        var asesores = document.getElementsByClassName("class_asesor")
+        for (asesor in asesores){
+            var break_for = false;
+            if (sala.value == "127"){
+                {% for asesor in asesores_127 %}
+                    if ("{{asesor.nombre}}" == asesores[asesor].getElementsByTagName("td")[1].innerHTML && break_for == false){
+                        asesores[asesor].style.display = "table-row";
+                        break_for = true
+                    }
+                    else if (break_for == false){
+                        asesores[asesor].style.display = "none";
+                    }
+                {% endfor %}
+            }
+            else if (sala.value == "Morato"){
+                {% for asesor in asesores_morato %}
+                    if ("{{asesor.nombre}}" == asesores[asesor].getElementsByTagName("td")[1].innerHTML && break_for == false){
+                        asesores[asesor].style.display = "table-row";
+                        break_for = true
+                    }
+                    else if (break_for == false){
+                        asesores[asesor].style.display = "none";
+                    }
+                {% endfor %}
+            }
+        }
     }
 
     function FiltrarSF() {

@@ -124,7 +124,7 @@
                                                         <div class="col-lg-6">
                                                             <div class="mb-4">
                                                                 <label for="exampleInputPassword1" class="form-label fw-semibold">Etapa:</label>
-                                                                <select class="p" id="Lead_Etapa" name="Lead_Etapa" onchange="filtrar_respuestas();">
+                                                                <select class="p" id="Lead_Etapa" name="Lead_Etapa" onchange="filtrar_respuestas();" {% if user.groups.get|stringformat:"s" == "Anfitrión" %}disabled{% endif %}>
                                                                     <option selected disabled="disabled" value="0">-- Etapa --</option>
                                                                     {% for etapa in etapas %}
                                                                     <option value="{{etapa.etapa}}" {% if lead.etapa == etapa.etapa %}selected{% endif %}>{{etapa.etapa}}</option>
@@ -135,7 +135,7 @@
                                                         <div class="col-lg-6">
                                                             <div class="mb-4">
                                                                 <label for="exampleInputPassword1" class="form-label fw-semibold">Respuesta:</label>
-                                                                <select name="Lead_Respuesta" id="Lead_Respuesta" class="p" value="N/A" required>
+                                                                <select name="Lead_Respuesta" id="Lead_Respuesta" class="p" value="N/A" required {% if user.groups.get|stringformat:"s" == "Anfitrión" %}disabled{% endif %}>
                                                                         
                                                                     <option selected disabled="disabled" value="0">-- Respuesta --</option>
                                                                     {% for respuesta in respuestas %}
@@ -146,7 +146,7 @@
                                                         </div>
                                                         <div class="mb-4">
                                                             <label for="exampleInputPassword1" class="form-label fw-semibold">Comentarios:</label>
-                                                            <input name="Lead_Comentario" type="text" class="form-control" id="Lead_Comentario" value="{{lead.comentario}}">
+                                                            <input name="Lead_Comentario" type="text" class="form-control" id="Lead_Comentario" {% if lead.comentario %}value="{{lead.comentario}}"{% endif %} {% if user.groups.get|stringformat:"s" == "Anfitrión" %}readonly{% endif %}>
                                                         </div>
                     
                                                     </div>
@@ -187,18 +187,18 @@
             
                                             <div class="col-lg-3 col-md-3">
                                                 <label for="exampleInputPassword1" class="form-label fw-semibold">Código Vehículo:</label>
-                                                <input type="text" class="form-control" id="CodigoVehiculo" name="CodigoVehiculo" placeholder="" value="{{carro.codigo}}">
+                                                <input type="text" class="form-control" id="CodigoVehiculo" name="CodigoVehiculo" placeholder="" value="{{carro.codigo}}" {% if user.groups.get|stringformat:"s" == "Anfitrión" %}readonly{% endif %}>
                                             </div>
                                             <div class="col-lg-3 col-md-3">
                                                 <label for="exampleInputPassword1" class="form-label fw-semibold">Precio Vehículo:</label>
-                                                <input type="number" class="form-control" id="PrecioVehiculo" name="PrecioVehiculo" placeholder="" value="{{carro.precio}}">
+                                                <input type="number" class="form-control" id="PrecioVehiculo" name="PrecioVehiculo" placeholder="" value="{{carro.precio}}" {% if user.groups.get|stringformat:"s" == "Anfitrión" %}readonly{% endif %}>
                                             </div>
                                             {% endfor %}
                                             <div class="col-lg-6">
                                                 <div class="mb-4" style="margin-top: 15px;">
                                                     <label for="exampleInputPassword1" class="form-label fw-semibold">Seleccione las marcas de interés del cliente:</label>
                                                     <input id="NumMarcas" name="NumMarcas" type="hidden" value="0" />
-                                                    <select class="col-12 selectpicker p" multiple title="Marcas de Interes" id="MarcasInteres" name="MarcasInteres" onchange="SelectChanged();">
+                                                    <select class="col-12 selectpicker p" multiple title="Marcas de Interes" id="MarcasInteres" name="MarcasInteres" onchange="SelectChanged();" {% if user.groups.get|stringformat:"s" == "Anfitrión" %}disabled{% endif %}>
                                                         {% for marca in marcas %}
                                                         <option value="{{marca.marca.upper}}">{{marca.marca.upper}}</option>
                                                         {% endfor %}
@@ -478,7 +478,7 @@
                                 <div class="modal-body small">
                                     <div class="form-group col-md-12">
                                         <table id="TableHistorialVenta"
-                                               {% if user.groups.get|stringformat:"s" != "Asesor" %}
+                                               {% if user.groups.get|stringformat:"s" != "Asesor" and user.groups.get|stringformat:"s" !=  "Anfitrión" %}
                                                data-show-export="true"
                                                {% endif %}
                                                data-toggle="table"
@@ -597,7 +597,7 @@
                                     <h1>Datos Generales</h1>
                                         <span class="input-group-append">
                                             <!-- Button trigger modal -->
-                                            <button id="modalContacto" type="button" class="btn btn-danger" style="padding: 0;margin-bottom: 100%; margin-top: 5px; margin-left: 15px; border-radius: 5px;" data-toggle="modal" data-target="#exampleModalInformacionGral">
+                                            <button id="modalContacto" type="button" class="btn btn-danger" style="padding: 0;margin-bottom: 100%; margin-top: 5px; margin-left: 15px; border-radius: 5px;" data-toggle="modal" {% if user.groups.get|stringformat:"s" != "Anfitrión" %}data-target="#exampleModalInformacionGral"{% endif %}>
                                                 <i class="large material-icons r">edit</i>
                                             </button>
                                             <!-- Modal -->

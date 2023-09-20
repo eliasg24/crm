@@ -269,6 +269,30 @@
 <script src="{% static 'js/es.js' %}"></script> <!--Idioma español Fullcalendar-->
 <script>
 
+    function editar_evento(){
+        var title= document.getElementById("title").innerHTML;
+        var EventoNombre= document.getElementById("EventoNombre");
+        EventoNombre.value = title;
+
+        var tipo= document.getElementById("tipo_evento").innerHTML;
+        var EventoTipo= document.getElementById("EventoTipo");
+        EventoTipo.value = tipo;
+
+        var cliente= document.getElementById("cliente").innerHTML;
+        var EventoCliente= document.getElementById("EventoCliente");
+        EventoCliente.value = cliente;
+
+        var fecha_hora= document.getElementById("start").innerHTML;
+        var EventoFechaHora= document.getElementById("EventoFechaHora");
+        EventoFechaHora.value = fecha_hora;
+
+        data = {}
+        data.title = title
+        
+        console.log("hola")
+        console.log(data)
+    }
+
     function eliminar_evento(){
         var title= document.getElementById("title").innerHTML;
 

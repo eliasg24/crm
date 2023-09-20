@@ -6,13 +6,15 @@
     <div id="navbarSupportedContent" class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item dropdown">
+                {% if user.groups.get|stringformat:"s" == "Asesor" %}
+                <a class="nav-link" href="{% url 'dashboards:captura' %}" role="button" aria-haspopup="true" aria-expanded="false">Captura prospectos</a>
+                {% else %}
                 <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Captura prospectos</a>
                 <div class="dropdown-menu">
                     <a class="dropdown-item" href="{% url 'dashboards:captura' %}">Venta</a>
-                    {% if user.groups.get|stringformat:"s" != "Asesor" %}
                     <a class="dropdown-item" href="/Compras/CompraCaptura">Compra</a>
-                    {% endif %}
                 </div>
+                {% endif %}
             </li>
             {% if user.groups.get|stringformat:"s" != "Asesor" %}
             <li class="nav-item dropdown">

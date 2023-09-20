@@ -417,7 +417,7 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
                 lista_historial.append(f"Respuesta. (Antes: {lead.respuesta}. Ahora: {request.POST.get('Lead_Respuesta')})")
             lead.respuesta = request.POST.get("Lead_Respuesta")
             comentario = request.POST.get("Lead_Comentario")
-            if lead.comentario != comentario:
+            if lead.comentario != comentario and comentario != "None":
                 lista_historial.append(f"Comentario. (Antes: {lead.comentario}. Ahora: {request.POST.get('Lead_Comentario')})")
             lead.comentario = request.POST.get("Lead_Comentario")
             if request.POST.get("Lead_Respuesta") != "Sin contactar":

@@ -343,7 +343,7 @@
                                             <div class="form-row">
                                                 <div class="form-group col-md-4">
                                                     <label for="Linea" class="col-form-label">Seleccione la acción a realizar:</label>
-                                                    <select class="form-control form-control-sm" id="accion" name="accion">
+                                                    <select class="form-control form-control-sm" id="accion" name="accion" onchange="actualizar_accion(this);">
                                                             <option value="">Seleccione la acción a realizar</option>
                                                             <option value="Separar">Separar</option>
                                                             <option value="Facturar">Facturar</option>
@@ -524,7 +524,7 @@
                                     <div class="form-row">
                                         <div class="col-lg-6">
                                             <div class="mb-4">
-                                                <label for="EventoNombre" class="col-form-label">Nombre:</label>
+                                                <label for="EventoNombre" class="col-form-label">Nombre evento:</label>
                                                 <input type="text" class="form-control" id="EventoNombre">
                                             </div>
                                         </div>
@@ -921,6 +921,32 @@
         modelo.checked = true;
         console.log(modelo)
     }
+
+    function actualizar_accion(accion)
+    {
+    console.log(accion.value);
+    data = {}
+    data.select_accion = accion.value;
+    $.ajax({
+        type: "post", // "post" "get" "delete" "put"
+        data: data, // PREFERIBLEMENTE JSON
+        cache: false,
+        headers: {
+          "X-CSRFToken": Cookies.get("csrftoken")
+        },
+        success: function (response) {
+          console.log(response)
+          inputs = document.getElementsByName("vehiculo_acciones")
+          for (input in inputs){
+            inputs[input].checked = false;
+            vehiculo = inputs[input].value.split("/")[0] + " " + inputs[input].value.split("/")[1]
+            if (vehiculo == response){
+                inputs[input].checked = true;
+            }
+          }
+          }
+      })
+}
 
     
     function BorrarModelo(cont, temp) {

@@ -81,7 +81,7 @@
                                         </div>
                                     </div>
                                     <div class="col" style="padding: 1px;">
-                                        <div class="card-counter success">
+                                        <div class="card-counter danger">
                                             <div class="form-row">
                                                 <div class="form-group col-md-12">
                                                     <i class="material-icons">announcement</i>
@@ -136,6 +136,20 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="col" style="padding: 1px;">
+                                        <div class="card-counter success">
+                                            <div class="form-row">
+                                                <div class="form-group col-md-12">
+                                                    <i class="material-icons">announcement</i>
+                                                    <span class="count-numbers">
+                                                        
+                                                        0
+                                                    </span>
+                                                    <a href="#Concretadas" style="color: #ffffff;"><span class="count-name">Eventos cumplidos</span></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="card-body border-0" style="background-color: #eee;">
@@ -179,6 +193,7 @@
                                                     <th data-field="Telefono" data-sortable="false">Leads sin eventos</th>
                                                     <th data-field="Correo" data-sortable="false">Eventos vencidos</th>
                                                     <th data-field="Pendiente" data-sortable="false">Eventos pendientes</th>
+                                                    <th data-field="Pendiente" data-sortable="false">Eventos cumplidos</th>
                                                     <th data-field="Anfitrion" data-sortable="false">
                                                         Ir al calendario
                                                     </th>
@@ -193,6 +208,7 @@
                                                         <td>0</td>
                                                         <td>0</td>
                                                         <td id="evento_pendiente{{asesor.id}}">{% for evento in eventos_pendientes %}{% if evento.asesor == asesor.pk %}{{evento.cantidad}}{% endif %}{% endfor %}</td>
+                                                        <td>0</td>
                                                         <td><a href="{% url 'dashboards:calendar_detail' asesor.id %}">Calendario</td>
                                                     </tr>
                                                 {% endfor %}

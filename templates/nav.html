@@ -29,10 +29,10 @@
 
                 <li><a class="nav-link" href="{% url 'dashboards:operativo_asesor' %}">Operativo Asesor</a></li>
 
-            {% if user.groups.get|stringformat:"s" != "Asesor" %}
+            {% if user.groups.get|stringformat:"s" != "Asesor" and user.groups.get|stringformat:"s" != "Anfitrión" %}
                 <li><a class="nav-link" href="/Compras/OperativoComprador">Operativo Comprador</a></li>
             {% endif %}
-            {% if user.groups.get|stringformat:"s" != "Asesor" %}
+            {% if user.groups.get|stringformat:"s" != "Asesor" and user.groups.get|stringformat:"s" != "Anfitrión" %}
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Reportes</a>
                     <div class="dropdown-menu">
@@ -45,14 +45,16 @@
                     </div>
                 </li>
                 {% endif %}
+                {% if user.groups.get|stringformat:"s" != "Anfitrión" %}
                 <li><a class="nav-link" href="{% if calendario_general %}{% url 'dashboards:calendar' %}{% else %}{% url 'dashboards:calendar_detail' asesor_actual.pk %}{% endif %}">Calendario</a></li>
-                {% if user.groups.get|stringformat:"s" != "Asesor" %}
+                {% endif %}
+                {% if user.groups.get|stringformat:"s" != "Asesor" and user.groups.get|stringformat:"s" != "Anfitrión" %}
                 <li><a class="nav-link" href="/Compras/OperativoPerito">Operativo Perito</a></li>
                 {% endif %}
-                {% if user.groups.get|stringformat:"s" != "Asesor" %}
+                {% if user.groups.get|stringformat:"s" != "Asesor" and user.groups.get|stringformat:"s" != "Anfitrión" %}
                 <li><a class="nav-link" href="/Compras/OperativoTaller">Operativo Taller</a></li>
                 {% endif %}
-                {% if user.groups.get|stringformat:"s" != "Asesor" %}
+                {% if user.groups.get|stringformat:"s" != "Asesor" and user.groups.get|stringformat:"s" != "Anfitrión" %}
                 <li><a class="nav-link" href="http://capnet2.ddns.net:5007/" target="_blank">KPI's</a></li>
                 {% endif %}
         </ul>

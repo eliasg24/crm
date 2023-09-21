@@ -123,42 +123,10 @@
                                     <div class="form-group col-md-4">
                                         <h2>*Origen Lead</h2>
                                         <select class="p" id="OrigenLead" name="OrigenLead" required="required"><option disabled="disabled" value="">-- Origen Lead --</option>
-<option value="LLAMADA CONMUTADOR">LLAMADA CONMUTADOR</option>
-<option value="LLAMADA CELULAR">LLAMADA CELULAR</option>
-<option value="LLAMADA/CARROYA">LLAMADA/CARROYA</option>
-<option value="LLAMADA/TUCARRO">LLAMADA/TUCARRO</option>
-<option value="LLAMADA/OLX">LLAMADA/OLX</option>
-<option value="CARROYA">CARROYA</option>
-<option value="TUCARRO">TUCARRO</option>
-<option value="ESTRENAR CARRO">ESTRENAR CARRO</option>
-<option value="OLX">OLX</option>
-<option value="PÁGINA WEB">P&#193;GINA WEB</option>
-<option value="CAMPAÑA PAGA FACEBOOK">CAMPA&#209;A PAGA FACEBOOK</option>
-<option value="CAMPAÑA ORGÁNICA FACEBOOK">CAMPA&#209;A ORG&#193;NICA FACEBOOK</option>
-<option value="INSTAGRAM">INSTAGRAM</option>
-<option value="CAMPAÑA FINANCIERA">CAMPA&#209;A FINANCIERA</option>
-<option value="CONVENIO">CONVENIO</option>
-<option value="WHATSAPP MAZDA">WHATSAPP MAZDA</option>
-<option value="WHATSAPP DIRECTO USADOS">WHATSAPP DIRECTO USADOS</option>
-<option value="WHATSAPP HYUNDAI">WHATSAPP HYUNDAI</option>
-<option value="Google Search">Google Search</option>
-<option value="WHATSAPP COMPRAS USADO">WHATSAPP COMPRAS USADO</option>
-<option value="TU USADO FINANDINA">TU USADO FINANDINA</option>
-<option value="CORREO">CORREO</option>
-<option value="Retoma mazda">Retoma mazda</option>
-<option value="Retoma hyundai">Retoma hyundai</option>
-<option value="Olx">Olx</option>
-<option value="Retoma usados">Retoma usados</option>
-<option value="Compra Morato">Compra Morato</option>
-<option value="Usados 127">Usados 127</option>
-<option value="Compra 127">Compra 127</option>
-<option value="Renting Colombia">Renting Colombia</option>
-<option value="Consignado">Consignado</option>
-<option value="Referido">Referido</option>
-<option value="Rebold">Rebold</option>
-<option value="PÁGINA WEB FORMULARIO">P&#193;GINA WEB FORMULARIO</option>
-<option value="Finanzauto">Finanzauto</option>
-</select>
+                                            {% for origen_lead in origenes_lead %}
+                                            <option value="{{origen_lead}}">{{origen_lead}}</option>
+                                            {% endfor %}
+                                        </select>
                                         <span class="field-validation-valid text-danger" data-valmsg-for="OrigenLead" data-valmsg-replace="true"></span>
                                     </div>
                                 </div>

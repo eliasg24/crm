@@ -82,7 +82,7 @@
                             <div class="container-fluid">
                                 <input type="hidden" name="id" value="">
                                 <div class="form-group mb-2">
-                                    <label for="title" class="control-label">Nombre</label>
+                                    <label for="title" class="control-label">Nombre evento</label>
                                     <input type="text" class="form-control form-control-sm rounded-0" name="nombre" id="nombre" required>
                                 </div>
                                 <div class="form-group mb-2">
@@ -95,7 +95,11 @@
                                 </div>
                                 <div class="form-group mb-2">
                                     <label for="start_datetime" class="control-label">Cliente</label>
-                                    <input type="text" class="form-control form-control-sm rounded-0" name="cliente" id="cliente" required>
+                                    <select class="form-control" id="cliente" name="cliente"><option selected="selected" value="0">-- Cliente --</option>
+                                        {% for prospecto in prospectos %}
+                                            <option value="{{prospecto.nombre}}" selected>{{prospecto.nombre}}</option>
+                                        {% endfor %}
+                                    </select>
                                 </div>
                                 <div class="form-group mb-2">
                                     <label for="end_datetime" class="control-label">Observaciones</label>
@@ -171,7 +175,7 @@
                                 <div class="form-row">
                                     <div class="col-lg-6">
                                         <div class="mb-4">
-                                            <label for="EventoNombre" class="col-form-label">Nombre:</label>
+                                            <label for="EventoNombre" class="col-form-label">Nombre evento:</label>
                                             <input type="text" class="form-control" id="EventoNombre">
                                         </div>
                                     </div>

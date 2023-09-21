@@ -50,15 +50,17 @@ class CapturaView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = User.objects.get(username=self.request.user)
         try:
-            asesor_actual = Asesor.objects.get(nombre=user.username)
+            asesor_actual = Asesor.objects.get(nombre=functions.separar_nombre(user.username))
         except:
             asesor_actual = {}
             asesor_actual["pk"] = 0
 
         calendario_general = True
+        origenes_lead = Catalogo.objects.filter(clasificacion="Origen Lead")
         for grupo in self.request.user.groups.all():
             if grupo.name == "Asesor":
                 calendario_general = False
+                origenes_lead = Catalogo.objects.filter(clasificacion="Origen Lead Asesor")
 
         asesores = Asesor.objects.all()
         grupo = Group.objects.get(name="Asesor")
@@ -72,12 +74,14 @@ class CapturaView(LoginRequiredMixin, TemplateView):
 
         today = datetime.now()
 
+
         context["asesor_actual"] = asesor_actual
         context["calendario_general"] = calendario_general
         context["cantidad_morato"] = cantidad_morato
         context["cantidad_127"] = cantidad_127
         context["marcas"] = marcas
         context["today"] = today
+        context["origenes_lead"] = origenes_lead
         context["user"] = user
         return context
 
@@ -190,6 +194,19 @@ class CapturaView(LoginRequiredMixin, TemplateView):
                         operacion=f"Creación Lead",
                         comentarios=comentario
                         )
+            VehiculosInteresLead.objects.create(lead=lead,
+                                            marca=marcas_interes[0],
+                                            modelo=modelo[0],
+                                            color=color[0],
+                                            comentario=marca_comentario[0],
+                                            peritaje=False,
+                                            cotizar=False,
+                                            aprobacion=False,
+                                            precio=False,
+                                            separado=False,
+                                            facturado=False,
+                                            mostrado=True
+                                            )
             return HttpResponseRedirect(reverse_lazy('dashboards:captura'))
 
 
@@ -228,7 +245,7 @@ class CapturaReasignamientoView(LoginRequiredMixin, DetailView):
         lead = self.get_object()
         user = User.objects.get(username=self.request.user)
         try:
-            asesor_actual = Asesor.objects.get(nombre=user.username)
+            asesor_actual = Asesor.objects.get(nombre=functions.separar_nombre(user.username))
         except:
             asesor_actual = {}
             asesor_actual["pk"] = 0
@@ -313,7 +330,7 @@ class DetalleClienteView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = User.objects.get(username=self.request.user)
         try:
-            asesor_actual = Asesor.objects.get(nombre=user.username)
+            asesor_actual = Asesor.objects.get(nombre=functions.separar_nombre(user.username))
         except:
             asesor_actual = {}
             asesor_actual["pk"] = 0
@@ -346,7 +363,7 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
 
         user = User.objects.get(username=self.request.user)
         try:
-            asesor_actual = Asesor.objects.get(nombre=user.username)
+            asesor_actual = Asesor.objects.get(nombre=functions.separar_nombre(user.username))
         except:
             asesor_actual = {}
             asesor_actual["pk"] = 0
@@ -612,7 +629,10 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
             vehiculo_acciones = vehiculo_acciones.split("/")
 
             if separado == True or facturado == True:
-                eliminar_separados_y_facturados = VehiculosInteresLead.objects.filter(lead=lead, mostrado=False).delete()
+                VehiculosInteresLead.objects.filter(lead=lead, mostrado=False).delete()
+
+            if mostrado == True:
+                VehiculosInteresLead.objects.filter(lead=lead, mostrado=True).delete()
             
             VehiculosInteresLead.objects.create(lead=lead,
                                                 marca=vehiculo_acciones[0],
@@ -657,6 +677,21 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
                                     )
             return JsonResponse(evento.pk, safe=False)
     
+        if request.POST.get("select_accion"):
+            accion = request.POST.get("select_accion")
+            try:
+                if accion == "Separar":
+                    vehiculo = VehiculosInteresLead.objects.get(lead=lead, separado=True)
+                elif accion == "Facturar":
+                    vehiculo = VehiculosInteresLead.objects.get(lead=lead, facturado=True)
+                elif accion == "Mostrar":
+                    vehiculo = VehiculosInteresLead.objects.get(lead=lead, mostrado=True)
+                print("vehiculo")
+                print(vehiculo)
+                vehiculo = f"{vehiculo.marca} {vehiculo.modelo}"
+                return JsonResponse(vehiculo, safe=False)
+            except:
+                return JsonResponse(None, safe=False)
 
 class OperativoAnfitrionView(LoginRequiredMixin, TemplateView):
     # Vista de Operativo Anfitrion
@@ -667,7 +702,7 @@ class OperativoAnfitrionView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = User.objects.get(username=self.request.user)
         try:
-            asesor_actual = Asesor.objects.get(nombre=user.username)
+            asesor_actual = Asesor.objects.get(nombre=functions.separar_nombre(user.username))
         except:
             asesor_actual = {}
             asesor_actual["pk"] = 0
@@ -709,7 +744,7 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = User.objects.get(username=self.request.user)
         try:
-            asesor_actual = Asesor.objects.get(nombre=user.username)
+            asesor_actual = Asesor.objects.get(nombre=functions.separar_nombre(user.username))
         except:
             asesor_actual = {}
             asesor_actual["pk"] = 0
@@ -736,7 +771,15 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
 
         mostrado_marcas = VehiculosInteresLead.objects.filter(mostrado=True).values("lead", "mostrado").distinct().annotate(latest=Max("id")).values("lead", "marca", "modelo")
 
-        print(mostrado_marcas)
+        origenes_lead_no_contactado = leads_no_contactado.values("origen_lead")
+        origenes_lead_interaccion = leads_interaccion.values("origen_lead")
+        origenes_lead_oportunidad = leads_oportunidad.values("origen_lead")
+        origenes_lead_pedido = leads_pedido.values("origen_lead")
+
+        respuestas_no_contactado = leads_no_contactado.values("respuesta")
+        respuestas_interaccion = leads_interaccion.values("respuesta")
+        respuestas_oportunidad = leads_oportunidad.values("respuesta")
+        respuestas_pedido = leads_pedido.values("respuesta")
 
         context["asesor_actual"] = asesor_actual
         context["calendario_general"] = calendario_general
@@ -750,7 +793,15 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
         context["leads_oportunidad"] = leads_oportunidad
         context["leads_pedido"] = leads_pedido
         context["mostrado_marcas"] = mostrado_marcas
+        context["origenes_lead_no_contactado"] = origenes_lead_no_contactado
+        context["origenes_lead_interaccion"] = origenes_lead_interaccion
+        context["origenes_lead_oportunidad"] = origenes_lead_oportunidad
+        context["origenes_lead_pedido"] = origenes_lead_pedido
         context["respuestas"] = respuestas
+        context["respuestas_no_contactado"] = respuestas_no_contactado
+        context["respuestas_interaccion"] = respuestas_interaccion
+        context["respuestas_oportunidad"] = respuestas_oportunidad
+        context["respuestas_pedido"] = respuestas_pedido
         context["user"] = user
 
         return context
@@ -764,7 +815,7 @@ class ReportesView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = User.objects.get(username=self.request.user)
         try:
-            asesor_actual = Asesor.objects.get(nombre=user.username)
+            asesor_actual = Asesor.objects.get(nombre=functions.separar_nombre(user.username))
         except:
             asesor_actual = {}
             asesor_actual["pk"] = 0
@@ -824,7 +875,7 @@ class TiemposView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = User.objects.get(username=self.request.user)
         try:
-            asesor_actual = Asesor.objects.get(nombre=user.username)
+            asesor_actual = Asesor.objects.get(nombre=functions.separar_nombre(user.username))
         except:
             asesor_actual = {}
             asesor_actual["pk"] = 0
@@ -866,7 +917,7 @@ class AnuladosView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = User.objects.get(username=self.request.user)
         try:
-            asesor_actual = Asesor.objects.get(nombre=user.username)
+            asesor_actual = Asesor.objects.get(nombre=functions.separar_nombre(user.username))
         except:
             asesor_actual = {}
             asesor_actual["pk"] = 0
@@ -933,7 +984,7 @@ class ReportesEventosView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = User.objects.get(username=self.request.user)
         try:
-            asesor_actual = Asesor.objects.get(nombre=user.username)
+            asesor_actual = Asesor.objects.get(nombre=functions.separar_nombre(user.username))
         except:
             asesor_actual = {}
             asesor_actual["pk"] = 0
@@ -1007,7 +1058,7 @@ class CalendarView(LoginRequiredMixin, TemplateView):
         context = super().get_context_data(**kwargs)
         user = User.objects.get(username=self.request.user)
         try:
-            asesor_actual = Asesor.objects.get(nombre=user.username)
+            asesor_actual = Asesor.objects.get(nombre=functions.separar_nombre(user.username))
         except:
             asesor_actual = {}
             asesor_actual["pk"] = 0
@@ -1039,6 +1090,8 @@ class CalendarView(LoginRequiredMixin, TemplateView):
 
         general = True
 
+        prospectos = Prospecto.objects.all()
+
         context["asesor_actual"] = asesor_actual
         context["asesores"] = asesores
         context["calendario_general"] = calendario_general
@@ -1049,6 +1102,7 @@ class CalendarView(LoginRequiredMixin, TemplateView):
         context["eventos_hoy"] = eventos_hoy
         context["eventos_pendientes"] = eventos_pendientes
         context["general"] = general
+        context["prospectos"] = prospectos
         context["respuestas"] = respuestas
         context["user"] = user
 
@@ -1097,7 +1151,7 @@ class CalendarDetailView(LoginRequiredMixin, DetailView):
         adviser = self.get_object()
         user = User.objects.get(username=self.request.user)
         try:
-            asesor_actual = Asesor.objects.get(nombre=user.username)
+            asesor_actual = Asesor.objects.get(nombre=functions.separar_nombre(user.username))
         except:
             asesor_actual = {}
             asesor_actual["pk"] = 0
@@ -1131,6 +1185,8 @@ class CalendarDetailView(LoginRequiredMixin, DetailView):
 
         general = False
 
+        prospectos = Prospecto.objects.all()
+
         context["adviser"] = adviser
         context["asesor_actual"] = asesor_actual
         context["asesores"] = asesores
@@ -1143,6 +1199,7 @@ class CalendarDetailView(LoginRequiredMixin, DetailView):
         context["eventos_pendientes"] = eventos_pendientes
         context["general"] = general
         context["mostrar_evento"] = mostrar_evento
+        context["prospectos"] = prospectos
         context["respuestas"] = respuestas
         context["user"] = user
 

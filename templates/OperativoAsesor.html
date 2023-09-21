@@ -122,53 +122,16 @@
                                             <div class="form-group col-md-3">
                                                 <select class="form-control form-control-sm" id="ContAsesor_OrigenIngreso" name="ContAsesor_OrigenIngreso">
                                                     <option selected="selected" value="0">-- Origen Lead --</option>
-                                                    <option value="WHATSAPP DIRECTO USADOS">WHATSAPP DIRECTO USADOS</option>
-                                                    <option value="INST RENUEVATE">INST RENUEVATE</option>
-                                                    <option value="Retoma mazda">Retoma mazda</option>
-                                                    <option value="WHATSAPP MAZDA">WHATSAPP MAZDA</option>
-                                                    <option value="Tucarro">Tucarro</option>
-                                                    <option value="CAMPAÑA FINANCIERA">CAMPA&#209;A FINANCIERA</option>
-                                                    <option value="PÁGINA WEB">P&#193;GINA WEB</option>
-                                                    <option value="ESTRENAR CARRO">ESTRENAR CARRO</option>
-                                                    <option value="Rebold">Rebold</option>
-                                                    <option value="Facebook Social AD">Facebook Social AD</option>
-                                                    <option value="LLAMADA CELULAR">LLAMADA CELULAR</option>
-                                                    <option value="WHATSAPP HYUNDAI">WHATSAPP HYUNDAI</option>
-                                                    <option value="REDES SOCIALES">REDES SOCIALES</option>
-                                                    <option value="Google Search">Google Search</option>
-                                                    <option value="FC RENUEVATE">FC RENUEVATE</option>
-                                                    <option value="Carroya">Carroya</option>
-                                                    <option value="FACEBOOK">FACEBOOK</option>
-                                                    <option value="LLAMADA CONMUTADOR">LLAMADA CONMUTADOR</option>
-                                                    <option value="CORREO">CORREO</option>
-                                                    <option value="Referido">Referido</option>
-                                                    <option value="Planta">Planta</option>
-                                                    <option value="INSTAGRAM">INSTAGRAM</option>
-                                                    <option value="WHATSAPP COMPRAS USADO">WHATSAPP COMPRAS USADO</option>
-                                                    <option value="TU USADO FINANDINA">TU USADO FINANDINA</option>
-                                                    <option value="----">----</option>
-                                                    <option value="Finanzauto">Finanzauto</option>
-                                                    <option value="Facebook Lead AD">Facebook Lead AD</option>
-                                                    <option value="- N/A -">- N/A -</option>
-                                                    <option value="CONVENIO">CONVENIO</option>
-                                                    <option value="PÁGINA WEB FORMULARIO">P&#193;GINA WEB FORMULARIO</option>
-                                                    <option value="LLAMADA/CARROYA">LLAMADA/CARROYA</option>
-                                                    <option value="CAMPAÑA ORGÁNICA FACEBOOK">CAMPA&#209;A ORG&#193;NICA FACEBOOK</option>
-                                                    <option value="LLAMADA/TUCARRO">LLAMADA/TUCARRO</option>
-                                                    <option value="OLX">OLX</option>
-                                                    <option value="Google Display">Google Display</option>
-                                                    <option value="LLAMADA/OLX">LLAMADA/OLX</option>
-                                                    <option value="Google Adwords">Google Adwords</option>
-                                                    <option value="CAMPAÑA PAGA FACEBOOK">CAMPA&#209;A PAGA FACEBOOK</option>
-                                                    <option value="Retoma usados">Retoma usados</option>
-                                                    <option value="Renting Colombia">Renting Colombia</option>
+                                                    {% for origen in origenes_lead_no_contactado %}
+                                                    <option value="{{origen.origen_lead}}">{{origen.origen_lead}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Respuesta" name="ContAsesor_Respuesta">
                                                     <option selected="selected" value="0">-- Respuesta --</option>
-                                                    {% for respuesta in respuestas %}
-                                                    <option value="{{respuesta}}">{{respuesta}}</option>
+                                                    {% for respuesta in respuestas_no_contactado %}
+                                                    <option value="{{respuesta.respuesta}}">{{respuesta.respuesta}}</option>
                                                     {% endfor %}
                                                 </select>
                                             </div>
@@ -421,101 +384,17 @@
                                             <div class="form-group col-md-3">
                                                 <select class="form-control form-control-sm" id="ContAsesor_OrigenIngreso" name="ContAsesor_OrigenIngreso">
                                                     <option selected="selected" value="0">-- Origen Lead --</option>
-                                                    <option value="WHATSAPP DIRECTO USADOS">WHATSAPP DIRECTO USADOS</option>
-                                                    <option value="INST RENUEVATE">INST RENUEVATE</option>
-                                                    <option value="Retoma mazda">Retoma mazda</option>
-                                                    <option value="WHATSAPP MAZDA">WHATSAPP MAZDA</option>
-                                                    <option value="Tucarro">Tucarro</option>
-                                                    <option value="CAMPAÑA FINANCIERA">CAMPA&#209;A FINANCIERA</option>
-                                                    <option value="PÁGINA WEB">P&#193;GINA WEB</option>
-                                                    <option value="ESTRENAR CARRO">ESTRENAR CARRO</option>
-                                                    <option value="Rebold">Rebold</option>
-                                                    <option value="Facebook Social AD">Facebook Social AD</option>
-                                                    <option value="LLAMADA CELULAR">LLAMADA CELULAR</option>
-                                                    <option value="WHATSAPP HYUNDAI">WHATSAPP HYUNDAI</option>
-                                                    <option value="REDES SOCIALES">REDES SOCIALES</option>
-                                                    <option value="Google Search">Google Search</option>
-                                                    <option value="FC RENUEVATE">FC RENUEVATE</option>
-                                                    <option value="Carroya">Carroya</option>
-                                                    <option value="FACEBOOK">FACEBOOK</option>
-                                                    <option value="LLAMADA CONMUTADOR">LLAMADA CONMUTADOR</option>
-                                                    <option value="CORREO">CORREO</option>
-                                                    <option value="Referido">Referido</option>
-                                                    <option value="Planta">Planta</option>
-                                                    <option value="INSTAGRAM">INSTAGRAM</option>
-                                                    <option value="WHATSAPP COMPRAS USADO">WHATSAPP COMPRAS USADO</option>
-                                                    <option value="TU USADO FINANDINA">TU USADO FINANDINA</option>
-                                                    <option value="----">----</option>
-                                                    <option value="Finanzauto">Finanzauto</option>
-                                                    <option value="Facebook Lead AD">Facebook Lead AD</option>
-                                                    <option value="- N/A -">- N/A -</option>
-                                                    <option value="CONVENIO">CONVENIO</option>
-                                                    <option value="PÁGINA WEB FORMULARIO">P&#193;GINA WEB FORMULARIO</option>
-                                                    <option value="LLAMADA/CARROYA">LLAMADA/CARROYA</option>
-                                                    <option value="CAMPAÑA ORGÁNICA FACEBOOK">CAMPA&#209;A ORG&#193;NICA FACEBOOK</option>
-                                                    <option value="LLAMADA/TUCARRO">LLAMADA/TUCARRO</option>
-                                                    <option value="OLX">OLX</option>
-                                                    <option value="Google Display">Google Display</option>
-                                                    <option value="LLAMADA/OLX">LLAMADA/OLX</option>
-                                                    <option value="Google Adwords">Google Adwords</option>
-                                                    <option value="CAMPAÑA PAGA FACEBOOK">CAMPA&#209;A PAGA FACEBOOK</option>
-                                                    <option value="Retoma usados">Retoma usados</option>
-                                                    <option value="Renting Colombia">Renting Colombia</option>
+                                                    {% for origen in origenes_lead_interaccion %}
+                                                    <option value="{{origen.origen_lead}}">{{origen.origen_lead}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Respuesta" name="ContAsesor_Respuesta">
                                                     <option selected="selected" value="0">-- Respuesta --</option>
-                                                    <option value="Sin Contactar">Sin Contactar</option>
-                                                    <option value="Entrega del vehiculo">Entrega del vehiculo</option>
-                                                    <option value="Test drive">Test drive</option>
-                                                    <option value="Niega solicitud">Niega solicitud</option>
-                                                    <option value="Separación">Separaci&#243;n</option>
-                                                    <option value="En otra ciudad inviable">En otra ciudad inviable</option>
-                                                    <option value="No contesta/Fuera de Servicio">No contesta/Fuera de Servicio</option>
-                                                    <option value="Espera de aprobacion de Credito">Espera de aprobacion de Credito</option>
-                                                    <option value="Entregado">Entregado</option>
-                                                    <option value="N/A">N/A</option>
-                                                    <option value="Capacidad de endeudamiento">Capacidad de endeudamiento</option>
-                                                    <option value="Se deja mensaje de voz">Se deja mensaje de voz</option>
-                                                    <option value="Interes mediano plazo / Fecha">Interes mediano plazo / Fecha</option>
-                                                    <option value="En otra ciudad posibilidad traslado">En otra ciudad posibilidad traslado</option>
-                                                    <option value="Cliente no acepta oferta de retoma">Cliente no acepta oferta de retoma</option>
-                                                    <option value="Cita agendada">Cita agendada</option>
-                                                    <option value="Interesado mas adelante">Interesado mas adelante</option>
-                                                    <option value="Asignar Asesor">Asignar Asesor</option>
-                                                    <option value="No contesta / volver a llamar">No contesta / volver a llamar</option>
-                                                    <option value="Alistamiento mecanico basico ">Alistamiento mecanico basico </option>
-                                                    <option value="Llamada realizada">Llamada realizada</option>
-                                                    <option value="Negociacion">Negociacion</option>
-                                                    <option value="Cliente contactado por otro asesor">Cliente contactado por otro asesor</option>
-                                                    <option value="Cliente duplicado">Cliente duplicado</option>
-                                                    <option value="Ya compro">Ya compro</option>
-                                                    <option value="Datos de contacto incorrectos">Datos de contacto incorrectos</option>
-                                                    <option value="No esta el vh de su interes">No esta el vh de su interes</option>
-                                                    <option value="Poca Capacidad de endeudamiento">Poca Capacidad de endeudamiento</option>
-                                                    <option value="Agenda cita">Agenda cita</option>
-                                                    <option value="Esta interesado en otro vehiculo">Esta interesado en otro vehiculo</option>
-                                                    <option value="Enviar cotización/catalogo">Enviar cotizaci&#243;n/catalogo</option>
-                                                    <option value="Reportado">Reportado</option>
-                                                    <option value="No interesado">No interesado</option>
-                                                    <option value="Desistido">Desistido</option>
-                                                    <option value="Vh excede su presupuesto">Vh excede su presupuesto</option>
-                                                    <option value="Mensaje enviado a whatsapp">Mensaje enviado a whatsapp</option>
-                                                    <option value="Interes largo plazo / Fecha">Interes largo plazo / Fecha</option>
-                                                    <option value="Informacion de vehiculos nuevos">Informacion de vehiculos nuevos</option>
-                                                    <option value="Interes en vehiculo de bajo presupuesto">Interes en vehiculo de bajo presupuesto</option>
-                                                    <option value="Vehiculo separado">Vehiculo separado</option>
-                                                    <option value="En el momento no hay vh de interes">En el momento no hay vh de interes</option>
-                                                    <option value="Marca/ Modelo no se encuntra disponible">Marca/ Modelo no se encuntra disponible</option>
-                                                    <option value="Hacer una nueva llamada_ Cita // fecha">Hacer una nueva llamada_ Cita // fecha</option>
-                                                    <option value="Vehículo ya se vendió">Veh&#237;culo ya se vendi&#243;</option>
-                                                    <option value="Nunca Contactado">Nunca Contactado</option>
-                                                    <option value="Aceptacion de documentos">Aceptacion de documentos</option>
-                                                    <option value="Crédito Negado">Cr&#233;dito Negado</option>
-                                                    <option value="Enviar catalogo / Informacion">Enviar catalogo / Informacion</option>
-                                                    <option value="Seguimiento venta">Seguimiento venta</option>
-                                                    <option value="Vehículo entregado">Veh&#237;culo entregado</option>
+                                                    {% for respuesta in respuestas_interaccion %}
+                                                    <option value="{{respuesta.respuesta}}">{{respuesta.respuesta}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-2">
@@ -792,101 +671,17 @@
                                             <div class="form-group col-md-3">
                                                 <select class="form-control form-control-sm" id="ContAsesor_OrigenIngreso" name="ContAsesor_OrigenIngreso">
                                                     <option selected="selected" value="0">-- Origen Lead --</option>
-                                                    <option value="WHATSAPP DIRECTO USADOS">WHATSAPP DIRECTO USADOS</option>
-                                                    <option value="INST RENUEVATE">INST RENUEVATE</option>
-                                                    <option value="Retoma mazda">Retoma mazda</option>
-                                                    <option value="WHATSAPP MAZDA">WHATSAPP MAZDA</option>
-                                                    <option value="Tucarro">Tucarro</option>
-                                                    <option value="CAMPAÑA FINANCIERA">CAMPA&#209;A FINANCIERA</option>
-                                                    <option value="PÁGINA WEB">P&#193;GINA WEB</option>
-                                                    <option value="ESTRENAR CARRO">ESTRENAR CARRO</option>
-                                                    <option value="Rebold">Rebold</option>
-                                                    <option value="Facebook Social AD">Facebook Social AD</option>
-                                                    <option value="LLAMADA CELULAR">LLAMADA CELULAR</option>
-                                                    <option value="WHATSAPP HYUNDAI">WHATSAPP HYUNDAI</option>
-                                                    <option value="REDES SOCIALES">REDES SOCIALES</option>
-                                                    <option value="Google Search">Google Search</option>
-                                                    <option value="FC RENUEVATE">FC RENUEVATE</option>
-                                                    <option value="Carroya">Carroya</option>
-                                                    <option value="FACEBOOK">FACEBOOK</option>
-                                                    <option value="LLAMADA CONMUTADOR">LLAMADA CONMUTADOR</option>
-                                                    <option value="CORREO">CORREO</option>
-                                                    <option value="Referido">Referido</option>
-                                                    <option value="Planta">Planta</option>
-                                                    <option value="INSTAGRAM">INSTAGRAM</option>
-                                                    <option value="WHATSAPP COMPRAS USADO">WHATSAPP COMPRAS USADO</option>
-                                                    <option value="TU USADO FINANDINA">TU USADO FINANDINA</option>
-                                                    <option value="----">----</option>
-                                                    <option value="Finanzauto">Finanzauto</option>
-                                                    <option value="Facebook Lead AD">Facebook Lead AD</option>
-                                                    <option value="- N/A -">- N/A -</option>
-                                                    <option value="CONVENIO">CONVENIO</option>
-                                                    <option value="PÁGINA WEB FORMULARIO">P&#193;GINA WEB FORMULARIO</option>
-                                                    <option value="LLAMADA/CARROYA">LLAMADA/CARROYA</option>
-                                                    <option value="CAMPAÑA ORGÁNICA FACEBOOK">CAMPA&#209;A ORG&#193;NICA FACEBOOK</option>
-                                                    <option value="LLAMADA/TUCARRO">LLAMADA/TUCARRO</option>
-                                                    <option value="OLX">OLX</option>
-                                                    <option value="Google Display">Google Display</option>
-                                                    <option value="LLAMADA/OLX">LLAMADA/OLX</option>
-                                                    <option value="Google Adwords">Google Adwords</option>
-                                                    <option value="CAMPAÑA PAGA FACEBOOK">CAMPA&#209;A PAGA FACEBOOK</option>
-                                                    <option value="Retoma usados">Retoma usados</option>
-                                                    <option value="Renting Colombia">Renting Colombia</option>
+                                                    {% for origen in origenes_lead_oportunidad %}
+                                                    <option value="{{origen.origen_lead}}">{{origen.origen_lead}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Respuesta" name="ContAsesor_Respuesta">
                                                     <option selected="selected" value="0">-- Respuesta --</option>
-                                                    <option value="Sin Contactar">Sin Contactar</option>
-                                                    <option value="Entrega del vehiculo">Entrega del vehiculo</option>
-                                                    <option value="Test drive">Test drive</option>
-                                                    <option value="Niega solicitud">Niega solicitud</option>
-                                                    <option value="Separación">Separaci&#243;n</option>
-                                                    <option value="En otra ciudad inviable">En otra ciudad inviable</option>
-                                                    <option value="No contesta/Fuera de Servicio">No contesta/Fuera de Servicio</option>
-                                                    <option value="Espera de aprobacion de Credito">Espera de aprobacion de Credito</option>
-                                                    <option value="Entregado">Entregado</option>
-                                                    <option value="N/A">N/A</option>
-                                                    <option value="Capacidad de endeudamiento">Capacidad de endeudamiento</option>
-                                                    <option value="Se deja mensaje de voz">Se deja mensaje de voz</option>
-                                                    <option value="Interes mediano plazo / Fecha">Interes mediano plazo / Fecha</option>
-                                                    <option value="En otra ciudad posibilidad traslado">En otra ciudad posibilidad traslado</option>
-                                                    <option value="Cliente no acepta oferta de retoma">Cliente no acepta oferta de retoma</option>
-                                                    <option value="Cita agendada">Cita agendada</option>
-                                                    <option value="Interesado mas adelante">Interesado mas adelante</option>
-                                                    <option value="Asignar Asesor">Asignar Asesor</option>
-                                                    <option value="No contesta / volver a llamar">No contesta / volver a llamar</option>
-                                                    <option value="Alistamiento mecanico basico ">Alistamiento mecanico basico </option>
-                                                    <option value="Llamada realizada">Llamada realizada</option>
-                                                    <option value="Negociacion">Negociacion</option>
-                                                    <option value="Cliente contactado por otro asesor">Cliente contactado por otro asesor</option>
-                                                    <option value="Cliente duplicado">Cliente duplicado</option>
-                                                    <option value="Ya compro">Ya compro</option>
-                                                    <option value="Datos de contacto incorrectos">Datos de contacto incorrectos</option>
-                                                    <option value="No esta el vh de su interes">No esta el vh de su interes</option>
-                                                    <option value="Poca Capacidad de endeudamiento">Poca Capacidad de endeudamiento</option>
-                                                    <option value="Agenda cita">Agenda cita</option>
-                                                    <option value="Esta interesado en otro vehiculo">Esta interesado en otro vehiculo</option>
-                                                    <option value="Enviar cotización/catalogo">Enviar cotizaci&#243;n/catalogo</option>
-                                                    <option value="Reportado">Reportado</option>
-                                                    <option value="No interesado">No interesado</option>
-                                                    <option value="Desistido">Desistido</option>
-                                                    <option value="Vh excede su presupuesto">Vh excede su presupuesto</option>
-                                                    <option value="Mensaje enviado a whatsapp">Mensaje enviado a whatsapp</option>
-                                                    <option value="Interes largo plazo / Fecha">Interes largo plazo / Fecha</option>
-                                                    <option value="Informacion de vehiculos nuevos">Informacion de vehiculos nuevos</option>
-                                                    <option value="Interes en vehiculo de bajo presupuesto">Interes en vehiculo de bajo presupuesto</option>
-                                                    <option value="Vehiculo separado">Vehiculo separado</option>
-                                                    <option value="En el momento no hay vh de interes">En el momento no hay vh de interes</option>
-                                                    <option value="Marca/ Modelo no se encuntra disponible">Marca/ Modelo no se encuntra disponible</option>
-                                                    <option value="Hacer una nueva llamada_ Cita // fecha">Hacer una nueva llamada_ Cita // fecha</option>
-                                                    <option value="Vehículo ya se vendió">Veh&#237;culo ya se vendi&#243;</option>
-                                                    <option value="Nunca Contactado">Nunca Contactado</option>
-                                                    <option value="Aceptacion de documentos">Aceptacion de documentos</option>
-                                                    <option value="Crédito Negado">Cr&#233;dito Negado</option>
-                                                    <option value="Enviar catalogo / Informacion">Enviar catalogo / Informacion</option>
-                                                    <option value="Seguimiento venta">Seguimiento venta</option>
-                                                    <option value="Vehículo entregado">Veh&#237;culo entregado</option>
+                                                    {% for respuesta in respuestas_oportunidad %}
+                                                    <option value="{{respuesta.respuesta}}">{{respuesta.respuesta}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-2">
@@ -1163,101 +958,17 @@
                                             <div class="form-group col-md-3">
                                                 <select class="form-control form-control-sm" id="ContAsesor_OrigenIngreso" name="ContAsesor_OrigenIngreso">
                                                     <option selected="selected" value="0">-- Origen Lead --</option>
-                                                    <option value="WHATSAPP DIRECTO USADOS">WHATSAPP DIRECTO USADOS</option>
-                                                    <option value="INST RENUEVATE">INST RENUEVATE</option>
-                                                    <option value="Retoma mazda">Retoma mazda</option>
-                                                    <option value="WHATSAPP MAZDA">WHATSAPP MAZDA</option>
-                                                    <option value="Tucarro">Tucarro</option>
-                                                    <option value="CAMPAÑA FINANCIERA">CAMPA&#209;A FINANCIERA</option>
-                                                    <option value="PÁGINA WEB">P&#193;GINA WEB</option>
-                                                    <option value="ESTRENAR CARRO">ESTRENAR CARRO</option>
-                                                    <option value="Rebold">Rebold</option>
-                                                    <option value="Facebook Social AD">Facebook Social AD</option>
-                                                    <option value="LLAMADA CELULAR">LLAMADA CELULAR</option>
-                                                    <option value="WHATSAPP HYUNDAI">WHATSAPP HYUNDAI</option>
-                                                    <option value="REDES SOCIALES">REDES SOCIALES</option>
-                                                    <option value="Google Search">Google Search</option>
-                                                    <option value="FC RENUEVATE">FC RENUEVATE</option>
-                                                    <option value="Carroya">Carroya</option>
-                                                    <option value="FACEBOOK">FACEBOOK</option>
-                                                    <option value="LLAMADA CONMUTADOR">LLAMADA CONMUTADOR</option>
-                                                    <option value="CORREO">CORREO</option>
-                                                    <option value="Referido">Referido</option>
-                                                    <option value="Planta">Planta</option>
-                                                    <option value="INSTAGRAM">INSTAGRAM</option>
-                                                    <option value="WHATSAPP COMPRAS USADO">WHATSAPP COMPRAS USADO</option>
-                                                    <option value="TU USADO FINANDINA">TU USADO FINANDINA</option>
-                                                    <option value="----">----</option>
-                                                    <option value="Finanzauto">Finanzauto</option>
-                                                    <option value="Facebook Lead AD">Facebook Lead AD</option>
-                                                    <option value="- N/A -">- N/A -</option>
-                                                    <option value="CONVENIO">CONVENIO</option>
-                                                    <option value="PÁGINA WEB FORMULARIO">P&#193;GINA WEB FORMULARIO</option>
-                                                    <option value="LLAMADA/CARROYA">LLAMADA/CARROYA</option>
-                                                    <option value="CAMPAÑA ORGÁNICA FACEBOOK">CAMPA&#209;A ORG&#193;NICA FACEBOOK</option>
-                                                    <option value="LLAMADA/TUCARRO">LLAMADA/TUCARRO</option>
-                                                    <option value="OLX">OLX</option>
-                                                    <option value="Google Display">Google Display</option>
-                                                    <option value="LLAMADA/OLX">LLAMADA/OLX</option>
-                                                    <option value="Google Adwords">Google Adwords</option>
-                                                    <option value="CAMPAÑA PAGA FACEBOOK">CAMPA&#209;A PAGA FACEBOOK</option>
-                                                    <option value="Retoma usados">Retoma usados</option>
-                                                    <option value="Renting Colombia">Renting Colombia</option>
+                                                    {% for origen in origenes_lead_pedido %}
+                                                    <option value="{{origen.origen_lead}}">{{origen.origen_lead}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Respuesta" name="ContAsesor_Respuesta">
                                                     <option selected="selected" value="0">-- Respuesta --</option>
-                                                    <option value="Sin Contactar">Sin Contactar</option>
-                                                    <option value="Entrega del vehiculo">Entrega del vehiculo</option>
-                                                    <option value="Test drive">Test drive</option>
-                                                    <option value="Niega solicitud">Niega solicitud</option>
-                                                    <option value="Separación">Separaci&#243;n</option>
-                                                    <option value="En otra ciudad inviable">En otra ciudad inviable</option>
-                                                    <option value="No contesta/Fuera de Servicio">No contesta/Fuera de Servicio</option>
-                                                    <option value="Espera de aprobacion de Credito">Espera de aprobacion de Credito</option>
-                                                    <option value="Entregado">Entregado</option>
-                                                    <option value="N/A">N/A</option>
-                                                    <option value="Capacidad de endeudamiento">Capacidad de endeudamiento</option>
-                                                    <option value="Se deja mensaje de voz">Se deja mensaje de voz</option>
-                                                    <option value="Interes mediano plazo / Fecha">Interes mediano plazo / Fecha</option>
-                                                    <option value="En otra ciudad posibilidad traslado">En otra ciudad posibilidad traslado</option>
-                                                    <option value="Cliente no acepta oferta de retoma">Cliente no acepta oferta de retoma</option>
-                                                    <option value="Cita agendada">Cita agendada</option>
-                                                    <option value="Interesado mas adelante">Interesado mas adelante</option>
-                                                    <option value="Asignar Asesor">Asignar Asesor</option>
-                                                    <option value="No contesta / volver a llamar">No contesta / volver a llamar</option>
-                                                    <option value="Alistamiento mecanico basico ">Alistamiento mecanico basico </option>
-                                                    <option value="Llamada realizada">Llamada realizada</option>
-                                                    <option value="Negociacion">Negociacion</option>
-                                                    <option value="Cliente contactado por otro asesor">Cliente contactado por otro asesor</option>
-                                                    <option value="Cliente duplicado">Cliente duplicado</option>
-                                                    <option value="Ya compro">Ya compro</option>
-                                                    <option value="Datos de contacto incorrectos">Datos de contacto incorrectos</option>
-                                                    <option value="No esta el vh de su interes">No esta el vh de su interes</option>
-                                                    <option value="Poca Capacidad de endeudamiento">Poca Capacidad de endeudamiento</option>
-                                                    <option value="Agenda cita">Agenda cita</option>
-                                                    <option value="Esta interesado en otro vehiculo">Esta interesado en otro vehiculo</option>
-                                                    <option value="Enviar cotización/catalogo">Enviar cotizaci&#243;n/catalogo</option>
-                                                    <option value="Reportado">Reportado</option>
-                                                    <option value="No interesado">No interesado</option>
-                                                    <option value="Desistido">Desistido</option>
-                                                    <option value="Vh excede su presupuesto">Vh excede su presupuesto</option>
-                                                    <option value="Mensaje enviado a whatsapp">Mensaje enviado a whatsapp</option>
-                                                    <option value="Interes largo plazo / Fecha">Interes largo plazo / Fecha</option>
-                                                    <option value="Informacion de vehiculos nuevos">Informacion de vehiculos nuevos</option>
-                                                    <option value="Interes en vehiculo de bajo presupuesto">Interes en vehiculo de bajo presupuesto</option>
-                                                    <option value="Vehiculo separado">Vehiculo separado</option>
-                                                    <option value="En el momento no hay vh de interes">En el momento no hay vh de interes</option>
-                                                    <option value="Marca/ Modelo no se encuntra disponible">Marca/ Modelo no se encuntra disponible</option>
-                                                    <option value="Hacer una nueva llamada_ Cita // fecha">Hacer una nueva llamada_ Cita // fecha</option>
-                                                    <option value="Vehículo ya se vendió">Veh&#237;culo ya se vendi&#243;</option>
-                                                    <option value="Nunca Contactado">Nunca Contactado</option>
-                                                    <option value="Aceptacion de documentos">Aceptacion de documentos</option>
-                                                    <option value="Crédito Negado">Cr&#233;dito Negado</option>
-                                                    <option value="Enviar catalogo / Informacion">Enviar catalogo / Informacion</option>
-                                                    <option value="Seguimiento venta">Seguimiento venta</option>
-                                                    <option value="Vehículo entregado">Veh&#237;culo entregado</option>
+                                                    {% for respuesta in respuestas_pedido %}
+                                                    <option value="{{respuesta.respuesta}}">{{respuesta.respuesta}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-2">

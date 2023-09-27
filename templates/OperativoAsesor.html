@@ -138,90 +138,25 @@
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Estado" name="ContAsesor_Estado">
                                                     <option selected="selected" value="0">-- Estado --</option>
-                                                    {% for estado in estados %}
-                                                    <option value="{{estado}}">{{estado}}</option>
+                                                    {% for estado in estados_no_contactado %}
+                                                    <option value="{{estado.estado}}">{{estado.estado}}</option>
                                                     {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Asesor" name="ContAsesor_Asesor">
                                                     <option selected="selected" value="0">-- Asesor --</option>
-                                                    <option value="Laura Martinez">Laura Martinez</option>
-                                                    <option value="Escobar Salamanca Milton">Escobar Salamanca Milton</option>
-                                                    <option value="Gomez Ariza Fabio">Gomez Ariza Fabio</option>
-                                                    <option value="Fernandez Yobanna">Fernandez Yobanna</option>
-                                                    <option value="Diana Oliveros Ramos">Diana Oliveros Ramos</option>
-                                                    <option value="Duque Sebastian">Duque Sebastian</option>
-                                                    <option value="Sergio Piragua">Sergio Piragua</option>
-                                                    <option value="Roger Steven Rincon Cohecha">Roger Steven Rincon Cohecha</option>
-                                                    <option value="Alejandro Urdaneta">Alejandro Urdaneta</option>
-                                                    <option value="Diana Patricia mayorga Arevalo">Diana Patricia mayorga Arevalo</option>
-                                                    <option value="Brandon Ovalle">Brandon Ovalle</option>
-                                                    <option value="Sergio Andres Lombo Bastidas">Sergio Andres Lombo Bastidas</option>
-                                                    <option value="Angelica Marcela Zambrano Bejarano">Angelica Marcela Zambrano Bejarano</option>
-                                                    <option value="Diana Pinzon">Diana Pinzon</option>
-                                                    <option value="Rodriguez Martin Bernardo Antonio">Rodriguez Martin Bernardo Antonio</option>
-                                                    <option value="Luis Saenz">Luis Saenz</option>
-                                                    <option value="Rodriguez Carol">Rodriguez Carol</option>
-                                                    <option value="Italia Franchesca Carrasco">Italia Franchesca Carrasco</option>
-                                                    <option value="Catalina Ayala Cabrera">Catalina Ayala Cabrera</option>
-                                                    <option value="Jose Antonio Gallo">Jose Antonio Gallo</option>
-                                                    <option value="Andres Moreno">Andres Moreno</option>
-                                                    <option value="Isauro Martinez Vargas">Isauro Martinez Vargas</option>
-                                                    <option value="Vargas Marisol">Vargas Marisol</option>
-                                                    <option value="Alexandra Rodriguez">Alexandra Rodriguez</option>
-                                                    <option value="Gonzalez Fuentes Cediel">Gonzalez Fuentes Cediel</option>
-                                                    <option value="Jenifer Rojas Segura">Jenifer Rojas Segura</option>
-                                                    <option value="Alvaro Vanegas">Alvaro Vanegas</option>
-                                                    <option value="Miguel Bonilla">Miguel Bonilla</option>
-                                                    <option value="Lopez Ortiz Diego Edison">Lopez Ortiz Diego Edison</option>
-                                                    <option value=" Alvaro Vanegas"> Alvaro Vanegas</option>
-                                                    <option value=""></option>
-                                                    <option value="Kevin Bernal">Kevin Bernal</option>
-                                                    <option value="Diego Urbano">Diego Urbano</option>
-                                                    <option value="Fredy Parra Neuta">Fredy Parra Neuta</option>
-                                                    <option value="Andres Arias">Andres Arias</option>
-                                                    <option value="Alexander Garzon">Alexander Garzon</option>
-                                                    <option value="Diego Sanchez">Diego Sanchez</option>
-                                                    <option value="Diego Forero">Diego Forero</option>
-                                                    <option value="Paola Petro">Paola Petro</option>
-                                                    <option value="Juan David Gutierrez Serrato">Juan David Gutierrez Serrato</option>
-                                                    <option value="ANDRES CRUZ">ANDRES CRUZ</option>
-                                                    <option value="Jorge Ramirez">Jorge Ramirez</option>
-                                                    <option value="Alexander Hernandez">Alexander Hernandez</option>
-                                                    <option value="Paez Carlos">Paez Carlos</option>
-                                                    <option value="Nicolas Rodriguez">Nicolas Rodriguez</option>
-                                                    <option value="FABIAN OSPINA">FABIAN OSPINA</option>
-                                                    <option value="Freddy Cardenas">Freddy Cardenas</option>
-                                                    <option value="Juan Polania">Juan Polania</option>
-                                                    <option value="Consuelo Izquierdo">Consuelo Izquierdo</option>
-                                                    <option value="Melina Alba Villarreal">Melina Alba Villarreal</option>
-                                                    <option value="Sandra Lizbeth Cano Garcia">Sandra Lizbeth Cano Garcia</option>
-                                                    <option value="Karen Buitrago Rodríguez">Karen Buitrago Rodr&#237;guez</option>
-                                                    <option value="Parra Gil Maria Dolores">Parra Gil Maria Dolores</option>
-                                                    <option value="Ana Milena Carranza">Ana Milena Carranza</option>
-                                                    <option value="Jaime Murcia">Jaime Murcia</option>
-                                                    <option value="Javier Caicedo">Javier Caicedo</option>
-                                                    <option value="David Correa">David Correa</option>
-                                                    <option value="Jimenez Enrique">Jimenez Enrique</option>
-                                                    <option value="Sebastian Orrego">Sebastian Orrego</option>
-                                                    <option value="Gustavo Parraga">Gustavo Parraga</option>
-                                                    <option value="Cesar Cruz">Cesar Cruz</option>
-                                                    <option value="Miranda Quintero Angie  Paola">Miranda Quintero Angie  Paola</option>
-                                                    <option value="Ximena Bayona">Ximena Bayona</option>
-                                                    <option value="Bustos Cristian">Bustos Cristian</option>
-                                                    <option value="Lozada Juan">Lozada Juan</option>
-                                                    <option value="Sandra Isabel Pulido">Sandra Isabel Pulido</option>
-                                                    <option value="Carlos Felipe Cedeño Vargas">Carlos Felipe Cede&#241;o Vargas</option>
-                                                    <option value="Garcia Acero Diego Alejandro">Garcia Acero Diego Alejandro</option>
-                                                    <option value="0">0</option>
+                                                    {% for nombre_asesor in asesores_no_contactado %}
+                                                    <option value="{{nombre_asesor.nombre_asesor}}">{{nombre_asesor.nombre_asesor}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-1">
                                                 <select id="ContAsesor_Sala" name="ContAsesor_Sala" class="form-control form-control-sm">
                                                     <option value="0" selected>--Sala--</option>
-                                                    <option value="127">127</option>
-                                                    <option value="Morato">Morato</option>
+                                                    {% for sala in salas_no_contactado %}
+                                                    <option value="{{sala.sala}}">{{sala.sala}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                         </div>
@@ -229,72 +164,17 @@
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Marca" name="ContAsesor_Marca">
                                                     <option selected="selected" value="0">-- Marca --</option>
-                                                    <option value="AUDI">AUDI</option>
-                                                    <option value="BMW">BMW</option>
-                                                    <option value="CHEVROLET">CHEVROLET</option>
-                                                    <option value="CITROEN">CITROEN</option>
-                                                    <option value="DAIHATSU">DAIHATSU</option>
-                                                    <option value="FIAT">FIAT</option>
-                                                    <option value="FORD">FORD</option>
-                                                    <option value="HONDA">HONDA</option>
-                                                    <option value="HYUNDAI">HYUNDAI</option>
-                                                    <option value="JEEP">JEEP</option>
-                                                    <option value="KIA">KIA</option>
-                                                    <option value="MAZDA">MAZDA</option>
-                                                    <option value="MERCEDES BENZ">MERCEDES BENZ</option>
-                                                    <option value="MINI">MINI</option>
-                                                    <option value="MITSUBISHI">MITSUBISHI</option>
-                                                    <option value="NISSAN">NISSAN</option>
-                                                    <option value="PEUGEOT">PEUGEOT</option>
-                                                    <option value="PORSCHE">PORSCHE</option>
-                                                    <option value="RENAULT">RENAULT</option>
-                                                    <option value="SEAT">SEAT</option>
-                                                    <option value="SSANG YONG">SSANG YONG</option>
-                                                    <option value="SUBARU">SUBARU</option>
-                                                    <option value="TOYOTA">TOYOTA</option>
-                                                    <option value="VOLKSWAGEN">VOLKSWAGEN</option>
-                                                    <option value="Suzuki">Suzuki</option>
-                                                    <option value="RAM">RAM</option>
-                                                    <option value="VOLVO">VOLVO</option>
-                                                    <option value="JAGUAR">JAGUAR</option>
-                                                    <option value="BAIC">BAIC</option>
-                                                    <option value="BYD">BYD</option>
-                                                    <option value="Brilliance">Brilliance</option>
-                                                    <option value="Chana">Chana</option>
-                                                    <option value="Changan">Changan</option>
-                                                    <option value="CHANGHE">CHANGHE</option>
-                                                    <option value="CHERY">CHERY</option>
-                                                    <option value="Chrysler">Chrysler</option>
-                                                    <option value="Dodge">Dodge</option>
-                                                    <option value="DS">DS</option>
-                                                    <option value="DFSK">DFSK</option>
-                                                    <option value="FAW">FAW</option>
-                                                    <option value="FOTON">FOTON</option>
-                                                    <option value="GEELY">GEELY</option>
-                                                    <option value="Great Wall">Great Wall</option>
-                                                    <option value="Hafei">Hafei</option>
-                                                    <option value="HAVAL">HAVAL</option>
-                                                    <option value="JAC">JAC</option>
-                                                    <option value="Otro">Otro</option>
-                                                    <option value="JMC">JMC</option>
-                                                    <option value="Hyundai Nuevos">Hyundai Nuevos</option>
-                                                    <option value="Mazda Nuevos">Mazda Nuevos</option>
-                                                    <option value="Karry">Karry</option>
-                                                    <option value="KENBO">KENBO</option>
-                                                    <option value="MAHINDRA">MAHINDRA</option>
-                                                    <option value="MG">MG</option>
-                                                    <option value="OPEL">OPEL</option>
-                                                    <option value="SOUEATS">SOUEATS</option>
-                                                    <option value="Skoda">Skoda</option>
-                                                    <option value="SsangYong">SsangYong</option>
-                                                    <option value="TESLA">TESLA</option>
-                                                    <option value="Zotye">Zotye</option>
+                                                    {% for marca in mostrado_marcas_no_contactado %}
+                                                    <option value="{{marca.marca}}">{{marca.marca}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Modelo" name="ContAsesor_Modelo">
                                                     <option selected="selected" value="0">-- Modelo --</option>
-                                                    <option value="chevrolet beat">chevrolet beat</option>
+                                                    {% for modelo in mostrado_marcas_no_contactado %}
+                                                    <option value="{{modelo.modelo}}">{{modelo.modelo}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-2">
@@ -302,7 +182,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="basic-addon1">De:</span>
                                                     </div>
-                                                    <input name="ContAsesor_Desde" id="ContAsesor_Desde" class="form-control rangos" type="text" autocomplete="off">
+                                                    <input name="ContAsesor_Desde" id="ContAsesor_Desde" class="form-control rangos" type="date" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-2">
@@ -310,7 +190,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="basic-addon1">a:</span>
                                                     </div>
-                                                    <input name="ContAsesor_Hasta" id="ContAsesor_Hasta" class="form-control rangos" type="text" autocomplete="off">
+                                                    <input name="ContAsesor_Hasta" id="ContAsesor_Hasta" class="form-control rangos" type="date" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-2">
@@ -400,115 +280,25 @@
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Estado" name="ContAsesor_Estado">
                                                     <option selected="selected" value="0">-- Estado --</option>
-                                                    <option value="Sin contactar">Sin contactar</option>
-                                                    <option value="No contactado / interesado ">No contactado / interesado </option>
-                                                    <option value="Seguimiento de venta usado">Seguimiento de venta usado</option>
-                                                    <option value="Separación">Separaci&#243;n</option>
-                                                    <option value="No contesta/seguimiento">No contesta/seguimiento</option>
-                                                    <option value="N/A">N/A</option>
-                                                    <option value="Capacidad de endeudamiento">Capacidad de endeudamiento</option>
-                                                    <option value="Venta Finalizada ">Venta Finalizada </option>
-                                                    <option value="Poder adquisitivo">Poder adquisitivo</option>
-                                                    <option value="Venta y Entrega">Venta y Entrega</option>
-                                                    <option value="Cliente no acepta oferta de retoma">Cliente no acepta oferta de retoma</option>
-                                                    <option value="Interesado mas adelante">Interesado mas adelante</option>
-                                                    <option value="Sin stock">Sin stock</option>
-                                                    <option value="Seguimiento pago">Seguimiento pago</option>
-                                                    <option value="Seguimiento de venta">Seguimiento de venta</option>
-                                                    <option value="Ya compró">Ya compr&#243;</option>
-                                                    <option value="Venta desistida">Venta desistida</option>
-                                                    <option value="Datos de contacto incorrectos">Datos de contacto incorrectos</option>
-                                                    <option value="Imposible contactar">Imposible contactar</option>
-                                                    <option value="Alistamiento">Alistamiento</option>
-                                                    <option value="Sigue proceso">Sigue proceso</option>
-                                                    <option value="No interesado">No interesado</option>
-                                                    <option value="Desistido">Desistido</option>
-                                                    <option value="Información de vehículos nuevos">Informaci&#243;n de veh&#237;culos nuevos</option>
-                                                    <option value="Vehículo ya se vendió">Veh&#237;culo ya se vendi&#243;</option>
-                                                    <option value="Nunca Contactado">Nunca Contactado</option>
-                                                    <option value="Contactado / Interesado">Contactado / Interesado</option>
-                                                    <option value="Seguimiento venta">Seguimiento venta</option>
+                                                    {% for estado in estados_interaccion %}
+                                                    <option value="{{estado.estado}}">{{estado.estado}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Asesor" name="ContAsesor_Asesor">
                                                     <option selected="selected" value="0">-- Asesor --</option>
-                                                    <option value="Laura Martinez">Laura Martinez</option>
-                                                    <option value="Escobar Salamanca Milton">Escobar Salamanca Milton</option>
-                                                    <option value="Gomez Ariza Fabio">Gomez Ariza Fabio</option>
-                                                    <option value="Fernandez Yobanna">Fernandez Yobanna</option>
-                                                    <option value="Diana Oliveros Ramos">Diana Oliveros Ramos</option>
-                                                    <option value="Duque Sebastian">Duque Sebastian</option>
-                                                    <option value="Sergio Piragua">Sergio Piragua</option>
-                                                    <option value="Roger Steven Rincon Cohecha">Roger Steven Rincon Cohecha</option>
-                                                    <option value="Alejandro Urdaneta">Alejandro Urdaneta</option>
-                                                    <option value="Diana Patricia mayorga Arevalo">Diana Patricia mayorga Arevalo</option>
-                                                    <option value="Brandon Ovalle">Brandon Ovalle</option>
-                                                    <option value="Sergio Andres Lombo Bastidas">Sergio Andres Lombo Bastidas</option>
-                                                    <option value="Angelica Marcela Zambrano Bejarano">Angelica Marcela Zambrano Bejarano</option>
-                                                    <option value="Diana Pinzon">Diana Pinzon</option>
-                                                    <option value="Rodriguez Martin Bernardo Antonio">Rodriguez Martin Bernardo Antonio</option>
-                                                    <option value="Luis Saenz">Luis Saenz</option>
-                                                    <option value="Rodriguez Carol">Rodriguez Carol</option>
-                                                    <option value="Italia Franchesca Carrasco">Italia Franchesca Carrasco</option>
-                                                    <option value="Catalina Ayala Cabrera">Catalina Ayala Cabrera</option>
-                                                    <option value="Jose Antonio Gallo">Jose Antonio Gallo</option>
-                                                    <option value="Andres Moreno">Andres Moreno</option>
-                                                    <option value="Isauro Martinez Vargas">Isauro Martinez Vargas</option>
-                                                    <option value="Vargas Marisol">Vargas Marisol</option>
-                                                    <option value="Alexandra Rodriguez">Alexandra Rodriguez</option>
-                                                    <option value="Gonzalez Fuentes Cediel">Gonzalez Fuentes Cediel</option>
-                                                    <option value="Jenifer Rojas Segura">Jenifer Rojas Segura</option>
-                                                    <option value="Alvaro Vanegas">Alvaro Vanegas</option>
-                                                    <option value="Miguel Bonilla">Miguel Bonilla</option>
-                                                    <option value="Lopez Ortiz Diego Edison">Lopez Ortiz Diego Edison</option>
-                                                    <option value=" Alvaro Vanegas"> Alvaro Vanegas</option>
-                                                    <option value=""></option>
-                                                    <option value="Kevin Bernal">Kevin Bernal</option>
-                                                    <option value="Diego Urbano">Diego Urbano</option>
-                                                    <option value="Fredy Parra Neuta">Fredy Parra Neuta</option>
-                                                    <option value="Andres Arias">Andres Arias</option>
-                                                    <option value="Alexander Garzon">Alexander Garzon</option>
-                                                    <option value="Diego Sanchez">Diego Sanchez</option>
-                                                    <option value="Diego Forero">Diego Forero</option>
-                                                    <option value="Paola Petro">Paola Petro</option>
-                                                    <option value="Juan David Gutierrez Serrato">Juan David Gutierrez Serrato</option>
-                                                    <option value="ANDRES CRUZ">ANDRES CRUZ</option>
-                                                    <option value="Jorge Ramirez">Jorge Ramirez</option>
-                                                    <option value="Alexander Hernandez">Alexander Hernandez</option>
-                                                    <option value="Paez Carlos">Paez Carlos</option>
-                                                    <option value="Nicolas Rodriguez">Nicolas Rodriguez</option>
-                                                    <option value="FABIAN OSPINA">FABIAN OSPINA</option>
-                                                    <option value="Freddy Cardenas">Freddy Cardenas</option>
-                                                    <option value="Juan Polania">Juan Polania</option>
-                                                    <option value="Consuelo Izquierdo">Consuelo Izquierdo</option>
-                                                    <option value="Melina Alba Villarreal">Melina Alba Villarreal</option>
-                                                    <option value="Sandra Lizbeth Cano Garcia">Sandra Lizbeth Cano Garcia</option>
-                                                    <option value="Karen Buitrago Rodríguez">Karen Buitrago Rodr&#237;guez</option>
-                                                    <option value="Parra Gil Maria Dolores">Parra Gil Maria Dolores</option>
-                                                    <option value="Ana Milena Carranza">Ana Milena Carranza</option>
-                                                    <option value="Jaime Murcia">Jaime Murcia</option>
-                                                    <option value="Javier Caicedo">Javier Caicedo</option>
-                                                    <option value="David Correa">David Correa</option>
-                                                    <option value="Jimenez Enrique">Jimenez Enrique</option>
-                                                    <option value="Sebastian Orrego">Sebastian Orrego</option>
-                                                    <option value="Gustavo Parraga">Gustavo Parraga</option>
-                                                    <option value="Cesar Cruz">Cesar Cruz</option>
-                                                    <option value="Miranda Quintero Angie  Paola">Miranda Quintero Angie  Paola</option>
-                                                    <option value="Ximena Bayona">Ximena Bayona</option>
-                                                    <option value="Bustos Cristian">Bustos Cristian</option>
-                                                    <option value="Lozada Juan">Lozada Juan</option>
-                                                    <option value="Sandra Isabel Pulido">Sandra Isabel Pulido</option>
-                                                    <option value="Carlos Felipe Cedeño Vargas">Carlos Felipe Cede&#241;o Vargas</option>
-                                                    <option value="Garcia Acero Diego Alejandro">Garcia Acero Diego Alejandro</option>
-                                                    <option value="0">0</option>
+                                                    {% for nombre_asesor in asesores_interaccion %}
+                                                    <option value="{{nombre_asesor.nombre_asesor}}">{{nombre_asesor.nombre_asesor}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-1">
                                                 <select id="ContAsesor_Sala" name="ContAsesor_Sala" class="form-control form-control-sm">
                                                     <option value="0" selected>--Sala--</option>
-                                                    <option value="127">127</option>
-                                                    <option value="Morato">Morato</option>
+                                                    {% for sala in salas_interaccion %}
+                                                    <option value="{{sala.sala}}">{{sala.sala}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                         </div>
@@ -516,72 +306,17 @@
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Marca" name="ContAsesor_Marca">
                                                     <option selected="selected" value="0">-- Marca --</option>
-                                                    <option value="AUDI">AUDI</option>
-                                                    <option value="BMW">BMW</option>
-                                                    <option value="CHEVROLET">CHEVROLET</option>
-                                                    <option value="CITROEN">CITROEN</option>
-                                                    <option value="DAIHATSU">DAIHATSU</option>
-                                                    <option value="FIAT">FIAT</option>
-                                                    <option value="FORD">FORD</option>
-                                                    <option value="HONDA">HONDA</option>
-                                                    <option value="HYUNDAI">HYUNDAI</option>
-                                                    <option value="JEEP">JEEP</option>
-                                                    <option value="KIA">KIA</option>
-                                                    <option value="MAZDA">MAZDA</option>
-                                                    <option value="MERCEDES BENZ">MERCEDES BENZ</option>
-                                                    <option value="MINI">MINI</option>
-                                                    <option value="MITSUBISHI">MITSUBISHI</option>
-                                                    <option value="NISSAN">NISSAN</option>
-                                                    <option value="PEUGEOT">PEUGEOT</option>
-                                                    <option value="PORSCHE">PORSCHE</option>
-                                                    <option value="RENAULT">RENAULT</option>
-                                                    <option value="SEAT">SEAT</option>
-                                                    <option value="SSANG YONG">SSANG YONG</option>
-                                                    <option value="SUBARU">SUBARU</option>
-                                                    <option value="TOYOTA">TOYOTA</option>
-                                                    <option value="VOLKSWAGEN">VOLKSWAGEN</option>
-                                                    <option value="Suzuki">Suzuki</option>
-                                                    <option value="RAM">RAM</option>
-                                                    <option value="VOLVO">VOLVO</option>
-                                                    <option value="JAGUAR">JAGUAR</option>
-                                                    <option value="BAIC">BAIC</option>
-                                                    <option value="BYD">BYD</option>
-                                                    <option value="Brilliance">Brilliance</option>
-                                                    <option value="Chana">Chana</option>
-                                                    <option value="Changan">Changan</option>
-                                                    <option value="CHANGHE">CHANGHE</option>
-                                                    <option value="CHERY">CHERY</option>
-                                                    <option value="Chrysler">Chrysler</option>
-                                                    <option value="Dodge">Dodge</option>
-                                                    <option value="DS">DS</option>
-                                                    <option value="DFSK">DFSK</option>
-                                                    <option value="FAW">FAW</option>
-                                                    <option value="FOTON">FOTON</option>
-                                                    <option value="GEELY">GEELY</option>
-                                                    <option value="Great Wall">Great Wall</option>
-                                                    <option value="Hafei">Hafei</option>
-                                                    <option value="HAVAL">HAVAL</option>
-                                                    <option value="JAC">JAC</option>
-                                                    <option value="Otro">Otro</option>
-                                                    <option value="JMC">JMC</option>
-                                                    <option value="Hyundai Nuevos">Hyundai Nuevos</option>
-                                                    <option value="Mazda Nuevos">Mazda Nuevos</option>
-                                                    <option value="Karry">Karry</option>
-                                                    <option value="KENBO">KENBO</option>
-                                                    <option value="MAHINDRA">MAHINDRA</option>
-                                                    <option value="MG">MG</option>
-                                                    <option value="OPEL">OPEL</option>
-                                                    <option value="SOUEATS">SOUEATS</option>
-                                                    <option value="Skoda">Skoda</option>
-                                                    <option value="SsangYong">SsangYong</option>
-                                                    <option value="TESLA">TESLA</option>
-                                                    <option value="Zotye">Zotye</option>
+                                                    {% for marca in mostrado_marcas_interaccion %}
+                                                    <option value="{{marca.marca}}">{{marca.marca}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Modelo" name="ContAsesor_Modelo">
                                                     <option selected="selected" value="0">-- Modelo --</option>
-                                                    <option value="chevrolet beat">chevrolet beat</option>
+                                                    {% for modelo in mostrado_marcas_interaccion %}
+                                                    <option value="{{modelo.modelo}}">{{modelo.modelo}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-2">
@@ -589,7 +324,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="basic-addon1">De:</span>
                                                     </div>
-                                                    <input name="ContAsesor_Desde" id="ContAsesor_Desde" class="form-control rangos" type="text" autocomplete="off">
+                                                    <input name="ContAsesor_Desde" id="ContAsesor_Desde" class="form-control rangos" type="date" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-2">
@@ -597,7 +332,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="basic-addon1">a:</span>
                                                     </div>
-                                                    <input name="ContAsesor_Hasta" id="ContAsesor_Hasta" class="form-control rangos" type="text" autocomplete="off">
+                                                    <input name="ContAsesor_Hasta" id="ContAsesor_Hasta" class="form-control rangos" type="date" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-2">
@@ -687,115 +422,25 @@
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Estado" name="ContAsesor_Estado">
                                                     <option selected="selected" value="0">-- Estado --</option>
-                                                    <option value="Sin contactar">Sin contactar</option>
-                                                    <option value="No contactado / interesado ">No contactado / interesado </option>
-                                                    <option value="Seguimiento de venta usado">Seguimiento de venta usado</option>
-                                                    <option value="Separación">Separaci&#243;n</option>
-                                                    <option value="No contesta/seguimiento">No contesta/seguimiento</option>
-                                                    <option value="N/A">N/A</option>
-                                                    <option value="Capacidad de endeudamiento">Capacidad de endeudamiento</option>
-                                                    <option value="Venta Finalizada ">Venta Finalizada </option>
-                                                    <option value="Poder adquisitivo">Poder adquisitivo</option>
-                                                    <option value="Venta y Entrega">Venta y Entrega</option>
-                                                    <option value="Cliente no acepta oferta de retoma">Cliente no acepta oferta de retoma</option>
-                                                    <option value="Interesado mas adelante">Interesado mas adelante</option>
-                                                    <option value="Sin stock">Sin stock</option>
-                                                    <option value="Seguimiento pago">Seguimiento pago</option>
-                                                    <option value="Seguimiento de venta">Seguimiento de venta</option>
-                                                    <option value="Ya compró">Ya compr&#243;</option>
-                                                    <option value="Venta desistida">Venta desistida</option>
-                                                    <option value="Datos de contacto incorrectos">Datos de contacto incorrectos</option>
-                                                    <option value="Imposible contactar">Imposible contactar</option>
-                                                    <option value="Alistamiento">Alistamiento</option>
-                                                    <option value="Sigue proceso">Sigue proceso</option>
-                                                    <option value="No interesado">No interesado</option>
-                                                    <option value="Desistido">Desistido</option>
-                                                    <option value="Información de vehículos nuevos">Informaci&#243;n de veh&#237;culos nuevos</option>
-                                                    <option value="Vehículo ya se vendió">Veh&#237;culo ya se vendi&#243;</option>
-                                                    <option value="Nunca Contactado">Nunca Contactado</option>
-                                                    <option value="Contactado / Interesado">Contactado / Interesado</option>
-                                                    <option value="Seguimiento venta">Seguimiento venta</option>
+                                                    {% for estado in estados_oportunidad %}
+                                                    <option value="{{estado.estado}}">{{estado.estado}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Asesor" name="ContAsesor_Asesor">
                                                     <option selected="selected" value="0">-- Asesor --</option>
-                                                    <option value="Laura Martinez">Laura Martinez</option>
-                                                    <option value="Escobar Salamanca Milton">Escobar Salamanca Milton</option>
-                                                    <option value="Gomez Ariza Fabio">Gomez Ariza Fabio</option>
-                                                    <option value="Fernandez Yobanna">Fernandez Yobanna</option>
-                                                    <option value="Diana Oliveros Ramos">Diana Oliveros Ramos</option>
-                                                    <option value="Duque Sebastian">Duque Sebastian</option>
-                                                    <option value="Sergio Piragua">Sergio Piragua</option>
-                                                    <option value="Roger Steven Rincon Cohecha">Roger Steven Rincon Cohecha</option>
-                                                    <option value="Alejandro Urdaneta">Alejandro Urdaneta</option>
-                                                    <option value="Diana Patricia mayorga Arevalo">Diana Patricia mayorga Arevalo</option>
-                                                    <option value="Brandon Ovalle">Brandon Ovalle</option>
-                                                    <option value="Sergio Andres Lombo Bastidas">Sergio Andres Lombo Bastidas</option>
-                                                    <option value="Angelica Marcela Zambrano Bejarano">Angelica Marcela Zambrano Bejarano</option>
-                                                    <option value="Diana Pinzon">Diana Pinzon</option>
-                                                    <option value="Rodriguez Martin Bernardo Antonio">Rodriguez Martin Bernardo Antonio</option>
-                                                    <option value="Luis Saenz">Luis Saenz</option>
-                                                    <option value="Rodriguez Carol">Rodriguez Carol</option>
-                                                    <option value="Italia Franchesca Carrasco">Italia Franchesca Carrasco</option>
-                                                    <option value="Catalina Ayala Cabrera">Catalina Ayala Cabrera</option>
-                                                    <option value="Jose Antonio Gallo">Jose Antonio Gallo</option>
-                                                    <option value="Andres Moreno">Andres Moreno</option>
-                                                    <option value="Isauro Martinez Vargas">Isauro Martinez Vargas</option>
-                                                    <option value="Vargas Marisol">Vargas Marisol</option>
-                                                    <option value="Alexandra Rodriguez">Alexandra Rodriguez</option>
-                                                    <option value="Gonzalez Fuentes Cediel">Gonzalez Fuentes Cediel</option>
-                                                    <option value="Jenifer Rojas Segura">Jenifer Rojas Segura</option>
-                                                    <option value="Alvaro Vanegas">Alvaro Vanegas</option>
-                                                    <option value="Miguel Bonilla">Miguel Bonilla</option>
-                                                    <option value="Lopez Ortiz Diego Edison">Lopez Ortiz Diego Edison</option>
-                                                    <option value=" Alvaro Vanegas"> Alvaro Vanegas</option>
-                                                    <option value=""></option>
-                                                    <option value="Kevin Bernal">Kevin Bernal</option>
-                                                    <option value="Diego Urbano">Diego Urbano</option>
-                                                    <option value="Fredy Parra Neuta">Fredy Parra Neuta</option>
-                                                    <option value="Andres Arias">Andres Arias</option>
-                                                    <option value="Alexander Garzon">Alexander Garzon</option>
-                                                    <option value="Diego Sanchez">Diego Sanchez</option>
-                                                    <option value="Diego Forero">Diego Forero</option>
-                                                    <option value="Paola Petro">Paola Petro</option>
-                                                    <option value="Juan David Gutierrez Serrato">Juan David Gutierrez Serrato</option>
-                                                    <option value="ANDRES CRUZ">ANDRES CRUZ</option>
-                                                    <option value="Jorge Ramirez">Jorge Ramirez</option>
-                                                    <option value="Alexander Hernandez">Alexander Hernandez</option>
-                                                    <option value="Paez Carlos">Paez Carlos</option>
-                                                    <option value="Nicolas Rodriguez">Nicolas Rodriguez</option>
-                                                    <option value="FABIAN OSPINA">FABIAN OSPINA</option>
-                                                    <option value="Freddy Cardenas">Freddy Cardenas</option>
-                                                    <option value="Juan Polania">Juan Polania</option>
-                                                    <option value="Consuelo Izquierdo">Consuelo Izquierdo</option>
-                                                    <option value="Melina Alba Villarreal">Melina Alba Villarreal</option>
-                                                    <option value="Sandra Lizbeth Cano Garcia">Sandra Lizbeth Cano Garcia</option>
-                                                    <option value="Karen Buitrago Rodríguez">Karen Buitrago Rodr&#237;guez</option>
-                                                    <option value="Parra Gil Maria Dolores">Parra Gil Maria Dolores</option>
-                                                    <option value="Ana Milena Carranza">Ana Milena Carranza</option>
-                                                    <option value="Jaime Murcia">Jaime Murcia</option>
-                                                    <option value="Javier Caicedo">Javier Caicedo</option>
-                                                    <option value="David Correa">David Correa</option>
-                                                    <option value="Jimenez Enrique">Jimenez Enrique</option>
-                                                    <option value="Sebastian Orrego">Sebastian Orrego</option>
-                                                    <option value="Gustavo Parraga">Gustavo Parraga</option>
-                                                    <option value="Cesar Cruz">Cesar Cruz</option>
-                                                    <option value="Miranda Quintero Angie  Paola">Miranda Quintero Angie  Paola</option>
-                                                    <option value="Ximena Bayona">Ximena Bayona</option>
-                                                    <option value="Bustos Cristian">Bustos Cristian</option>
-                                                    <option value="Lozada Juan">Lozada Juan</option>
-                                                    <option value="Sandra Isabel Pulido">Sandra Isabel Pulido</option>
-                                                    <option value="Carlos Felipe Cedeño Vargas">Carlos Felipe Cede&#241;o Vargas</option>
-                                                    <option value="Garcia Acero Diego Alejandro">Garcia Acero Diego Alejandro</option>
-                                                    <option value="0">0</option>
+                                                    {% for nombre_asesor in asesores_oportunidad %}
+                                                    <option value="{{nombre_asesor.nombre_asesor}}">{{nombre_asesor.nombre_asesor}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-1">
                                                 <select id="ContAsesor_Sala" name="ContAsesor_Sala" class="form-control form-control-sm">
                                                     <option value="0" selected>--Sala--</option>
-                                                    <option value="127">127</option>
-                                                    <option value="Morato">Morato</option>
+                                                    {% for sala in salas_oportunidad %}
+                                                    <option value="{{sala.sala}}">{{sala.sala}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                         </div>
@@ -803,72 +448,17 @@
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Marca" name="ContAsesor_Marca">
                                                     <option selected="selected" value="0">-- Marca --</option>
-                                                    <option value="AUDI">AUDI</option>
-                                                    <option value="BMW">BMW</option>
-                                                    <option value="CHEVROLET">CHEVROLET</option>
-                                                    <option value="CITROEN">CITROEN</option>
-                                                    <option value="DAIHATSU">DAIHATSU</option>
-                                                    <option value="FIAT">FIAT</option>
-                                                    <option value="FORD">FORD</option>
-                                                    <option value="HONDA">HONDA</option>
-                                                    <option value="HYUNDAI">HYUNDAI</option>
-                                                    <option value="JEEP">JEEP</option>
-                                                    <option value="KIA">KIA</option>
-                                                    <option value="MAZDA">MAZDA</option>
-                                                    <option value="MERCEDES BENZ">MERCEDES BENZ</option>
-                                                    <option value="MINI">MINI</option>
-                                                    <option value="MITSUBISHI">MITSUBISHI</option>
-                                                    <option value="NISSAN">NISSAN</option>
-                                                    <option value="PEUGEOT">PEUGEOT</option>
-                                                    <option value="PORSCHE">PORSCHE</option>
-                                                    <option value="RENAULT">RENAULT</option>
-                                                    <option value="SEAT">SEAT</option>
-                                                    <option value="SSANG YONG">SSANG YONG</option>
-                                                    <option value="SUBARU">SUBARU</option>
-                                                    <option value="TOYOTA">TOYOTA</option>
-                                                    <option value="VOLKSWAGEN">VOLKSWAGEN</option>
-                                                    <option value="Suzuki">Suzuki</option>
-                                                    <option value="RAM">RAM</option>
-                                                    <option value="VOLVO">VOLVO</option>
-                                                    <option value="JAGUAR">JAGUAR</option>
-                                                    <option value="BAIC">BAIC</option>
-                                                    <option value="BYD">BYD</option>
-                                                    <option value="Brilliance">Brilliance</option>
-                                                    <option value="Chana">Chana</option>
-                                                    <option value="Changan">Changan</option>
-                                                    <option value="CHANGHE">CHANGHE</option>
-                                                    <option value="CHERY">CHERY</option>
-                                                    <option value="Chrysler">Chrysler</option>
-                                                    <option value="Dodge">Dodge</option>
-                                                    <option value="DS">DS</option>
-                                                    <option value="DFSK">DFSK</option>
-                                                    <option value="FAW">FAW</option>
-                                                    <option value="FOTON">FOTON</option>
-                                                    <option value="GEELY">GEELY</option>
-                                                    <option value="Great Wall">Great Wall</option>
-                                                    <option value="Hafei">Hafei</option>
-                                                    <option value="HAVAL">HAVAL</option>
-                                                    <option value="JAC">JAC</option>
-                                                    <option value="Otro">Otro</option>
-                                                    <option value="JMC">JMC</option>
-                                                    <option value="Hyundai Nuevos">Hyundai Nuevos</option>
-                                                    <option value="Mazda Nuevos">Mazda Nuevos</option>
-                                                    <option value="Karry">Karry</option>
-                                                    <option value="KENBO">KENBO</option>
-                                                    <option value="MAHINDRA">MAHINDRA</option>
-                                                    <option value="MG">MG</option>
-                                                    <option value="OPEL">OPEL</option>
-                                                    <option value="SOUEATS">SOUEATS</option>
-                                                    <option value="Skoda">Skoda</option>
-                                                    <option value="SsangYong">SsangYong</option>
-                                                    <option value="TESLA">TESLA</option>
-                                                    <option value="Zotye">Zotye</option>
+                                                    {% for marca in mostrado_marcas_oportunidad %}
+                                                    <option value="{{marca.marca}}">{{marca.marca}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Modelo" name="ContAsesor_Modelo">
                                                     <option selected="selected" value="0">-- Modelo --</option>
-                                                    <option value="chevrolet beat">chevrolet beat</option>
+                                                    {% for modelo in mostrado_marcas_oportunidad %}
+                                                    <option value="{{modelo.modelo}}">{{modelo.modelo}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-2">
@@ -876,7 +466,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="basic-addon1">De:</span>
                                                     </div>
-                                                    <input name="ContAsesor_Desde" id="ContAsesor_Desde" class="form-control rangos" type="text" autocomplete="off">
+                                                    <input name="ContAsesor_Desde" id="ContAsesor_Desde" class="form-control rangos" type="date" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-2">
@@ -884,7 +474,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="basic-addon1">a:</span>
                                                     </div>
-                                                    <input name="ContAsesor_Hasta" id="ContAsesor_Hasta" class="form-control rangos" type="text" autocomplete="off">
+                                                    <input name="ContAsesor_Hasta" id="ContAsesor_Hasta" class="form-control rangos" type="date" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-2">
@@ -974,115 +564,25 @@
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Estado" name="ContAsesor_Estado">
                                                     <option selected="selected" value="0">-- Estado --</option>
-                                                    <option value="Sin contactar">Sin contactar</option>
-                                                    <option value="No contactado / interesado ">No contactado / interesado </option>
-                                                    <option value="Seguimiento de venta usado">Seguimiento de venta usado</option>
-                                                    <option value="Separación">Separaci&#243;n</option>
-                                                    <option value="No contesta/seguimiento">No contesta/seguimiento</option>
-                                                    <option value="N/A">N/A</option>
-                                                    <option value="Capacidad de endeudamiento">Capacidad de endeudamiento</option>
-                                                    <option value="Venta Finalizada ">Venta Finalizada </option>
-                                                    <option value="Poder adquisitivo">Poder adquisitivo</option>
-                                                    <option value="Venta y Entrega">Venta y Entrega</option>
-                                                    <option value="Cliente no acepta oferta de retoma">Cliente no acepta oferta de retoma</option>
-                                                    <option value="Interesado mas adelante">Interesado mas adelante</option>
-                                                    <option value="Sin stock">Sin stock</option>
-                                                    <option value="Seguimiento pago">Seguimiento pago</option>
-                                                    <option value="Seguimiento de venta">Seguimiento de venta</option>
-                                                    <option value="Ya compró">Ya compr&#243;</option>
-                                                    <option value="Venta desistida">Venta desistida</option>
-                                                    <option value="Datos de contacto incorrectos">Datos de contacto incorrectos</option>
-                                                    <option value="Imposible contactar">Imposible contactar</option>
-                                                    <option value="Alistamiento">Alistamiento</option>
-                                                    <option value="Sigue proceso">Sigue proceso</option>
-                                                    <option value="No interesado">No interesado</option>
-                                                    <option value="Desistido">Desistido</option>
-                                                    <option value="Información de vehículos nuevos">Informaci&#243;n de veh&#237;culos nuevos</option>
-                                                    <option value="Vehículo ya se vendió">Veh&#237;culo ya se vendi&#243;</option>
-                                                    <option value="Nunca Contactado">Nunca Contactado</option>
-                                                    <option value="Contactado / Interesado">Contactado / Interesado</option>
-                                                    <option value="Seguimiento venta">Seguimiento venta</option>
+                                                    {% for estado in estados_pedido %}
+                                                    <option value="{{estado.estado}}">{{estado.estado}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Asesor" name="ContAsesor_Asesor">
                                                     <option selected="selected" value="0">-- Asesor --</option>
-                                                    <option value="Laura Martinez">Laura Martinez</option>
-                                                    <option value="Escobar Salamanca Milton">Escobar Salamanca Milton</option>
-                                                    <option value="Gomez Ariza Fabio">Gomez Ariza Fabio</option>
-                                                    <option value="Fernandez Yobanna">Fernandez Yobanna</option>
-                                                    <option value="Diana Oliveros Ramos">Diana Oliveros Ramos</option>
-                                                    <option value="Duque Sebastian">Duque Sebastian</option>
-                                                    <option value="Sergio Piragua">Sergio Piragua</option>
-                                                    <option value="Roger Steven Rincon Cohecha">Roger Steven Rincon Cohecha</option>
-                                                    <option value="Alejandro Urdaneta">Alejandro Urdaneta</option>
-                                                    <option value="Diana Patricia mayorga Arevalo">Diana Patricia mayorga Arevalo</option>
-                                                    <option value="Brandon Ovalle">Brandon Ovalle</option>
-                                                    <option value="Sergio Andres Lombo Bastidas">Sergio Andres Lombo Bastidas</option>
-                                                    <option value="Angelica Marcela Zambrano Bejarano">Angelica Marcela Zambrano Bejarano</option>
-                                                    <option value="Diana Pinzon">Diana Pinzon</option>
-                                                    <option value="Rodriguez Martin Bernardo Antonio">Rodriguez Martin Bernardo Antonio</option>
-                                                    <option value="Luis Saenz">Luis Saenz</option>
-                                                    <option value="Rodriguez Carol">Rodriguez Carol</option>
-                                                    <option value="Italia Franchesca Carrasco">Italia Franchesca Carrasco</option>
-                                                    <option value="Catalina Ayala Cabrera">Catalina Ayala Cabrera</option>
-                                                    <option value="Jose Antonio Gallo">Jose Antonio Gallo</option>
-                                                    <option value="Andres Moreno">Andres Moreno</option>
-                                                    <option value="Isauro Martinez Vargas">Isauro Martinez Vargas</option>
-                                                    <option value="Vargas Marisol">Vargas Marisol</option>
-                                                    <option value="Alexandra Rodriguez">Alexandra Rodriguez</option>
-                                                    <option value="Gonzalez Fuentes Cediel">Gonzalez Fuentes Cediel</option>
-                                                    <option value="Jenifer Rojas Segura">Jenifer Rojas Segura</option>
-                                                    <option value="Alvaro Vanegas">Alvaro Vanegas</option>
-                                                    <option value="Miguel Bonilla">Miguel Bonilla</option>
-                                                    <option value="Lopez Ortiz Diego Edison">Lopez Ortiz Diego Edison</option>
-                                                    <option value=" Alvaro Vanegas"> Alvaro Vanegas</option>
-                                                    <option value=""></option>
-                                                    <option value="Kevin Bernal">Kevin Bernal</option>
-                                                    <option value="Diego Urbano">Diego Urbano</option>
-                                                    <option value="Fredy Parra Neuta">Fredy Parra Neuta</option>
-                                                    <option value="Andres Arias">Andres Arias</option>
-                                                    <option value="Alexander Garzon">Alexander Garzon</option>
-                                                    <option value="Diego Sanchez">Diego Sanchez</option>
-                                                    <option value="Diego Forero">Diego Forero</option>
-                                                    <option value="Paola Petro">Paola Petro</option>
-                                                    <option value="Juan David Gutierrez Serrato">Juan David Gutierrez Serrato</option>
-                                                    <option value="ANDRES CRUZ">ANDRES CRUZ</option>
-                                                    <option value="Jorge Ramirez">Jorge Ramirez</option>
-                                                    <option value="Alexander Hernandez">Alexander Hernandez</option>
-                                                    <option value="Paez Carlos">Paez Carlos</option>
-                                                    <option value="Nicolas Rodriguez">Nicolas Rodriguez</option>
-                                                    <option value="FABIAN OSPINA">FABIAN OSPINA</option>
-                                                    <option value="Freddy Cardenas">Freddy Cardenas</option>
-                                                    <option value="Juan Polania">Juan Polania</option>
-                                                    <option value="Consuelo Izquierdo">Consuelo Izquierdo</option>
-                                                    <option value="Melina Alba Villarreal">Melina Alba Villarreal</option>
-                                                    <option value="Sandra Lizbeth Cano Garcia">Sandra Lizbeth Cano Garcia</option>
-                                                    <option value="Karen Buitrago Rodríguez">Karen Buitrago Rodr&#237;guez</option>
-                                                    <option value="Parra Gil Maria Dolores">Parra Gil Maria Dolores</option>
-                                                    <option value="Ana Milena Carranza">Ana Milena Carranza</option>
-                                                    <option value="Jaime Murcia">Jaime Murcia</option>
-                                                    <option value="Javier Caicedo">Javier Caicedo</option>
-                                                    <option value="David Correa">David Correa</option>
-                                                    <option value="Jimenez Enrique">Jimenez Enrique</option>
-                                                    <option value="Sebastian Orrego">Sebastian Orrego</option>
-                                                    <option value="Gustavo Parraga">Gustavo Parraga</option>
-                                                    <option value="Cesar Cruz">Cesar Cruz</option>
-                                                    <option value="Miranda Quintero Angie  Paola">Miranda Quintero Angie  Paola</option>
-                                                    <option value="Ximena Bayona">Ximena Bayona</option>
-                                                    <option value="Bustos Cristian">Bustos Cristian</option>
-                                                    <option value="Lozada Juan">Lozada Juan</option>
-                                                    <option value="Sandra Isabel Pulido">Sandra Isabel Pulido</option>
-                                                    <option value="Carlos Felipe Cedeño Vargas">Carlos Felipe Cede&#241;o Vargas</option>
-                                                    <option value="Garcia Acero Diego Alejandro">Garcia Acero Diego Alejandro</option>
-                                                    <option value="0">0</option>
+                                                    {% for nombre_asesor in asesores_pedido %}
+                                                    <option value="{{nombre_asesor.nombre_asesor}}">{{nombre_asesor.nombre_asesor}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-1">
                                                 <select id="ContAsesor_Sala" name="ContAsesor_Sala" class="form-control form-control-sm">
                                                     <option value="0" selected>--Sala--</option>
-                                                    <option value="127">127</option>
-                                                    <option value="Morato">Morato</option>
+                                                    {% for sala in salas_pedido %}
+                                                    <option value="{{sala.sala}}">{{sala.sala}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                         </div>
@@ -1090,72 +590,17 @@
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Marca" name="ContAsesor_Marca">
                                                     <option selected="selected" value="0">-- Marca --</option>
-                                                    <option value="AUDI">AUDI</option>
-                                                    <option value="BMW">BMW</option>
-                                                    <option value="CHEVROLET">CHEVROLET</option>
-                                                    <option value="CITROEN">CITROEN</option>
-                                                    <option value="DAIHATSU">DAIHATSU</option>
-                                                    <option value="FIAT">FIAT</option>
-                                                    <option value="FORD">FORD</option>
-                                                    <option value="HONDA">HONDA</option>
-                                                    <option value="HYUNDAI">HYUNDAI</option>
-                                                    <option value="JEEP">JEEP</option>
-                                                    <option value="KIA">KIA</option>
-                                                    <option value="MAZDA">MAZDA</option>
-                                                    <option value="MERCEDES BENZ">MERCEDES BENZ</option>
-                                                    <option value="MINI">MINI</option>
-                                                    <option value="MITSUBISHI">MITSUBISHI</option>
-                                                    <option value="NISSAN">NISSAN</option>
-                                                    <option value="PEUGEOT">PEUGEOT</option>
-                                                    <option value="PORSCHE">PORSCHE</option>
-                                                    <option value="RENAULT">RENAULT</option>
-                                                    <option value="SEAT">SEAT</option>
-                                                    <option value="SSANG YONG">SSANG YONG</option>
-                                                    <option value="SUBARU">SUBARU</option>
-                                                    <option value="TOYOTA">TOYOTA</option>
-                                                    <option value="VOLKSWAGEN">VOLKSWAGEN</option>
-                                                    <option value="Suzuki">Suzuki</option>
-                                                    <option value="RAM">RAM</option>
-                                                    <option value="VOLVO">VOLVO</option>
-                                                    <option value="JAGUAR">JAGUAR</option>
-                                                    <option value="BAIC">BAIC</option>
-                                                    <option value="BYD">BYD</option>
-                                                    <option value="Brilliance">Brilliance</option>
-                                                    <option value="Chana">Chana</option>
-                                                    <option value="Changan">Changan</option>
-                                                    <option value="CHANGHE">CHANGHE</option>
-                                                    <option value="CHERY">CHERY</option>
-                                                    <option value="Chrysler">Chrysler</option>
-                                                    <option value="Dodge">Dodge</option>
-                                                    <option value="DS">DS</option>
-                                                    <option value="DFSK">DFSK</option>
-                                                    <option value="FAW">FAW</option>
-                                                    <option value="FOTON">FOTON</option>
-                                                    <option value="GEELY">GEELY</option>
-                                                    <option value="Great Wall">Great Wall</option>
-                                                    <option value="Hafei">Hafei</option>
-                                                    <option value="HAVAL">HAVAL</option>
-                                                    <option value="JAC">JAC</option>
-                                                    <option value="Otro">Otro</option>
-                                                    <option value="JMC">JMC</option>
-                                                    <option value="Hyundai Nuevos">Hyundai Nuevos</option>
-                                                    <option value="Mazda Nuevos">Mazda Nuevos</option>
-                                                    <option value="Karry">Karry</option>
-                                                    <option value="KENBO">KENBO</option>
-                                                    <option value="MAHINDRA">MAHINDRA</option>
-                                                    <option value="MG">MG</option>
-                                                    <option value="OPEL">OPEL</option>
-                                                    <option value="SOUEATS">SOUEATS</option>
-                                                    <option value="Skoda">Skoda</option>
-                                                    <option value="SsangYong">SsangYong</option>
-                                                    <option value="TESLA">TESLA</option>
-                                                    <option value="Zotye">Zotye</option>
+                                                    {% for marca in mostrado_marcas_pedido %}
+                                                    <option value="{{marca.marca}}">{{marca.marca}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Modelo" name="ContAsesor_Modelo">
                                                     <option selected="selected" value="0">-- Modelo --</option>
-                                                    <option value="chevrolet beat">chevrolet beat</option>
+                                                    {% for modelo in mostrado_marcas_pedido %}
+                                                    <option value="{{modelo.modelo}}">{{modelo.modelo}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                             <div class="form-group col-md-2">
@@ -1163,7 +608,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="basic-addon1">De:</span>
                                                     </div>
-                                                    <input name="ContAsesor_Desde" id="ContAsesor_Desde" class="form-control rangos" type="text" autocomplete="off">
+                                                    <input name="ContAsesor_Desde" id="ContAsesor_Desde" class="form-control rangos" type="date" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-2">
@@ -1171,7 +616,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="basic-addon1">a:</span>
                                                     </div>
-                                                    <input name="ContAsesor_Hasta" id="ContAsesor_Hasta" class="form-control rangos" type="text" autocomplete="off">
+                                                    <input name="ContAsesor_Hasta" id="ContAsesor_Hasta" class="form-control rangos" type="date" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-2">

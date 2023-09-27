@@ -7,7 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
 from django.http.response import JsonResponse
 from django.shortcuts import redirect, render
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
@@ -398,7 +398,7 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
         mostrar_evento = False
         calendario_general = True
         for grupo in self.request.user.groups.all():
-            if grupo.name == "Asesor":
+            if grupo.name == "Asesor" or grupo.name == "Admin" :
                 mostrar_evento = True
                 calendario_general = False
 
@@ -722,6 +722,13 @@ class OperativoAnfitrionView(LoginRequiredMixin, TemplateView):
 
         print(verificaciones)
 
+        anfitriones_agendados = leads_agendados.values("nombre_anfitrion")
+        tipos_solicitud_agendados = leads_agendados.values("tipo_solicitud_verificacion")
+        asesores_agendados = leads_agendados.values("nombre_asesor")
+        salas_agendados = leads_agendados.values("sala")
+
+        context["anfitriones_agendados"] = anfitriones_agendados
+        context["asesores_agendados"] = asesores_agendados
         context["asesor_actual"] = asesor_actual
         context["calendario_general"] = calendario_general
         context["cantidad_agendados"] = leads_agendados.count()
@@ -730,6 +737,8 @@ class OperativoAnfitrionView(LoginRequiredMixin, TemplateView):
         context["leads_agendados"] = leads_agendados
         context["leads_primer_contacto"] = leads_primer_contacto
         context["mostrado_marcas"] = mostrado_marcas
+        context["salas_agendados"] = salas_agendados
+        context["tipos_solicitud_agendados"] = tipos_solicitud_agendados
         context["user"] = user
         context["verificaciones"] = verificaciones
 
@@ -781,18 +790,50 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
         respuestas_oportunidad = leads_oportunidad.values("respuesta")
         respuestas_pedido = leads_pedido.values("respuesta")
 
+        estados_no_contactado = leads_no_contactado.values("estado")
+        estados_interaccion = leads_interaccion.values("estado")
+        estados_oportunidad = leads_oportunidad.values("estado")
+        estados_pedido = leads_pedido.values("estado")
+
+        asesores_no_contactado = leads_no_contactado.values("nombre_asesor")
+        asesores_interaccion = leads_interaccion.values("nombre_asesor")
+        asesores_oportunidad = leads_oportunidad.values("nombre_asesor")
+        asesores_pedido = leads_pedido.values("nombre_asesor")
+
+        salas_no_contactado = leads_no_contactado.values("sala")
+        salas_interaccion = leads_interaccion.values("sala")
+        salas_oportunidad = leads_oportunidad.values("sala")
+        salas_pedido = leads_pedido.values("sala")
+
+        mostrado_marcas_no_contactado = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_no_contactado).values("lead", "mostrado").distinct().annotate(latest=Max("id")).values("lead", "marca", "modelo")
+        mostrado_marcas_interaccion = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_interaccion).values("lead", "mostrado").distinct().annotate(latest=Max("id")).values("lead", "marca", "modelo")
+        mostrado_marcas_oportunidad = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_oportunidad).values("lead", "mostrado").distinct().annotate(latest=Max("id")).values("lead", "marca", "modelo")
+        mostrado_marcas_pedido = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_pedido).values("lead", "mostrado").distinct().annotate(latest=Max("id")).values("lead", "marca", "modelo")
+
         context["asesor_actual"] = asesor_actual
+        context["asesores_no_contactado"] = asesores_no_contactado
+        context["asesores_interaccion"] = asesores_interaccion
+        context["asesores_oportunidad"] = asesores_oportunidad
+        context["asesores_pedido"] = asesores_pedido
         context["calendario_general"] = calendario_general
         context["cantidad_no_contactado"] = leads_no_contactado.count()
         context["cantidad_interaccion"] = leads_interaccion.count()
         context["cantidad_oportunidad"] = leads_oportunidad.count()
         context["cantidad_pedido"] = leads_pedido.count()
         context["estados"] = estados
+        context["estados_no_contactado"] = estados_no_contactado
+        context["estados_interaccion"] = estados_interaccion
+        context["estados_oportunidad"] = estados_oportunidad
+        context["estados_pedido"] = estados_pedido
         context["leads_no_contactado"] = leads_no_contactado
         context["leads_interaccion"] = leads_interaccion
         context["leads_oportunidad"] = leads_oportunidad
         context["leads_pedido"] = leads_pedido
         context["mostrado_marcas"] = mostrado_marcas
+        context["mostrado_marcas_no_contactado"] = mostrado_marcas_no_contactado
+        context["mostrado_marcas_interaccion"] = mostrado_marcas_interaccion
+        context["mostrado_marcas_oportunidad"] = mostrado_marcas_oportunidad
+        context["mostrado_marcas_pedido"] = mostrado_marcas_pedido
         context["origenes_lead_no_contactado"] = origenes_lead_no_contactado
         context["origenes_lead_interaccion"] = origenes_lead_interaccion
         context["origenes_lead_oportunidad"] = origenes_lead_oportunidad
@@ -802,6 +843,10 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
         context["respuestas_interaccion"] = respuestas_interaccion
         context["respuestas_oportunidad"] = respuestas_oportunidad
         context["respuestas_pedido"] = respuestas_pedido
+        context["salas_no_contactado"] = salas_no_contactado
+        context["salas_interaccion"] = salas_interaccion
+        context["salas_oportunidad"] = salas_oportunidad
+        context["salas_pedido"] = salas_pedido
         context["user"] = user
 
         return context
@@ -846,12 +891,42 @@ class ReportesView(LoginRequiredMixin, TemplateView):
 
         print(leads_separados_y_facturados)
 
+        origenes_lead_agendados = leads_agendados.values("origen_lead")
+        
+        respuestas_agendados = leads_agendados.values("respuesta")
+        respuestas_desistidos = leads_desistidos.values("respuesta")
+        
+        estados_agendados = leads_agendados.values("estado")
+        estados_separados_y_facturados = leads_separados_y_facturados.values("estado")
+        estados_desistidos = leads_desistidos.values("estado")
+
+        anfitriones_agendados = leads_agendados.values("nombre_anfitrion")
+
+        asesores_agendados = leads_agendados.values("nombre_asesor")
+        asesores_separados_y_facturados = leads_separados_y_facturados.values("nombre_asesor")
+        asesores_desistidos = leads_desistidos.values("nombre_asesor")
+
+        salas_agendados = leads_agendados.values("sala")
+        salas_separados_y_facturados = leads_separados_y_facturados.values("sala")
+        salas_desistidos = leads_desistidos.values("sala")
+
+        mostrado_marcas_agendados = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_agendados).values("lead", "mostrado").distinct().annotate(latest=Max("id")).values("lead", "marca", "modelo")
+        mostrado_marcas_separados_y_facturados = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_separados_y_facturados).values("lead", "mostrado").distinct().annotate(latest=Max("id")).values("lead", "marca", "modelo")
+        mostrado_marcas_desistidos = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_desistidos).values("lead", "mostrado").distinct().annotate(latest=Max("id")).values("lead", "marca", "modelo")
+       
+        context["anfitriones_agendados"] = anfitriones_agendados
         context["asesor_actual"] = asesor_actual
+        context["asesores_agendados"] = asesores_agendados
+        context["asesores_separados_y_facturados"] = asesores_separados_y_facturados
+        context["asesores_desistidos"] = asesores_desistidos
         context["calendario_general"] = calendario_general
         context["cantidad_agendados"] = leads_agendados.count()
         context["cantidad_desistidos"] = leads_desistidos.count()
         context["cantidad_historial"] = historial.count()
         context["cantidad_separados_y_facturados"] = leads_separados_y_facturados.count()
+        context["estados_agendados"] = estados_agendados
+        context["estados_separados_y_facturados"] = estados_separados_y_facturados
+        context["estados_desistidos"] = estados_desistidos
         context["historial"] = historial
         context["leads_agendados"] = leads_agendados
         context["leads_desistidos"] = leads_desistidos
@@ -859,6 +934,15 @@ class ReportesView(LoginRequiredMixin, TemplateView):
         context["leads_separados"] = leads_separados
         context["leads_separados_y_facturados"] = leads_separados_y_facturados
         context["mostrado_marcas"] = mostrado_marcas
+        context["mostrado_marcas_agendados"] = mostrado_marcas_agendados
+        context["mostrado_marcas_separados_y_facturados"] = mostrado_marcas_separados_y_facturados
+        context["mostrado_marcas_desistidos"] = mostrado_marcas_desistidos
+        context["origenes_lead_agendados"] = origenes_lead_agendados
+        context["respuestas_agendados"] = respuestas_agendados
+        context["respuestas_desistidos"] = respuestas_desistidos
+        context["salas_agendados"] = salas_agendados
+        context["salas_separados_y_facturados"] = salas_separados_y_facturados
+        context["salas_desistidos"] = salas_desistidos
         context["separados"] = separados
         context["separados_y_facturados_marcas"] = separados_y_facturados_marcas
         context["user"] = user
@@ -1136,6 +1220,15 @@ class CalendarView(LoginRequiredMixin, TemplateView):
             evento.delete()
 
             return HttpResponseRedirect(reverse_lazy('dashboards:calendar'))
+        if r.get("title2", None):
+            nombre = r.get("title2", None)
+            evento = Evento.objects.get(nombre=nombre).lead
+            
+            print("evento")
+            print("evento")
+            print(evento)
+
+            return redirect("dashboards:detallenuevo", evento)
 
 class CalendarDetailView(LoginRequiredMixin, DetailView):
     # Vista de Calendar Detail
@@ -1185,7 +1278,9 @@ class CalendarDetailView(LoginRequiredMixin, DetailView):
 
         general = False
 
-        prospectos = Prospecto.objects.all()
+        prospectos = eventos.values("cliente").distinct()
+
+        print(prospectos)
 
         context["adviser"] = adviser
         context["asesor_actual"] = asesor_actual
@@ -1205,7 +1300,7 @@ class CalendarDetailView(LoginRequiredMixin, DetailView):
 
         return context
 
-    def post(self, request):
+    def post(self, request, pk):
         r = request.POST
         user = User.objects.get(username=self.request.user)
         
@@ -1226,3 +1321,16 @@ class CalendarDetailView(LoginRequiredMixin, DetailView):
                                            )
 
             return HttpResponseRedirect(reverse_lazy('dashboards:calendar'))
+        if r.get("title2", None):
+            print("evento")
+            print("evento")
+            print("evento")
+            print("evento")
+            nombre = r.get("title2", None)
+            evento = Evento.objects.get(nombre=nombre).lead
+            
+            print("evento")
+            print("evento")
+            print(evento)
+
+            return JsonResponse(evento, safe=False)

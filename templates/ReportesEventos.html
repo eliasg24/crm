@@ -75,7 +75,7 @@
                                                     <span class="count-numbers">
                                                         {{cantidad_activos}}                                                        
                                                     </span>
-                                                    <a href="#Capturados" style="color: #ffffff;"><span class="count-name">Leads activos</span></a>
+                                                    <a href="#Capturados" style="color: #ffffff;" onclick="actualizar_capturados();"><span class="count-name">Leads activos</span></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -89,7 +89,7 @@
                                                         
                                                         {{cantidad_hoy}}
                                                     </span>
-                                                    <a href="#SF" style="color: #ffffff;"><span class="count-name">Eventos del día</span></a>
+                                                    <a href="#SF" style="color: #ffffff;" onclick="actualizar_hoy();"><span class="count-name">Eventos del día</span></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -103,7 +103,7 @@
                                                         
                                                         0
                                                     </span>
-                                                    <a href="#Desistidas" style="color: #ffffff;"><span class="count-name">Eventos vencidos</span></a>
+                                                    <a href="#Desistidas" style="color: #ffffff;" onclick="actualizar_vencidos();"><span class="count-name">Eventos vencidos</span></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -117,7 +117,7 @@
                                                         
                                                         0
                                                     </span>
-                                                    <a href="#Concretadas" style="color: #ffffff;"><span class="count-name">Leads sin eventos</span></a>
+                                                    <a href="#Concretadas" style="color: #ffffff;" onclick="actualizar_sin_eventos();"><span class="count-name">Leads sin eventos</span></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -131,7 +131,7 @@
                                                         
                                                         {{cantidad_pendientes}}
                                                     </span>
-                                                    <a href="#Concretadas" style="color: #ffffff;"><span class="count-name">Eventos pendientes</span></a>
+                                                    <a href="#Concretadas" style="color: #ffffff;" onclick="actualizar_pendientes();"><span class="count-name">Eventos pendientes</span></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -145,7 +145,7 @@
                                                         
                                                         0
                                                     </span>
-                                                    <a href="#Concretadas" style="color: #ffffff;"><span class="count-name">Eventos cumplidos</span></a>
+                                                    <a href="#Concretadas" style="color: #ffffff;" onclick="actualizar_cumplidos();"><span class="count-name">Eventos cumplidos</span></a>
                                                 </div>
                                             </div>
                                         </div>
@@ -160,7 +160,22 @@
                                                     <option value="Morato">Morato</option>
                                                 </select>
                                             </div>
-                                            
+                                            <div class="form-group col-md-2" style="float: right; margin-right: 800px; " >
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">a:</span>
+                                                    </div>
+                                                    <input name="CapturaHasta" id="CapturaHasta" class="form-control" type="date" autocomplete="off">
+                                                </div>
+                                            </div>
+                                            <div class="form-group col-md-2" style="float: right;" >
+                                                <div class="input-group">
+                                                    <div class="input-group-prepend">
+                                                        <span class="input-group-text" id="basic-addon1">De:</span>
+                                                    </div>
+                                                    <input name="CapturaDesde" id="CapturaDesde" class="form-control" type="date" autocomplete="off">
+                                                </div>
+                                            </div>
                                             <div class="form-group col-md-3">
                                                 <button id="ok" type="button" class="btn btn-primary" onclick="FiltrarCapturados();">Buscar</button>
                                                 <button id="rCaptura" type="button" class="btn btn-secondary"><i class="material-icons">cached</i></button>
@@ -168,7 +183,9 @@
                                                <button type="submit" value="Capturados" name="tabla" id="exportCapturados" class="btn btn-secondary"><i class="material-icons">description</i></button>
                                                {% endif %}
                                             </div>
-                                    </div>
+                                            
+                                            
+                                    
                                         <table id="tableCapturados"
                                                data-toolbar="#toolbar"
                                                data-toggle="table"
@@ -187,13 +204,13 @@
                                                     <th data-field="FechaIngreso" data-sortable="false">
                                                         Asesor
                                                     </th>
-                                                    <th data-field="Cliente" data-sortable="false">
+                                                    <th data-field="EventosHoy" data-sortable="false">
                                                         Eventos hoy
                                                     </th>
-                                                    <th data-field="Telefono" data-sortable="false">Leads sin eventos</th>
-                                                    <th data-field="Correo" data-sortable="false">Eventos vencidos</th>
-                                                    <th data-field="Pendiente" data-sortable="false">Eventos pendientes</th>
-                                                    <th data-field="Pendiente" data-sortable="false">Eventos cumplidos</th>
+                                                    <th data-field="LeadsSinEventos" data-sortable="false">Leads sin eventos</th>
+                                                    <th data-field="EventosVencidos" data-sortable="false">Eventos vencidos</th>
+                                                    <th data-field="EventosPendientes" data-sortable="false">Eventos pendientes</th>
+                                                    <th data-field="EventosCumplidos" data-sortable="false">Eventos cumplidos</th>
                                                     <th data-field="Anfitrion" data-sortable="false">
                                                         Ir al calendario
                                                     </th>
@@ -204,18 +221,18 @@
                                                     <tr class="class_asesor">
                                                         <td><button id="DeleteProspecto" type="button" onclick="BorrarLead(54928)"><span class="material-symbols-outlined">account_circle</span></button></td>
                                                         <td id="nombre_asesor">{{asesor.nombre}}</td>
-                                                        <td id="evento_hoy{{asesor.id}}">{% for evento in eventos_hoy %}{% if evento.asesor == asesor.pk %}{{evento.cantidad}}{% endif %}{% endfor %}</td>
-                                                        <td>0</td>
-                                                        <td>0</td>
-                                                        <td id="evento_pendiente{{asesor.id}}">{% for evento in eventos_pendientes %}{% if evento.asesor == asesor.pk %}{{evento.cantidad}}{% endif %}{% endfor %}</td>
-                                                        <td>0</td>
+                                                        <td id="evento_hoy{{asesor.id}}" data-field="EventosHoy">{% for evento in eventos_hoy %}{% if evento.asesor == asesor.pk %}{{evento.cantidad}}{% endif %}{% endfor %}</td>
+                                                        <td data-field="LeadsSinEventos">0</td>
+                                                        <td data-field="EventosVencidos">0</td>
+                                                        <td id="evento_pendiente{{asesor.id}}" data-field="EventosPendientes">{% for evento in eventos_pendientes %}{% if evento.asesor == asesor.pk %}{{evento.cantidad}}{% endif %}{% endfor %}</td>
+                                                        <td data-field="EventosCumplidos">0</td>
                                                         <td><a href="{% url 'dashboards:calendar_detail' asesor.id %}">Calendario</td>
                                                     </tr>
                                                 {% endfor %}
                                             </tbody>
                                         </table>
-                                </div>
                             </div>
+                            
                             <div class="modal fade bd-example-modal-lg" id="ModalEvento" tabindex="-1" role="dialog" aria-labelledby="exampleModalPreviewLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg" role="document">
                                     <div class="modal-content">
@@ -297,6 +314,176 @@
         document.getElementById("evento_pendiente{{asesor.id}}").innerHTML = 0;
       }
     {% endfor %}
+
+    function actualizar_capturados(){
+        eventos = document.querySelectorAll("[data-field='EventosHoy']")
+        for (evento in eventos){
+            eventos[evento].hidden = false;
+        }
+
+        eventos = document.querySelectorAll("[data-field='LeadsSinEventos']")
+        for (evento in eventos){
+            eventos[evento].hidden = false;
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosVencidos']")
+        for (evento in eventos){
+            eventos[evento].hidden = false;
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosPendientes']")
+        for (evento in eventos){
+            eventos[evento].hidden = false;
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosCumplidos']")
+        for (evento in eventos){
+            eventos[evento].hidden = false;
+        }
+    }
+
+    function actualizar_hoy(){
+        eventos = document.querySelectorAll("[data-field='EventosHoy']")
+        for (evento in eventos){
+            eventos[evento].hidden = false;
+        }
+
+        eventos = document.querySelectorAll("[data-field='LeadsSinEventos']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosVencidos']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosPendientes']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosCumplidos']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+    }
+
+    function actualizar_vencidos(){
+        eventos = document.querySelectorAll("[data-field='EventosHoy']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+
+        eventos = document.querySelectorAll("[data-field='LeadsSinEventos']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosVencidos']")
+        for (evento in eventos){
+            eventos[evento].hidden = false;
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosPendientes']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosCumplidos']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+    }
+
+    function actualizar_sin_eventos(){
+        eventos = document.querySelectorAll("[data-field='EventosHoy']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+
+        eventos = document.querySelectorAll("[data-field='LeadsSinEventos']")
+        for (evento in eventos){
+            eventos[evento].hidden = false;
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosVencidos']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosPendientes']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosCumplidos']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+    }
+
+    function actualizar_pendientes(){
+        eventos = document.querySelectorAll("[data-field='EventosHoy']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+
+        eventos = document.querySelectorAll("[data-field='LeadsSinEventos']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosVencidos']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosPendientes']")
+        for (evento in eventos){
+            console.log(eventos[evento].closest('tr'))
+            if (eventos[evento].innerHTML == 0){
+            eventos[evento].hidden = true;
+
+            }
+            else {
+            eventos[evento].hidden = false;
+            }
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosCumplidos']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+    }
+
+    function actualizar_cumplidos(){
+        eventos = document.querySelectorAll("[data-field='EventosHoy']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+
+        eventos = document.querySelectorAll("[data-field='LeadsSinEventos']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosVencidos']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosPendientes']")
+        for (evento in eventos){
+            eventos[evento].hidden = true;
+        }
+
+        eventos = document.querySelectorAll("[data-field='EventosCumplidos']")
+        for (evento in eventos){
+            eventos[evento].hidden = false;
+        }
+    }
+
 
     function subir_formulario_evento(){
         var EventoNombre=$("#EventoNombre").val();

@@ -559,7 +559,7 @@
                                                 <label for="EventoAsesor" class="col-form-label">Asesor:</label>
                                                 <select class="form-control" id="EventoAsesor" name="EventoAsesor"><option selected="selected" value="0">-- Asesor --</option>
                                                     {% for asesor in asesores %}
-                                                        {% if asesor.nombre == asesor_actual.nombre %}
+                                                        {% if asesor.nombre == lead.nombre_asesor %}
                                                         <option value="{{asesor.nombre}}" selected>{{asesor.nombre}}</option>
                                                         {% endif %}
                                                     {% endfor %}

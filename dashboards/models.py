@@ -479,14 +479,18 @@ class Evento(models.Model):
     # Modelo de Eventos
 
     nombre = models.CharField(max_length=255, null=True)
+    lead = models.ForeignKey("Lead", on_delete=models.CASCADE)
     choices_tipo = (("Testdrive", "Testdrive"),
                      ("Peritaje", "Peritaje"),
-                     ("Whatsapp", "Whatsapp"))
+                     ("Whatsapp", "Whatsapp"),
+                     ("Llamada", "Llamada"),
+                     ("Cita Vitrina", "Cita Vitrina"))
     tipo = models.CharField(max_length=255, null=True, choices=choices_tipo)
     cliente = models.CharField(max_length=255, null=True)
     observaciones = models.CharField(max_length=255)
     asesor = models.ForeignKey("Asesor", on_delete=models.CASCADE)
     fecha_hora = models.DateTimeField()
+    tiempo_evento = models.CharField(max_length=255, null=True)
 
     def __str__(self):
         # Retorna el id

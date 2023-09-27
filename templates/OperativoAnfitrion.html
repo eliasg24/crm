@@ -270,33 +270,10 @@
                                         <div class="form-row">
                                             <div class="form-group col-md-4">
                                                 <select class="form-control form-control-sm" id="H_Anfitrion" name="H_Anfitrion"><option selected="selected" value="0">-- Anfitrion --</option>
-<option value="Laura Martinez">Laura Martinez</option>
-<option value="Natalia Cano">Natalia Cano</option>
-<option value="Sandra Isabel Pulido Diaz">Sandra Isabel Pulido Diaz</option>
-<option value="Luis Saenz">Luis Saenz</option>
-<option value="Catalina Ayala Cabrera">Catalina Ayala Cabrera</option>
-<option value="Alexandra Rodriguez">Alexandra Rodriguez</option>
-<option value="Camilo Andres Salazar Campos">Camilo Andres Salazar Campos</option>
-<option value=""></option>
-<option value="Sharon Diaz">Sharon Diaz</option>
-<option value="Brenda Milena Martinez Martinez">Brenda Milena Martinez Martinez</option>
-<option value="Luis Miguel Moreno">Luis Miguel Moreno</option>
-<option value="Diana Hurtado">Diana Hurtado</option>
-<option value="Daniela Quijano">Daniela Quijano</option>
-<option value="Maryluz Anzola">Maryluz Anzola</option>
-<option value="Jhonatan Vargas">Jhonatan Vargas</option>
-<option value="Jonathan Vargas">Jonathan Vargas</option>
-<option value="Viviana Salazar">Viviana Salazar</option>
-<option value="Melina Alba Villarreal">Melina Alba Villarreal</option>
-<option value="Jose Antonio Gallo Fuentes ">Jose Antonio Gallo Fuentes </option>
-<option value="Cristian Guzman">Cristian Guzman</option>
-<option value="Mayerly Andrea Gutierrez Garcia">Mayerly Andrea Gutierrez Garcia</option>
-<option value="Jaime Murcia">Jaime Murcia</option>
-<option value="David Correa">David Correa</option>
-<option value="Sebastian Orrego">Sebastian Orrego</option>
-<option value="Ximena Bayona">Ximena Bayona</option>
-<option value="Pamela Capera">Pamela Capera</option>
-</select>
+                                                    {% for nombre_anfitrion in anfitriones_agendados %}
+                                                    <option value="{{nombre_anfitrion.nombre_anfitrion}}">{{nombre_anfitrion.nombre_anfitrion}}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                             <div class="form-group col-md-1">
                                                 <select id="H_Verificado" name="H_Verificado" class="form-control form-control-sm">
@@ -307,98 +284,24 @@
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <select class="form-control form-control-sm" id="H_TipoSolicitud" name="H_TipoSolicitud"><option selected="selected" value="0">-- Tipo Solicitud --</option>
-<option value="Reasignado">Reasignado</option>
-<option value="Error al asignar Asesor por Anfitriona">Error al asignar Asesor por Anfitriona</option>
-<option value="Volver a llamar/apagado">Volver a llamar/apagado</option>
-<option value="Recordatorio">Recordatorio</option>
-<option value="Cliente pide volver a llamar">Cliente pide volver a llamar</option>
-<option value="Cliente Verificado">Cliente Verificado</option>
-<option value="Error al asignar Comprador por Anfitriona">Error al asignar Comprador por Anfitriona</option>
-</select>
+                                                    {% for tipo_solicitud_verificacion in tipos_solicitud_agendados %}
+                                                    <option value="{{tipo_solicitud_verificacion.tipo_solicitud_verificacion}}">{{tipo_solicitud_verificacion.tipo_solicitud_verificacion}}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <select class="form-control form-control-sm" id="H_Asesor" name="H_Asesor"><option selected="selected" value="0">-- Asesor --</option>
-<option value="Laura Martinez">Laura Martinez</option>
-<option value="Escobar Salamanca Milton">Escobar Salamanca Milton</option>
-<option value="Gomez Ariza Fabio">Gomez Ariza Fabio</option>
-<option value="Fernandez Yobanna">Fernandez Yobanna</option>
-<option value="Diana Oliveros Ramos">Diana Oliveros Ramos</option>
-<option value="Duque Sebastian">Duque Sebastian</option>
-<option value="Sergio Piragua">Sergio Piragua</option>
-<option value="Roger Steven Rincon Cohecha">Roger Steven Rincon Cohecha</option>
-<option value="Alejandro Urdaneta">Alejandro Urdaneta</option>
-<option value="Diana Patricia mayorga Arevalo">Diana Patricia mayorga Arevalo</option>
-<option value="Brandon Ovalle">Brandon Ovalle</option>
-<option value="Sergio Andres Lombo Bastidas">Sergio Andres Lombo Bastidas</option>
-<option value="Angelica Marcela Zambrano Bejarano">Angelica Marcela Zambrano Bejarano</option>
-<option value="Diana Pinzon">Diana Pinzon</option>
-<option value="Rodriguez Martin Bernardo Antonio">Rodriguez Martin Bernardo Antonio</option>
-<option value="Luis Saenz">Luis Saenz</option>
-<option value="Rodriguez Carol">Rodriguez Carol</option>
-<option value="Italia Franchesca Carrasco">Italia Franchesca Carrasco</option>
-<option value="Catalina Ayala Cabrera">Catalina Ayala Cabrera</option>
-<option value="Jose Antonio Gallo">Jose Antonio Gallo</option>
-<option value="Andres Moreno">Andres Moreno</option>
-<option value="Isauro Martinez Vargas">Isauro Martinez Vargas</option>
-<option value="Vargas Marisol">Vargas Marisol</option>
-<option value="Alexandra Rodriguez">Alexandra Rodriguez</option>
-<option value="Gonzalez Fuentes Cediel">Gonzalez Fuentes Cediel</option>
-<option value="Jenifer Rojas Segura">Jenifer Rojas Segura</option>
-<option value="Alvaro Vanegas">Alvaro Vanegas</option>
-<option value="Miguel Bonilla">Miguel Bonilla</option>
-<option value="Lopez Ortiz Diego Edison">Lopez Ortiz Diego Edison</option>
-<option value=" Alvaro Vanegas"> Alvaro Vanegas</option>
-<option value=""></option>
-<option value="Kevin Bernal">Kevin Bernal</option>
-<option value="Diego Urbano">Diego Urbano</option>
-<option value="Fredy Parra Neuta">Fredy Parra Neuta</option>
-<option value="Luis Miguel Moreno">Luis Miguel Moreno</option>
-<option value="Anderson Perez ">Anderson Perez </option>
-<option value="Andres Arias">Andres Arias</option>
-<option value="Alexander Garzon">Alexander Garzon</option>
-<option value="Diego Sanchez">Diego Sanchez</option>
-<option value="Maryluz Anzola">Maryluz Anzola</option>
-<option value="Diego Forero">Diego Forero</option>
-<option value="Paola Petro">Paola Petro</option>
-<option value="Juan David Gutierrez Serrato">Juan David Gutierrez Serrato</option>
-<option value="ANDRES CRUZ">ANDRES CRUZ</option>
-<option value="Jorge Ramirez">Jorge Ramirez</option>
-<option value="Alexander Hernandez">Alexander Hernandez</option>
-<option value="Paez Carlos">Paez Carlos</option>
-<option value="Nicolas Rodriguez">Nicolas Rodriguez</option>
-<option value="FABIAN OSPINA">FABIAN OSPINA</option>
-<option value="Freddy Cardenas">Freddy Cardenas</option>
-<option value="Juan Polania">Juan Polania</option>
-<option value="Consuelo Izquierdo">Consuelo Izquierdo</option>
-<option value="Melina Alba Villarreal">Melina Alba Villarreal</option>
-<option value="Sandra Lizbeth Cano Garcia">Sandra Lizbeth Cano Garcia</option>
-<option value="Karen Buitrago Rodríguez">Karen Buitrago Rodr&#237;guez</option>
-<option value="Parra Gil Maria Dolores">Parra Gil Maria Dolores</option>
-<option value="Ana Milena Carranza">Ana Milena Carranza</option>
-<option value="Jaime Murcia">Jaime Murcia</option>
-<option value="Javier Caicedo">Javier Caicedo</option>
-<option value="David Correa">David Correa</option>
-<option value="Jimenez Enrique">Jimenez Enrique</option>
-<option value="Sebastian Orrego">Sebastian Orrego</option>
-<option value="Gustavo Parraga">Gustavo Parraga</option>
-<option value="Paola Galindez">Paola Galindez</option>
-<option value="Cesar Cruz">Cesar Cruz</option>
-<option value="Miranda Quintero Angie  Paola">Miranda Quintero Angie  Paola</option>
-<option value="Ximena Bayona">Ximena Bayona</option>
-<option value="Bustos Cristian">Bustos Cristian</option>
-<option value="Lozada Juan">Lozada Juan</option>
-<option value="Sandra Isabel Pulido">Sandra Isabel Pulido</option>
-<option value="Carlos Felipe Cedeño Vargas">Carlos Felipe Cede&#241;o Vargas</option>
-<option value="Garcia Acero Diego Alejandro">Garcia Acero Diego Alejandro</option>
-<option value="0">0</option>
-<option value="Jackson Rodriguez">Jackson Rodriguez</option>
-</select>
+                                                    {% for nombre_asesor in asesores_agendados %}
+                                                    <option value="{{nombre_asesor.nombre_asesor}}">{{nombre_asesor.nombre_asesor}}</option>
+                                                    {% endfor %}
+                                                </select>
                                             </div>
                                             <div class="form-group col-md-1">
                                                 <select id="H_Sala" name="H_Sala" class="form-control form-control-sm">
                                                     <option value="0" selected>--Sala--</option>
-                                                    <option value="127">127</option>
-                                                    <option value="Morato">Morato</option>
+                                                    {% for sala in salas_agendados %}
+                                                    <option value="{{sala.sala}}">{{sala.sala}}</option>
+                                                    {% endfor %}
                                                 </select>
                                             </div>
                                         </div>
@@ -408,7 +311,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="basic-addon1">De:</span>
                                                     </div>
-                                                    <input name="HDesde" id="HDesde" class="form-control rangos" type="text" autocomplete="off">
+                                                    <input name="HDesde" id="HDesde" class="form-control rangos" type="date" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-3">
@@ -416,7 +319,7 @@
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="basic-addon1">a:</span>
                                                     </div>
-                                                    <input name="HHasta" id="HHasta" class="form-control rangos" type="text" autocomplete="off">
+                                                    <input name="HHasta" id="HHasta" class="form-control rangos" type="date" autocomplete="off">
                                                 </div>
                                             </div>
                                             <div class="form-group col-md-3">

@@ -76,6 +76,7 @@
                                                         {{cantidad_activos}}                                                        
                                                     </span>
                                                     <a href="#Capturados" style="color: #ffffff;" onclick="actualizar_capturados();"><span class="count-name">Leads activos</span></a>
+                                                    <button type="submit" name="tabla" id="exportCapturados" class="btn btn-link" style="margin-bottom: 50px;"><i class="material-icons" style="font-size: 20px;">description</i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -90,6 +91,7 @@
                                                         {{cantidad_hoy}}
                                                     </span>
                                                     <a href="#SF" style="color: #ffffff;" onclick="actualizar_hoy();"><span class="count-name">Eventos del día</span></a>
+                                                    <button type="submit" name="tabla" id="exportCapturados" class="btn btn-link" style="margin-bottom: 50px;"><i class="material-icons" style="font-size: 20px;">description</i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -104,6 +106,7 @@
                                                         0
                                                     </span>
                                                     <a href="#Desistidas" style="color: #ffffff;" onclick="actualizar_vencidos();"><span class="count-name">Eventos vencidos</span></a>
+                                                    <button type="submit" name="tabla" id="exportCapturados" class="btn btn-link" style="margin-bottom: 50px;"><i class="material-icons" style="font-size: 20px;">description</i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -118,6 +121,7 @@
                                                         0
                                                     </span>
                                                     <a href="#Concretadas" style="color: #ffffff;" onclick="actualizar_sin_eventos();"><span class="count-name">Leads sin eventos</span></a>
+                                                    <button type="submit" name="tabla" id="exportCapturados" class="btn btn-link" style="margin-bottom: 50px;"><i class="material-icons" style="font-size: 20px;">description</i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -132,6 +136,7 @@
                                                         {{cantidad_pendientes}}
                                                     </span>
                                                     <a href="#Concretadas" style="color: #ffffff;" onclick="actualizar_pendientes();"><span class="count-name">Eventos pendientes</span></a>
+                                                    <button type="submit" name="tabla" id="exportCapturados" class="btn btn-link" style="margin-bottom: 50px;"><i class="material-icons" style="font-size: 20px;">description</i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -146,6 +151,7 @@
                                                         0
                                                     </span>
                                                     <a href="#Concretadas" style="color: #ffffff;" onclick="actualizar_cumplidos();"><span class="count-name">Eventos cumplidos</span></a>
+                                                    <button type="submit" name="tabla" id="exportCapturados" class="btn btn-link" style="margin-bottom: 50px;"><i class="material-icons" style="font-size: 20px;">description</i></button>
                                                 </div>
                                             </div>
                                         </div>
@@ -316,171 +322,85 @@
     {% endfor %}
 
     function actualizar_capturados(){
-        eventos = document.querySelectorAll("[data-field='EventosHoy']")
-        for (evento in eventos){
-            eventos[evento].hidden = false;
-        }
-
-        eventos = document.querySelectorAll("[data-field='LeadsSinEventos']")
-        for (evento in eventos){
-            eventos[evento].hidden = false;
-        }
-
-        eventos = document.querySelectorAll("[data-field='EventosVencidos']")
-        for (evento in eventos){
-            eventos[evento].hidden = false;
-        }
-
-        eventos = document.querySelectorAll("[data-field='EventosPendientes']")
-        for (evento in eventos){
-            eventos[evento].hidden = false;
-        }
-
-        eventos = document.querySelectorAll("[data-field='EventosCumplidos']")
-        for (evento in eventos){
-            eventos[evento].hidden = false;
+        var asesores = document.getElementsByClassName("class_asesor")
+        for (asesor in asesores){
+            asesores[asesor].hidden = false;
         }
     }
 
     function actualizar_hoy(){
-        eventos = document.querySelectorAll("[data-field='EventosHoy']")
-        for (evento in eventos){
-            eventos[evento].hidden = false;
-        }
+        var asesores = document.getElementsByClassName("class_asesor")
+        for (asesor in asesores){
+            tr = asesores[asesor].getElementsByTagName("td")[2].innerHTML;
+            console.log(tr)
+            if (asesores[asesor].getElementsByTagName("td")[2].innerHTML == 0){
+            asesores[asesor].hidden = true;
 
-        eventos = document.querySelectorAll("[data-field='LeadsSinEventos']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
-        }
-
-        eventos = document.querySelectorAll("[data-field='EventosVencidos']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
-        }
-
-        eventos = document.querySelectorAll("[data-field='EventosPendientes']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
-        }
-
-        eventos = document.querySelectorAll("[data-field='EventosCumplidos']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
+            }
+            else {
+            asesores[asesor].hidden = false;
+            }
         }
     }
 
     function actualizar_vencidos(){
-        eventos = document.querySelectorAll("[data-field='EventosHoy']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
-        }
+        var asesores = document.getElementsByClassName("class_asesor")
+        for (asesor in asesores){
+            tr = asesores[asesor].getElementsByTagName("td")[4].innerHTML;
+            console.log(tr)
+            if (asesores[asesor].getElementsByTagName("td")[4].innerHTML == 0){
+            asesores[asesor].hidden = true;
 
-        eventos = document.querySelectorAll("[data-field='LeadsSinEventos']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
-        }
-
-        eventos = document.querySelectorAll("[data-field='EventosVencidos']")
-        for (evento in eventos){
-            eventos[evento].hidden = false;
-        }
-
-        eventos = document.querySelectorAll("[data-field='EventosPendientes']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
-        }
-
-        eventos = document.querySelectorAll("[data-field='EventosCumplidos']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
+            }
+            else {
+            asesores[asesor].hidden = false;
+            }
         }
     }
 
     function actualizar_sin_eventos(){
-        eventos = document.querySelectorAll("[data-field='EventosHoy']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
-        }
+        var asesores = document.getElementsByClassName("class_asesor")
+        for (asesor in asesores){
+            tr = asesores[asesor].getElementsByTagName("td")[3].innerHTML;
+            console.log(tr)
+            if (asesores[asesor].getElementsByTagName("td")[3].innerHTML == 0){
+            asesores[asesor].hidden = true;
 
-        eventos = document.querySelectorAll("[data-field='LeadsSinEventos']")
-        for (evento in eventos){
-            eventos[evento].hidden = false;
-        }
-
-        eventos = document.querySelectorAll("[data-field='EventosVencidos']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
-        }
-
-        eventos = document.querySelectorAll("[data-field='EventosPendientes']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
-        }
-
-        eventos = document.querySelectorAll("[data-field='EventosCumplidos']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
+            }
+            else {
+            asesores[asesor].hidden = false;
+            }
         }
     }
 
     function actualizar_pendientes(){
-        eventos = document.querySelectorAll("[data-field='EventosHoy']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
-        }
-
-        eventos = document.querySelectorAll("[data-field='LeadsSinEventos']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
-        }
-
-        eventos = document.querySelectorAll("[data-field='EventosVencidos']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
-        }
-
-        eventos = document.querySelectorAll("[data-field='EventosPendientes']")
-        for (evento in eventos){
-            console.log(eventos[evento].closest('tr'))
-            if (eventos[evento].innerHTML == 0){
-            eventos[evento].hidden = true;
+        var asesores = document.getElementsByClassName("class_asesor")
+        for (asesor in asesores){
+            tr = asesores[asesor].getElementsByTagName("td")[5].innerHTML;
+            console.log(tr)
+            if (asesores[asesor].getElementsByTagName("td")[5].innerHTML == 0){
+            asesores[asesor].hidden = true;
 
             }
             else {
-            eventos[evento].hidden = false;
+            asesores[asesor].hidden = false;
             }
         }
 
-        eventos = document.querySelectorAll("[data-field='EventosCumplidos']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
-        }
     }
 
     function actualizar_cumplidos(){
-        eventos = document.querySelectorAll("[data-field='EventosHoy']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
-        }
+        var asesores = document.getElementsByClassName("class_asesor")
+        for (asesor in asesores){
+            tr = asesores[asesor].getElementsByTagName("td")[6].innerHTML;
+            console.log(tr)
+            if (asesores[asesor].getElementsByTagName("td")[6].innerHTML == 0){
+            asesores[asesor].hidden = true;
 
-        eventos = document.querySelectorAll("[data-field='LeadsSinEventos']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
-        }
-
-        eventos = document.querySelectorAll("[data-field='EventosVencidos']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
-        }
-
-        eventos = document.querySelectorAll("[data-field='EventosPendientes']")
-        for (evento in eventos){
-            eventos[evento].hidden = true;
-        }
-
-        eventos = document.querySelectorAll("[data-field='EventosCumplidos']")
-        for (evento in eventos){
-            eventos[evento].hidden = false;
+            }
+            else {
+            asesores[asesor].hidden = false;
+            }
         }
     }
 

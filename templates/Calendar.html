@@ -180,15 +180,17 @@
                             <dd id="tipo_evento" class=""></dd>
                             <dt class="text-muted">Tiempo de evento</dt>
                             <dd id="tiempo_evento" class=""></dd>
+                            <dt class="text-muted">Cumplido</dt>
+                            <dd id="cumplido" class=""></dd>
                         </dl>
                     </div>
                 </div>
                 <div class="modal-footer rounded-0">
                     <div class="text-end">
                         <button type="button" class="btn btn-warning btn-sm rounded-0" data-id="" onclick="ir_detalle()">Detalle</button>
-                        <button type="button" class="btn btn-success btn-sm rounded-0" data-id="">Cumplido</button>
-                        <button type="button" class="btn btn-primary btn-sm rounded-0" id="modalEvento" data-toggle="modal" data-target="#ModalEvento" onclick="editar_evento()">Editar</button>
-                        <button type="button" class="btn btn-danger btn-sm rounded-0" data-id="" onclick="eliminar_evento()">Eliminar</button>
+                        <button type="button" class="btn btn-success btn-sm rounded-0" id="btn_cumplir_evento" onclick="cumplir_evento()">Cumplido</button>
+                        <button type="button" class="btn btn-primary btn-sm rounded-0" id="btn_editar_evento" data-toggle="modal" data-target="#ModalEvento" onclick="editar_evento()">Editar</button>
+                        <button type="button" class="btn btn-danger btn-sm rounded-0" id="btn_eliminar_evento" onclick="eliminar_evento()">Eliminar</button>
                         <button type="button" class="btn btn-secondary btn-sm rounded-0" data-bs-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
@@ -325,6 +327,27 @@
         console.log(data)
     }
 
+    function cumplir_evento(){
+        var title= document.getElementById("title").innerHTML;
+
+        data = {}
+        data.title_cumplido = title
+        
+        console.log("hola")
+        console.log(data)
+        $.ajax({
+            type: "post", // "post" "get" "delete" "put"
+            data: data, // PREFERIBLEMENTE JSON
+            cache: false,
+            headers: {
+              "X-CSRFToken": Cookies.get("csrftoken")
+            },
+            success: function (response) {
+              location.reload()
+              }
+          })
+    }
+
     function eliminar_evento(){
         var title= document.getElementById("title").innerHTML;
 
@@ -364,6 +387,8 @@
                 "X-CSRFToken": Cookies.get("csrftoken")
               },
               success: function (response) {
+                console.log(response)
+                window.location.href = "{% url 'dashboards:detallenuevo' 1234 %}".replace(/1234/, response.toString());
                 }
             })
     }
@@ -378,7 +403,8 @@
     if ($('#evento_pendiente').val() == '') {
         document.getElementById("evento_pendiente").value = 0;
     }
-        var scheds = $.parseJSON('{ {% for evento in eventos %}"{{evento.id}}":{"id":"{{evento.id}}","title":"{{evento.nombre}}","cliente":"{{evento.cliente}}","estado":"{{evento.lead.estado}}","tipo_evento":"{{evento.tipo}}","tiempo_evento":"{{evento.tiempo_evento}}","description":"{{evento.observaciones}}", "telefono":"{{evento.lead.prospecto.celular}}", "start_datetime":"{{evento.fecha_hora|date:"Y-m-d"}} {{evento.fecha_hora|time:"H:i"}}:00","end_datetime":"{{evento.fecha_hora|date:"Y-m-d"}} {{evento.fecha_hora|time:"H:i"}}:00","sdate":"{{evento.fecha_hora|date:"F d, Y"}} {{evento.fecha_hora|time:"H:i A"}}","edate":"{{evento.fecha_hora|date:"F d, Y"}} {{evento.fecha_hora|time:"H:i A"}}"}{% if not forloop.last %},{% endif %} {% endfor %}}')
+        
+    var scheds = $.parseJSON('{ {% for evento in eventos %}"{{evento.id}}":{"id":"{{evento.id}}","title":"{{evento.nombre}}","cliente":"{{evento.cliente}}","cumplido":{% if evento.cumplido %}"Si"{% else %}"No"{% endif %},"estado":"{{evento.lead.estado}}","tipo_evento":"{{evento.tipo}}","tiempo_evento":"{{evento.tiempo_evento}}","description":"{{evento.observaciones}}", "telefono":"{{evento.lead.prospecto.celular}}", "start_datetime":"{{evento.fecha_hora|date:"Y-m-d"}} {{evento.fecha_hora|time:"H:i"}}:00","end_datetime":"{{evento.fecha_hora|date:"Y-m-d"}} {{evento.fecha_hora|time:"H:i"}}:00","sdate":"{{evento.fecha_hora|date:"F d, Y"}} {{evento.fecha_hora|time:"H:i A"}}","edate":"{{evento.fecha_hora|date:"F d, Y"}} {{evento.fecha_hora|time:"H:i A"}}"}{% if not forloop.last %},{% endif %} {% endfor %}}')
     
 </script>
 <script src="{% static 'js/script.js' %}"></script>

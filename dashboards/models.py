@@ -491,6 +491,7 @@ class Evento(models.Model):
     asesor = models.ForeignKey("Asesor", on_delete=models.CASCADE)
     fecha_hora = models.DateTimeField()
     tiempo_evento = models.CharField(max_length=255, null=True)
+    cumplido = models.BooleanField(null=True, default=False)
 
     def __str__(self):
         # Retorna el id

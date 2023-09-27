@@ -398,9 +398,11 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
         mostrar_evento = False
         calendario_general = True
         for grupo in self.request.user.groups.all():
-            if grupo.name == "Asesor" or grupo.name == "Admin" :
+            if grupo.name == "Asesor":
                 mostrar_evento = True
                 calendario_general = False
+            if grupo.name == "Admin":
+                mostrar_evento = True
 
         context["asesor_actual"] = asesor_actual
         context["asesores"] = asesores
@@ -1222,13 +1224,19 @@ class CalendarView(LoginRequiredMixin, TemplateView):
             return HttpResponseRedirect(reverse_lazy('dashboards:calendar'))
         if r.get("title2", None):
             nombre = r.get("title2", None)
-            evento = Evento.objects.get(nombre=nombre).lead
+            evento = Evento.objects.get(nombre=nombre).lead.pk
             
-            print("evento")
-            print("evento")
             print(evento)
 
-            return redirect("dashboards:detallenuevo", evento)
+            return JsonResponse(evento, safe=False)
+        if r.get("title_cumplido", None):
+            nombre = r.get("title_cumplido", None)
+            evento = Evento.objects.get(nombre=nombre)
+            evento.cumplido = True
+            evento.save()
+            
+            return HttpResponseRedirect(reverse_lazy('dashboards:calendar'))
+
 
 class CalendarDetailView(LoginRequiredMixin, DetailView):
     # Vista de Calendar Detail
@@ -1322,15 +1330,14 @@ class CalendarDetailView(LoginRequiredMixin, DetailView):
 
             return HttpResponseRedirect(reverse_lazy('dashboards:calendar'))
         if r.get("title2", None):
-            print("evento")
-            print("evento")
-            print("evento")
-            print("evento")
             nombre = r.get("title2", None)
-            evento = Evento.objects.get(nombre=nombre).lead
+            evento = Evento.objects.get(nombre=nombre).lead.pk
             
-            print("evento")
-            print("evento")
-            print(evento)
-
             return JsonResponse(evento, safe=False)
+        if r.get("title_cumplido", None):
+            nombre = r.get("title_cumplido", None)
+            evento = Evento.objects.get(nombre=nombre)
+            evento.cumplido = True
+            evento.save()
+            
+            return HttpResponseRedirect(reverse_lazy('dashboards:calendar'))

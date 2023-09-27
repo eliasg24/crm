@@ -34,12 +34,23 @@
                     _details.find('#telefono').text(scheds[id].telefono)
                     _details.find('#tipo_evento').text(scheds[id].tipo_evento)
                     _details.find('#estado').text(scheds[id].estado)
+                    _details.find('#cumplido').text(scheds[id].cumplido)
                     _details.find('#tiempo_evento').text(scheds[id].tiempo_evento)
                     _details.find('#description').text(scheds[id].description)
                     _details.find('#start').text(scheds[id].sdate)
                     _details.find('#end').text(scheds[id].edate)
                     _details.find('#edit,#delete').attr('data-id', id)
                     _details.modal('show')
+                    if (scheds[id].cumplido == "Si"){
+                        document.getElementById("btn_cumplir_evento").hidden = true;
+                        document.getElementById("btn_editar_evento").hidden = true;
+                        document.getElementById("btn_eliminar_evento").hidden = true;
+                    }
+                    else {
+                        document.getElementById("btn_cumplir_evento").hidden = false;
+                        document.getElementById("btn_editar_evento").hidden = false;
+                        document.getElementById("btn_eliminar_evento").hidden = false;
+                    }
                 } else {
                     alert("Event is undefined");
                 }

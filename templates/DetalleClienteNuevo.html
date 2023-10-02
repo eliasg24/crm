@@ -1117,20 +1117,101 @@
         var Lead_Respuesta=$("#Lead_Respuesta").val();
         var Lead_Comentario=$("#Lead_Comentario").val();
         var MarcasInteres = $("#MarcasInteres").val();
-        var Modelo = $("[name='Modelo']").val();
-        var Color = $("#Color").val();
-        var Codigo = $("#Codigo").val();
-        var Precio = $("#Precio").val();
+        var Modelo = document.getElementsByName("Modelo[]")
+        var Color = document.getElementsByName("Color[]")
+        var Codigo = document.getElementsByName("Codigo[]")
+        var Precio = document.getElementsByName("Precio[]")
+
+        var listaModelos = []
+        var num_marca = 0
+        var listaModelosPorMarca = []
+        listaModelos.push(listaModelosPorMarca)
+
+        for (Mod in Modelo){
+            if (Modelo[Mod].value){
+                if (parseInt(Modelo[Mod].id.charAt(6)) == num_marca){
+                    listaModelosPorMarca.push(Modelo[Mod].value)
+                }
+                else {
+                    num_marca = num_marca + 1
+                    var listaModelosPorMarca = []
+                    listaModelos.push(listaModelosPorMarca)
+                    listaModelosPorMarca.push(Modelo[Mod].value)
+                }
+            }
+        }
+        var listaColores = []
+        var num_marca = 0
+        var listaColoresPorMarca = []
+        listaColores.push(listaColoresPorMarca)
+
+        for (Mod in Color){
+            if (Color[Mod].value){
+                if (parseInt(Color[Mod].id.charAt(6)) == num_marca){
+                    listaColoresPorMarca.push(Color[Mod].value)
+                }
+                else {
+                    num_marca = num_marca + 1
+                    var listaColoresPorMarca = []
+                    listaColores.push(listaColoresPorMarca)
+                    listaColoresPorMarca.push(Color[Mod].value)
+                }
+            }
+        }
+
+        var listaCodigos = []
+        var num_marca = 0
+        var listaCodigosPorMarca = []
+        listaCodigos.push(listaCodigosPorMarca)
+
+        for (Mod in Codigo){
+            if (Codigo[Mod].value){
+                if (parseInt(Codigo[Mod].id.charAt(6)) == num_marca){
+                    listaCodigosPorMarca.push(Codigo[Mod].value)
+                }
+                else {
+                    num_marca = num_marca + 1
+                    var listaCodigosPorMarca = []
+                    listaCodigos.push(listaCodigosPorMarca)
+                    listaCodigosPorMarca.push(Codigo[Mod].value)
+                }
+            }
+        }
+
+        var listaPrecios = []
+        var num_marca = 0
+        var listaPreciosPorMarca = []
+        listaPrecios.push(listaPreciosPorMarca)
+
+        for (Mod in Precio){
+            if (Precio[Mod].value){
+                if (parseInt(Precio[Mod].id.charAt(6)) == num_marca){
+                    listaPreciosPorMarca.push(Precio[Mod].value)
+                }
+                else {
+                    num_marca = num_marca + 1
+                    var listaPreciosPorMarca = []
+                    listaPrecios.push(listaPreciosPorMarca)
+                    listaPreciosPorMarca.push(Precio[Mod].value)
+                }
+            }
+        }
+
+
+        console.log(listaModelos[0])
+        console.log(listaColores)
+        console.log(listaCodigos)
+        console.log(listaPrecios)
 
         data = {}
         data.Lead_Etapa = Lead_Etapa
         data.Lead_Respuesta = Lead_Respuesta
         data.Lead_Comentario = Lead_Comentario
         data.MarcasInteres = MarcasInteres
-        data.Modelo = Modelo
-        data.Color = Color
-        data.Codigo = Codigo
-        data.Precio = Precio
+        data.Modelo = JSON.stringify(listaModelos);
+        data.Color = JSON.stringify(listaColores);
+        data.Codigo = JSON.stringify(listaCodigos);
+        data.Precio = JSON.stringify(listaPrecios);
         console.log("hola")
         console.log(data)
 
@@ -1911,12 +1992,15 @@
         });
     }
 
+    
+
     function add(cont) {
         var marca= $("#Marca" + cont).val();
         
         //var newInput = '<tr><td><select class="p" id="Marca_' + cont + 'Modelo' + temp + '" name="Marca.' + cont + 'Modelo' + temp + '"><option disabled selected>-- Modelo --</option>'+options+'</select></td><td><select id="Marca_' + cont + 'Color' + temp + '" name="Marca.' + cont + 'Color' + temp + '" class="p">'+colores+'</select></td><td><textarea style="width: 100%;" rows="2" id="Marca_' + cont + 'Comentario' + temp + '" name="Marca.' + cont + 'Comentario' + temp + '"></textarea></td></tr>';
         var string='<select class="p" id="Marca_' + cont + 'Modelo' + temp + '" name="Marca.' + cont + 'Modelo' + temp + '"><option disabled="disabled" value="0" selected>-- Modelo --</option></select>';
-        var newInput = '<tr id="tr_' + cont + '_' + temp + '"><td><select class="p" id="Marca_' + cont + 'Modelo' + temp + '" name="Modelo"><option disabled="disabled" value="0" selected>-- Modelo --</option></select></td><td><input type="text" class="p" id="Color" name="Color"></td><td><input type="text" class="p" id="Codigo" name="Codigo"></td><td><input type="number" class="p" id="Precio" name="Precio"></td><td><button id="DeleteProspecto" type="button" class="btn btn-danger" onclick="BorrarModelo(' + cont + ',' + temp + ')"><i class="large material-icons r"> cancel</i></button></td></tr>';
+        var newInput = '<tr id="tr_' + cont + '_' + temp + '"><td><select class="p" id="Marca_' + cont + 'Modelo' + temp + '" name="Modelo[]"><option disabled="disabled" value="0" selected>-- Modelo --</option></select></td><td><input type="text" class="p" id="Marca_' + cont + 'Color' + temp + '" name="Color[]"></td><td><input type="text" class="p" id="Marca_' + cont + 'Codigo' + temp + '" name="Codigo[]"></td><td><input type="number" class="p" id="Marca_' + cont + 'Precio' + temp + '" name="Precio[]"></td><td><button id="DeleteProspecto" type="button" class="btn btn-danger" onclick="BorrarModelo(' + cont + ',' + temp + ')"><i class="large material-icons r"> cancel</i></button></td></tr>';
+      
         $("#table" + cont + " tbody").append(newInput);
         $("#NumLineaPrograma" + cont).val(temp);
         marca = document.getElementById("MarcasInteres").value;

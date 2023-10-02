@@ -446,10 +446,10 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
                     lead.tiempo_primer_contacto = tiempo_primer_contacto.total_seconds() / 60
             
             marcas_interes = request.POST.getlist("MarcasInteres[]", None)
-            modelo = request.POST.getlist("Modelo", None)
-            color = request.POST.getlist("Color", None)
-            codigo = request.POST.getlist("Codigo", None)
-            precio = request.POST.getlist("Precio", None)
+            modelo = json.loads(request.POST.get("Modelo", None))
+            color = json.loads(request.POST.get("Color", None))
+            codigo = json.loads(request.POST.get("Codigo", None))
+            precio = json.loads(request.POST.get("Precio", None))
             
             codigo_vehiculo = request.POST.getlist("CodigoVehiculo", None)
             precio_vehiculo = request.POST.getlist("PrecioVehiculo", None)
@@ -457,21 +457,27 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
             m_lista = eval(lead.marcas_interes)["marcas"]
             print("aver")
             print(request.POST)
+            print("marcas_interes")
+            print(marcas_interes)
+            print("modelo")
+            print(modelo)
+            print("color")
+            print(color)
             
-            for m in range(len(modelo)):
-                m_lista.append({"marca": marcas_interes[m],
-                     "modelo": modelo[m],
-                     "color": color[m],
-                     "marca_comentario": None,
-                     "codigo": codigo[m],
-                     "precio": precio[m]
-                    })
+            for ma in range(len(marcas_interes)):
+                for mo in range(len(modelo[ma])):
+                    m_lista.append({"marca": marcas_interes[ma],
+                        "modelo": modelo[ma][mo],
+                        "color": color[ma][mo],
+                        "marca_comentario": None,
+                        "codigo": codigo[ma][mo],
+                        "precio": precio[ma][mo]
+                        })
             
             marcas = {"marcas": m_lista}
 
             print(lead.marcas_interes)
-            print(type(lead.marcas_interes))
-            print(type(marcas))
+            print(marcas)
 
             if str(lead.marcas_interes) != str(marcas):
                 lista_historial.append(f"Marcas Interes. (Se agregaron: {m_lista})")
@@ -703,6 +709,11 @@ class OperativoAnfitrionView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = User.objects.get(username=self.request.user)
+        
+        leads = Lead.objects.filter(activo=True, nombre_asesor__isnull=False).order_by("-id")
+
+        functions.verificar_primer_contacto_todos_los_leads(leads)
+        
         try:
             asesor_actual = Asesor.objects.get(nombre=functions.separar_nombre(user.username))
         except:
@@ -765,6 +776,10 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
         for grupo in self.request.user.groups.all():
             if grupo.name == "Asesor":
                 calendario_general = False
+
+        leads = Lead.objects.filter(activo=True, nombre_asesor__isnull=False).order_by("-id")
+
+        functions.verificar_primer_contacto_todos_los_leads(leads)
 
         if calendario_general == False:
             leads_no_contactado = Lead.objects.filter(etapa="No contactado", activo=True, nombre_asesor=user.username).order_by("-id")
@@ -861,6 +876,11 @@ class ReportesView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = User.objects.get(username=self.request.user)
+
+        leads = Lead.objects.filter(activo=True, nombre_asesor__isnull=False).order_by("-id")
+
+        functions.verificar_primer_contacto_todos_los_leads(leads)
+
         try:
             asesor_actual = Asesor.objects.get(nombre=functions.separar_nombre(user.username))
         except:
@@ -1069,6 +1089,11 @@ class ReportesEventosView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = User.objects.get(username=self.request.user)
+
+        leads = Lead.objects.filter(activo=True, nombre_asesor__isnull=False).order_by("-id")
+
+        functions.verificar_primer_contacto_todos_los_leads(leads)
+
         try:
             asesor_actual = Asesor.objects.get(nombre=functions.separar_nombre(user.username))
         except:

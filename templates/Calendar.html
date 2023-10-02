@@ -84,7 +84,12 @@
                                 <input type="hidden" name="id" value="">
                                 <div class="form-group mb-2">
                                     <label for="title" class="control-label">Nombre evento</label>
-                                    <input type="text" class="form-control form-control-sm rounded-0" name="nombre" id="nombre" required>
+                                    <input type="text" class="form-control form-control-sm rounded-0" name="nombre_evento" id="nombre_evento" list="listaEventos" required>
+                                    <datalist id="listaEventos">
+                                        {% for evento in eventos %}
+                                        <option class="li_evento filtro">{{evento.nombre}}</option>
+                                        {% endfor %}
+                                    </datalist>
                                 </div>
                                 <div class="form-group mb-2">
                                     <label for="description" class="control-label">Tipo de evento</label>
@@ -302,6 +307,34 @@
 
 <script src="{% static 'js/es.js' %}"></script> <!--Idioma español Fullcalendar-->
 <script>
+
+    document.addEventListener("keyup", e=>{
+
+        if (e.target.matches("#nombre_evento")){
+
+            console.log(e.target.value)
+      
+            if (e.key ==="Escape")e.target.value = ""
+      
+            document.querySelectorAll(".li_evento").forEach(evento =>{
+      
+                evento.textContent.toLowerCase().includes(e.target.value.toLowerCase())
+                  ?evento.classList.remove("filtro")
+                  :evento.classList.add("filtro")
+            })
+      
+            if (e.target.value == ""){
+                console.log("hola aver")
+                document.querySelectorAll(".li_evento").forEach(evento =>{
+      
+                    evento.classList.add("filtro")
+                })
+            }
+
+        }
+      
+      
+      })
 
     function editar_evento(){
         var title= document.getElementById("title").innerHTML;

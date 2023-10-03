@@ -93,4 +93,4 @@ class VehiculosInteresLeadAdmin(admin.ModelAdmin):
 @admin.register(Evento)
 class EventoAdmin(admin.ModelAdmin):
     # Admin del Evento
-    list_display = ('id', 'nombre', "tipo", "asesor", "lead", "cumplido")
+    list_display = ('id', 'nombre', "tipo", "asesor", "lead", "telefono_cliente", "cumplido")

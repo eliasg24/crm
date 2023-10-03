@@ -486,12 +486,13 @@ class Evento(models.Model):
                      ("Llamada", "Llamada"),
                      ("Cita Vitrina", "Cita Vitrina"))
     tipo = models.CharField(max_length=255, null=True, choices=choices_tipo)
-    cliente = models.CharField(max_length=255, null=True)
+    telefono_cliente = models.CharField(max_length=255, null=True)
     observaciones = models.CharField(max_length=255)
     asesor = models.ForeignKey("Asesor", on_delete=models.CASCADE)
     fecha_hora = models.DateTimeField()
     tiempo_evento = models.CharField(max_length=255, null=True)
     cumplido = models.BooleanField(null=True, default=False)
+    fecha_hora_cumplido = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         # Retorna el id

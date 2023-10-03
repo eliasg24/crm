@@ -102,10 +102,10 @@
                                     </select>
                                 </div>
                                 <div class="form-group mb-2">
-                                    <label for="start_datetime" class="control-label">Cliente</label>
-                                    <select class="form-control" id="cliente" name="cliente"><option selected="selected" value="0">-- Cliente --</option>
+                                    <label for="start_datetime" class="control-label">Telefono del Cliente</label>
+                                    <select class="form-control" id="telefono_cliente" name="telefono_cliente"><option selected="selected" value="0">-- Telefono del Cliente --</option>
                                         {% for prospecto in prospectos %}
-                                            <option value="{{prospecto.cliente}}" selected>{{prospecto.cliente}}</option>
+                                            <option value="{{prospecto.telefono_cliente}}" selected>{{prospecto.telefono_cliente}}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -187,6 +187,8 @@
                             <dd id="tiempo_evento" class=""></dd>
                             <dt class="text-muted">Cumplido</dt>
                             <dd id="cumplido" class=""></dd>
+                            <dt class="text-muted" id="fechahoracumplido">Fecha y hora cumplido</dt>
+                            <dd id="fecha_hora_cumplido" class=""></dd>
                         </dl>
                     </div>
                 </div>
@@ -437,7 +439,7 @@
         document.getElementById("evento_pendiente").value = 0;
     }
         
-    var scheds = $.parseJSON('{ {% for evento in eventos %}"{{evento.id}}":{"id":"{{evento.id}}","title":"{{evento.nombre}}","cliente":"{{evento.cliente}}","cumplido":{% if evento.cumplido %}"Si"{% else %}"No"{% endif %},"estado":"{{evento.lead.estado}}","tipo_evento":"{{evento.tipo}}","tiempo_evento":"{{evento.tiempo_evento}}","description":"{{evento.observaciones}}", "telefono":"{{evento.lead.prospecto.celular}}", "start_datetime":"{{evento.fecha_hora|date:"Y-m-d"}} {{evento.fecha_hora|time:"H:i"}}:00","end_datetime":"{{evento.fecha_hora|date:"Y-m-d"}} {{evento.fecha_hora|time:"H:i"}}:00","sdate":"{{evento.fecha_hora|date:"F d, Y"}} {{evento.fecha_hora|time:"H:i A"}}","edate":"{{evento.fecha_hora|date:"F d, Y"}} {{evento.fecha_hora|time:"H:i A"}}"}{% if not forloop.last %},{% endif %} {% endfor %}}')
+    var scheds = $.parseJSON('{ {% for evento in eventos %}"{{evento.id}}":{"id":"{{evento.id}}","title":"{{evento.nombre}}","cliente":"{{evento.cliente}}","cumplido":{% if evento.cumplido %}"Si"{% else %}"No"{% endif %},"fecha_hora_cumplido":"{{evento.fecha_hora_cumplido}}","estado":"{{evento.lead.estado}}","tipo_evento":"{{evento.tipo}}","tiempo_evento":"{{evento.tiempo_evento}}","description":"{{evento.observaciones}}", "telefono":"{{evento.lead.prospecto.celular}}", "start_datetime":"{{evento.fecha_hora|date:"Y-m-d"}} {{evento.fecha_hora|time:"H:i"}}:00","end_datetime":"{{evento.fecha_hora|date:"Y-m-d"}} {{evento.fecha_hora|time:"H:i"}}:00","sdate":"{{evento.fecha_hora|date:"F d, Y"}} {{evento.fecha_hora|time:"H:i A"}}","edate":"{{evento.fecha_hora|date:"F d, Y"}} {{evento.fecha_hora|time:"H:i A"}}"}{% if not forloop.last %},{% endif %} {% endfor %}}')
     
 </script>
 <script src="{% static 'js/script.js' %}"></script>

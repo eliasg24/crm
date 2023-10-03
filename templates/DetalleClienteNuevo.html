@@ -535,6 +535,8 @@
                                                     <option value="Testdrive">Testdrive</option>
                                                     <option value="Peritaje">Peritaje</option>
                                                     <option value="Whatsapp">Whatsapp</option>
+                                                    <option value="Whatsapp">Llamada</option>
+                                                    <option value="Whatsapp">Cita Vitrina</option>
                                                 </select>
                                             </div>
                                         </div>                   
@@ -542,8 +544,8 @@
                                     <div class="form-row">
                                         <div class="col-lg-6">
                                             <div class="mb-4">
-                                                <label for="EventoCliente" class="col-form-label">Cliente:</label>
-                                                <input type="text" class="form-control" id="EventoCliente" value="{{prospecto.nombre}} {{prospecto.apellido_paterno}} {{prospecto.apellido_materno}}" readonly>
+                                                <label for="EventoTelefono" class="col-form-label">Telefono del Cliente:</label>
+                                                <input type="number" class="form-control" id="EventoTelefono" value="{{prospecto.celular}}" readonly onkeydown="return event.keyCode !== 69 && event.keyCode !== 190">
                                             </div>
                                         </div>
                                         <div class="col-lg-6">
@@ -571,6 +573,25 @@
                                             <div class="mb-4">
                                                 <label for="EventoFechaHora" class="col-form-label">Fecha y hora:</label>
                                                 <input type="datetime-local" class="form-control" id="EventoFechaHora">
+                                            </div>
+                                        </div>         
+                                        <div class="col-lg-6">
+                                            <div class="mb-4">
+                                                <label for="EventoTiempo" class="col-form-label">Tiempo evento:</label>
+                                                <select class="form-control" id="EventoTiempo" name="EventoTiempo"><option selected="selected" value="0">-- Tiempo --</option>
+                                                    <option value="00:15">00:15</option>
+                                                    <option value="00:30">00:30</option>
+                                                    <option value="00:45">00:45</option>
+                                                    <option value="01:00">01:00</option>
+                                                    <option value="01:15">01:15</option>
+                                                    <option value="01:30">01:30</option>
+                                                    <option value="01:45">01:45</option>
+                                                    <option value="02:00">02:00</option>
+                                                    <option value="02:15">02:15</option>
+                                                    <option value="02:30">02:30</option>
+                                                    <option value="02:45">02:45</option>
+                                                    <option value="03:00">03:00</option>
+                                                </select>
                                             </div>
                                         </div>         
                                         
@@ -1029,18 +1050,20 @@
     function subir_formulario_evento(){
         var EventoNombre=$("#EventoNombre").val();
         var EventoTipo=$("#EventoTipo").val();
-        var EventoCliente=$("#EventoCliente").val();
+        var EventoTelefono=$("#EventoTelefono").val();
         var EventoObservaciones=$("#EventoObservaciones").val();
         var EventoAsesor = $("#EventoAsesor").val();
         var EventoFechaHora = $("#EventoFechaHora").val();
+        var EventoTiempo = $("#EventoTiempo").val();
 
         data = {}
         data.EventoNombre = EventoNombre
         data.EventoTipo = EventoTipo
-        data.EventoCliente = EventoCliente
+        data.EventoTelefono = EventoTelefono
         data.EventoObservaciones = EventoObservaciones
         data.EventoAsesor = EventoAsesor
         data.EventoFechaHora = EventoFechaHora
+        data.EventoTiempo = EventoTiempo
         
         console.log("hola")
         console.log(data)

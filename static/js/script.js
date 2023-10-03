@@ -35,6 +35,7 @@
                     _details.find('#tipo_evento').text(scheds[id].tipo_evento)
                     _details.find('#estado').text(scheds[id].estado)
                     _details.find('#cumplido').text(scheds[id].cumplido)
+                    _details.find('#fecha_hora_cumplido').text(scheds[id].fecha_hora_cumplido)
                     _details.find('#tiempo_evento').text(scheds[id].tiempo_evento)
                     _details.find('#description').text(scheds[id].description)
                     _details.find('#start').text(scheds[id].sdate)
@@ -42,11 +43,15 @@
                     _details.find('#edit,#delete').attr('data-id', id)
                     _details.modal('show')
                     if (scheds[id].cumplido == "Si"){
+                        document.getElementById("fechahoracumplido").hidden = false;
+                        document.getElementById("fecha_hora_cumplido").hidden = false;
                         document.getElementById("btn_cumplir_evento").hidden = true;
                         document.getElementById("btn_editar_evento").hidden = true;
                         document.getElementById("btn_eliminar_evento").hidden = true;
                     }
                     else {
+                        document.getElementById("fechahoracumplido").hidden = true;
+                        document.getElementById("fecha_hora_cumplido").hidden = true;
                         document.getElementById("btn_cumplir_evento").hidden = false;
                         document.getElementById("btn_editar_evento").hidden = false;
                         document.getElementById("btn_eliminar_evento").hidden = false;

@@ -666,10 +666,11 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
 
             nombre = request.POST.get("EventoNombre")
             tipo = request.POST.get("EventoTipo")
-            cliente = request.POST.get("EventoCliente")
+            telefono_cliente = request.POST.get("EventoTelefono")
             observaciones = request.POST.get("EventoObservaciones")
             asesor = request.POST.get("EventoAsesor")
             fecha_hora = request.POST.get("EventoFechaHora")
+            tiempo_evento = request.POST.get("EventoTiempo")
 
             print("fecha_hora")
             print(fecha_hora)
@@ -681,11 +682,12 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
             
             evento = Evento.objects.create(nombre=nombre,
                                            tipo=tipo,
-                                           cliente=cliente,
+                                           telefono_cliente=telefono_cliente,
                                            observaciones=observaciones,
                                            asesor=Asesor.objects.get(nombre=asesor),
                                            fecha_hora=datetime.strptime(fecha_hora,"%Y-%m-%dT%H:%M"),
-                                           lead=lead
+                                           lead=lead,
+                                           tiempo_evento=tiempo_evento
                                            )
             Historial.objects.create(lead=lead,
                                     fecha=datetime.now(),
@@ -1155,14 +1157,14 @@ class ReportesEventosView(LoginRequiredMixin, TemplateView):
 
             nombre = request.POST.get("EventoNombre")
             tipo = request.POST.get("EventoTipo")
-            cliente = request.POST.get("EventoCliente")
+            telefono_cliente = request.POST.get("EventoTelefono")
             observaciones = request.POST.get("EventoObservaciones")
             asesor = request.POST.get("EventoAsesor")
             fecha_hora = request.POST.get("EventoFechaHora")
             
             evento = Evento.objects.create(nombre=nombre,
                                            tipo=tipo,
-                                           cliente=cliente,
+                                           telefono_cliente=telefono_cliente,
                                            observaciones=observaciones,
                                            asesor=Asesor.objects.get(nombre=asesor),
                                            fecha_hora=datetime.strptime(fecha_hora,"%Y-%m-%dT%H:%M"),
@@ -1237,28 +1239,15 @@ class CalendarView(LoginRequiredMixin, TemplateView):
         if r.get("nombre_evento", None):
             nombre = r.get("nombre_evento", None)
             tipo = r.get("tipo", None)
-            cliente = r.get("cliente", None)
+            telefono_cliente = r.get("telefono_cliente", None)
             observaciones = r.get("observaciones", None)
             asesor = r.get("asesor", None)
             fecha_hora = r.get("fecha_hora", None)
 
-
-            # MODIDICAR EL LEAD
-            
-
-
-            # MODIDICAR EL LEAD
-            
-
-            # MODIDICAR EL LEAD
-            
-
-            # MODIDICAR EL LEAD
-            
-            lead = Lead.objects.get(id=21)
+            lead = Lead.objects.get(prospecto__celular=telefono_cliente)
             evento = Evento.objects.create(nombre=nombre,
                                            tipo=tipo,
-                                           cliente=cliente,
+                                           telefono_cliente=telefono_cliente,
                                            observaciones=observaciones,
                                            asesor=Asesor.objects.get(nombre=asesor),
                                            fecha_hora=datetime.strptime(fecha_hora,"%Y-%m-%dT%H:%M"),
@@ -1284,6 +1273,7 @@ class CalendarView(LoginRequiredMixin, TemplateView):
             nombre = r.get("title_cumplido", None)
             evento = Evento.objects.get(nombre=nombre)
             evento.cumplido = True
+            evento.fecha_hora_cumplido = datetime.now()
             evento.save()
             
             return HttpResponseRedirect(reverse_lazy('dashboards:calendar'))
@@ -1337,7 +1327,7 @@ class CalendarDetailView(LoginRequiredMixin, DetailView):
 
         general = False
 
-        prospectos = eventos.values("cliente").distinct()
+        prospectos = eventos.values("telefono_cliente").distinct()
 
         print(prospectos)
 
@@ -1367,44 +1357,26 @@ class CalendarDetailView(LoginRequiredMixin, DetailView):
         if r.get("nombre_evento", None):
             nombre = r.get("nombre_evento", None)
             tipo = r.get("tipo", None)
-            cliente = r.get("cliente", None)
+            telefono_cliente = r.get("telefono_cliente", None)
             observaciones = r.get("observaciones", None)
             asesor = r.get("asesor", None)
             fecha_hora = r.get("fecha_hora", None)
             
+            print(telefono_cliente)
+            print(asesor)
+            print(type(telefono_cliente))
 
-
-
-
-            # MODIDICAR EL LEAD
-            
-
-
-            # MODIDICAR EL LEAD
-            
-
-            # MODIDICAR EL LEAD
-            
-
-            # MODIDICAR EL LEAD
-            
-
-
-
-
-
-            
-            lead = Lead.objects.get(id=21)
+            lead = Lead.objects.get(prospecto__celular=telefono_cliente)
             evento = Evento.objects.create(nombre=nombre,
                                            tipo=tipo,
-                                           cliente=cliente,
+                                           telefono_cliente=telefono_cliente,
                                            observaciones=observaciones,
                                            asesor=Asesor.objects.get(nombre=asesor),
                                            fecha_hora=datetime.strptime(fecha_hora,"%Y-%m-%dT%H:%M"),
                                            lead=lead
                                            )
 
-            return HttpResponseRedirect(reverse_lazy('dashboards:calendar'))
+            return HttpResponseRedirect(reverse_lazy('dashboards:calendar_detail', kwargs={"pk": pk}))
         if r.get("title2", None):
             nombre = r.get("title2", None)
             evento = Evento.objects.get(nombre=nombre).lead.pk
@@ -1414,6 +1386,7 @@ class CalendarDetailView(LoginRequiredMixin, DetailView):
             nombre = r.get("title_cumplido", None)
             evento = Evento.objects.get(nombre=nombre)
             evento.cumplido = True
+            evento.fecha_hora_cumplido = datetime.now()
             evento.save()
             
-            return HttpResponseRedirect(reverse_lazy('dashboards:calendar'))
+            return HttpResponseRedirect(reverse_lazy('dashboards:calendar_detail', kwargs={"pk": pk}))

@@ -50,7 +50,7 @@
         
 
 
-<form action="{% url 'dashboards:captura' %}" method="post"><input name="__RequestVerificationToken" type="hidden" value="oYnbYvKMAQseqww4ADfCWv8GqrpzT2F6-yP4027iscSP_upHsR7WPXff478d61C5y5XZbwIo0edixcAzgtA7NLzuO21_KynyPkRiwg0-tkA1" />    <!--container principal-->
+<form><input name="__RequestVerificationToken" type="hidden" value="oYnbYvKMAQseqww4ADfCWv8GqrpzT2F6-yP4027iscSP_upHsR7WPXff478d61C5y5XZbwIo0edixcAzgtA7NLzuO21_KynyPkRiwg0-tkA1" />    <!--container principal-->
     {% csrf_token %}
     <div class="container container-fluid">
         <h4 style="margin:20px;">Venta - Captura Prospecto</h4>
@@ -174,20 +174,22 @@
                                     <div class="form-group col-md-6">
                                         <h2>Recibido por: </h2>
 <select class="p" id="Anfitrion" name="Anfitrion" required="required"><option selected disabled="disabled" value="0">-- Anfitrion --</option>
-<option value="admin" {% if user.username == "admin" %}selected{% endif %}>admin</option>
+<option value="{{nombre}}" selected>{{nombre}}</option>
+{% if user.username == "admin" %}
 <option value="Daniela Quijano" {% if user.username == "Daniela Quijano" %}selected{% endif %}>Daniela Quijano</option>
 <option value="Sharon Diaz" {% if user.username == "Sharon Diaz" %}selected{% endif %}>Sharon Diaz</option>
 <option value="Cristian Guzman" {% if user.username == "Cristian Guzman" %}selected{% endif %}>Cristian Guzman</option>
 <option value="Brenda Milena Martinez Martinez" {% if user.username == "Brenda Milena Martinez Martinez" %}selected{% endif %}>Brenda Milena Martinez Martinez</option>
 <option value="Mayerly Andrea Gutierrez Garcia" {% if user.username == "Mayerly Andrea Gutierrez Garcia" %}selected{% endif %}>Mayerly Andrea Gutierrez Garcia</option>
 <option value="Jonathan Vargas" {% if user.username == "Jonathan Vargas" %}selected{% endif %}>Jonathan Vargas</option>
+{% endif %}
 </select><span class="field-validation-valid text-danger" data-valmsg-for="Anfitrion" data-valmsg-replace="true"></span>                                    </div>
                                     <div class="form-group col-md-6">
                                         <h2>Sala: </h2>
                                         <select class="p" id="Sala" name="Sala" required onchange="filtrar_asesores();">
                                             <option disabled="disabled" selected>-- Sala --</option>
-                                            <option value="127" {% if asesor_actual.sala == "127" %}selected{% endif %}>127</option>
-                                            <option value="Morato" {% if asesor_actual.sala == "Morato" %}selected{% endif %}>Morato</option>
+                                            {% if asesor_actual.sala == "127" %}<option value="127" selected>127</option>{% endif %}
+                                            {% if asesor_actual.sala == "Morato" %}<option value="Morato" selected>Morato</option>{% endif %}
                                         </select>
                                         <span class="field-validation-valid text-danger" data-valmsg-for="Sala" data-valmsg-replace="true"></span>
                                     </div>
@@ -266,7 +268,7 @@
             </div>
         </div>
         
-        <button type="submit" value="Guardar" name="action" id="Guardar" class="btn btn-primary btn-lg btn-block">Guardar</button>
+        <button type="submit" value="Guardar" name="action" id="Guardar" class="btn btn-primary btn-lg btn-block" onclick="subir_formulario_general();">Guardar</button>
     </div>
 </form>
 
@@ -544,7 +546,7 @@
         
         //var newInput = '<tr><td><select class="p" id="Marca_' + cont + 'Modelo' + temp + '" name="Marca.' + cont + 'Modelo' + temp + '"><option disabled selected>-- Modelo --</option>'+options+'</select></td><td><select id="Marca_' + cont + 'Color' + temp + '" name="Marca.' + cont + 'Color' + temp + '" class="p">'+colores+'</select></td><td><textarea style="width: 100%;" rows="2" id="Marca_' + cont + 'Comentario' + temp + '" name="Marca.' + cont + 'Comentario' + temp + '"></textarea></td></tr>';
         var string='<select class="p" id="Marca_' + cont + 'Modelo' + temp + '" name="Marca.' + cont + 'Modelo' + temp + '"><option disabled="disabled" value="0" selected>-- Modelo --</option></select>';
-        var newInput = '<tr><td><select class="p" id="Marca_' + cont + 'Modelo' + temp + '" name="Modelo"><option disabled="disabled" value="0" selected>-- Modelo --</option></select></td><td><input type="text" class="p" id="Marca_' + cont + 'Color' + temp + '" name="Color"></td><td><textarea style="width: 100%;" rows="2" id="Marca_' + cont + 'Comentario' + temp + '" name="MarcaComentario"></textarea></td></tr>';
+        var newInput = '<tr id="tr_' + cont + '_' + temp + '"><td><select class="p" id="Marca_' + cont + 'Modelo' + temp + '" name="Modelo[]"><option disabled="disabled" value="0" selected>-- Modelo --</option></select></td><td><input type="text" class="p" id="Marca_' + cont + 'Color' + temp + '" name="Color[]"></td><td><input type="text" class="p" id="Marca_' + cont + 'Comentario' + temp + '" name="MarcaComentario[]"></td><td><button id="DeleteProspecto" type="button" class="btn btn-danger" onclick="BorrarModelo(' + cont + ',' + temp + ')"><i class="large material-icons r"> cancel</i></button></td></tr>';
         $("#table" + cont + " tbody").append(newInput);
         $("#NumLineaPrograma" + cont).val(temp);
         marca = document.getElementById("MarcasInteres").value;
@@ -589,6 +591,123 @@
             },
             })
     };
+
+    function subir_formulario_general(){
+        var NombreProspecto = $("#NombreProspecto").val();
+        var ApellidoPProspecto = $("#ApellidoPProspecto").val();
+        var ApellidoMProspecto = $("#ApellidoMProspecto").val();
+        var Celular = $("#Celular").val();
+        var Correo = $("#Correo").val();
+        var OrigenLead = $("#OrigenLead").val();
+        var Campania = $("#Campania").val();
+        var TipoDocumento = $("#TipoDocumento").val();
+        var Documento = $("#Documento").val();
+        var PoliticaPrivacidad = $("#PoliticaPrivacidad").val();
+        var Anfitrion = $("#Anfitrion").val();
+        var Sala = $("#Sala").val();
+        var Asesor = $("#Asesor").val();
+        var Comentario = $("#Comentario").val();
+        var TestDrive = $("#TestDrive").val();
+        var MarcasInteres = $("#MarcasInteres").val();
+        var Modelo = document.getElementsByName("Modelo[]")
+        var Color = document.getElementsByName("Color[]")
+        var MarcaComentario = document.getElementsByName("MarcaComentario[]")
+
+        var listaModelos = []
+        var num_marca = 0
+        var listaModelosPorMarca = []
+        listaModelos.push(listaModelosPorMarca)
+
+        for (Mod in Modelo){
+            if (Modelo[Mod].value){
+                if (parseInt(Modelo[Mod].id.charAt(6)) == num_marca){
+                    listaModelosPorMarca.push(Modelo[Mod].value)
+                }
+                else {
+                    num_marca = num_marca + 1
+                    var listaModelosPorMarca = []
+                    listaModelos.push(listaModelosPorMarca)
+                    listaModelosPorMarca.push(Modelo[Mod].value)
+                }
+            }
+        }
+        var listaColores = []
+        var num_marca = 0
+        var listaColoresPorMarca = []
+        listaColores.push(listaColoresPorMarca)
+
+        for (Mod in Color){
+            if (Color[Mod].value){
+                if (parseInt(Color[Mod].id.charAt(6)) == num_marca){
+                    listaColoresPorMarca.push(Color[Mod].value)
+                }
+                else {
+                    num_marca = num_marca + 1
+                    var listaColoresPorMarca = []
+                    listaColores.push(listaColoresPorMarca)
+                    listaColoresPorMarca.push(Color[Mod].value)
+                }
+            }
+        }
+
+        var listaMarcaComentarios = []
+        var num_marca = 0
+        var listaMarcaComentariosPorMarca = []
+        listaMarcaComentarios.push(listaMarcaComentariosPorMarca)
+
+        for (Mod in MarcaComentario){
+            if (MarcaComentario[Mod].value){
+                if (parseInt(MarcaComentario[Mod].id.charAt(6)) == num_marca){
+                    listaMarcaComentariosPorMarca.push(MarcaComentario[Mod].value)
+                }
+                else {
+                    num_marca = num_marca + 1
+                    var listaMarcaComentariosPorMarca = []
+                    listaMarcaComentarios.push(listaMarcaComentariosPorMarca)
+                    listaMarcaComentariosPorMarca.push(MarcaComentario[Mod].value)
+                }
+            }
+        }
+
+        console.log(listaModelos[0])
+        console.log(listaColores)
+        console.log(listaMarcaComentarios)
+
+        data = {}
+        data.NombreProspecto = NombreProspecto
+        data.ApellidoPProspecto = ApellidoPProspecto
+        data.ApellidoMProspecto = ApellidoMProspecto
+        data.Celular = Celular
+        data.Correo = Correo
+        data.OrigenLead = OrigenLead
+        data.Campania = Campania
+        data.TipoDocumento = TipoDocumento
+        data.Documento = Documento
+        data.PoliticaPrivacidad = PoliticaPrivacidad
+        data.Anfitrion = Anfitrion
+        data.Sala = Sala
+        data.Asesor = Asesor
+        data.Comentario = Comentario
+        data.TestDrive = TestDrive
+        data.MarcasInteres = MarcasInteres
+        data.Modelo = JSON.stringify(listaModelos);
+        data.Color = JSON.stringify(listaColores);
+        data.MarcaComentario = JSON.stringify(listaMarcaComentarios);
+        console.log("hola")
+        console.log(data)
+
+        $.ajax({
+              type: "post", // "post" "get" "delete" "put"
+              data: data, // PREFERIBLEMENTE JSON
+              cache: false,
+              headers: {
+                "X-CSRFToken": Cookies.get("csrftoken")
+              },
+              success: function (response) {
+                location.reload()
+                }
+            })
+    }
 </script>
 
         <hr />

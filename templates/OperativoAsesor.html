@@ -164,7 +164,7 @@
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Marca" name="ContAsesor_Marca">
                                                     <option selected="selected" value="0">-- Marca --</option>
-                                                    {% for marca in mostrado_marcas_no_contactado %}
+                                                    {% for marca in marcas_no_contactado %}
                                                     <option value="{{marca.marca}}">{{marca.marca}}</option>
                                                     {% endfor %}
                                                 </select>
@@ -172,7 +172,7 @@
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Modelo" name="ContAsesor_Modelo">
                                                     <option selected="selected" value="0">-- Modelo --</option>
-                                                    {% for modelo in mostrado_marcas_no_contactado %}
+                                                    {% for modelo in modelos_no_contactado %}
                                                     <option value="{{modelo.modelo}}">{{modelo.modelo}}</option>
                                                     {% endfor %}
                                                 </select>
@@ -195,10 +195,7 @@
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <button id="ok" type="button" class="btn btn-primary" onclick="FiltrarContAsesor();">Buscar</button>
-                                                <button id="rContAsesor" type="button" class="btn btn-secondary"><i class="material-icons">cached</i></button>
-                                                {% if user.username == "admin" %}
-                                                <button type="submit" value="ContactoAsesor" name="tabla" id="exportContAsesor" class="btn btn-secondary"><i class="material-icons">description</i></button>
-                                                {% endif %}    
+                                                <button id="rContAsesor" type="button" class="btn btn-secondary" onclick="location.reload();">Recargar página</button>
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <div class="input-group mb-3">
@@ -213,6 +210,9 @@
                                         
                                     </div>
                                     <table id="tableF"
+                                            {% if user.username == "admin" %}
+                                           data-show-export="true"
+                                           {% endif %}    
                                            data-toolbar="#toolbar1"
                                            data-toggle="table"
                                            data-height="1200"
@@ -306,7 +306,7 @@
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Marca" name="ContAsesor_Marca">
                                                     <option selected="selected" value="0">-- Marca --</option>
-                                                    {% for marca in mostrado_marcas_interaccion %}
+                                                    {% for marca in marcas_interaccion %}
                                                     <option value="{{marca.marca}}">{{marca.marca}}</option>
                                                     {% endfor %}
                                                 </select>
@@ -314,7 +314,7 @@
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Modelo" name="ContAsesor_Modelo">
                                                     <option selected="selected" value="0">-- Modelo --</option>
-                                                    {% for modelo in mostrado_marcas_interaccion %}
+                                                    {% for modelo in modelos_interaccion %}
                                                     <option value="{{modelo.modelo}}">{{modelo.modelo}}</option>
                                                     {% endfor %}
                                                 </select>
@@ -337,10 +337,7 @@
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <button id="ok" type="button" class="btn btn-primary" onclick="FiltrarContAsesor();">Buscar</button>
-                                                <button id="rContAsesor" type="button" class="btn btn-secondary"><i class="material-icons">cached</i></button>
-                                                {% if user.username == "admin" %}
-                                                <button type="submit" value="ContactoAsesor" name="tabla" id="exportContAsesor" class="btn btn-secondary"><i class="material-icons">description</i></button>
-                                                {% endif %}    
+                                                <button id="rContAsesor" type="button" class="btn btn-secondary" onclick="location.reload();">Recargar página</button>
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <div class="input-group mb-3">
@@ -355,6 +352,9 @@
                                         
                                     </div>
                                     <table id="tableT"
+                                    {% if user.username == "admin" %}
+                                    data-show-export="true"
+                                    {% endif %}   
                                            data-toolbar="#toolbar2"
                                            data-toggle="table"
                                            data-height="1200"
@@ -448,7 +448,7 @@
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Marca" name="ContAsesor_Marca">
                                                     <option selected="selected" value="0">-- Marca --</option>
-                                                    {% for marca in mostrado_marcas_oportunidad %}
+                                                    {% for marca in marcas_oportunidad %}
                                                     <option value="{{marca.marca}}">{{marca.marca}}</option>
                                                     {% endfor %}
                                                 </select>
@@ -456,7 +456,7 @@
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Modelo" name="ContAsesor_Modelo">
                                                     <option selected="selected" value="0">-- Modelo --</option>
-                                                    {% for modelo in mostrado_marcas_oportunidad %}
+                                                    {% for modelo in modelos_oportunidad %}
                                                     <option value="{{modelo.modelo}}">{{modelo.modelo}}</option>
                                                     {% endfor %}
                                                 </select>
@@ -479,10 +479,7 @@
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <button id="ok" type="button" class="btn btn-primary" onclick="FiltrarContAsesor();">Buscar</button>
-                                                <button id="rContAsesor" type="button" class="btn btn-secondary"><i class="material-icons">cached</i></button>
-                                                {% if user.username == "admin" %}
-                                                <button type="submit" value="ContactoAsesor" name="tabla" id="exportContAsesor" class="btn btn-secondary"><i class="material-icons">description</i></button>
-                                                {% endif %}    
+                                                <button id="rContAsesor" type="button" class="btn btn-secondary" onclick="location.reload();">Recargar página</button>
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <div class="input-group mb-3">
@@ -497,6 +494,9 @@
                                         
                                     </div>
                                     <table id="tableO"
+                                            {% if user.username == "admin" %}
+                                            data-show-export="true"
+                                            {% endif %}   
                                            data-toolbar="#toolbar3"
                                            data-toggle="table"
                                            data-height="1200"
@@ -590,7 +590,7 @@
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Marca" name="ContAsesor_Marca">
                                                     <option selected="selected" value="0">-- Marca --</option>
-                                                    {% for marca in mostrado_marcas_pedido %}
+                                                    {% for marca in marcas_pedido %}
                                                     <option value="{{marca.marca}}">{{marca.marca}}</option>
                                                     {% endfor %}
                                                 </select>
@@ -598,7 +598,7 @@
                                             <div class="form-group col-md-2">
                                                 <select class="form-control form-control-sm" id="ContAsesor_Modelo" name="ContAsesor_Modelo">
                                                     <option selected="selected" value="0">-- Modelo --</option>
-                                                    {% for modelo in mostrado_marcas_pedido %}
+                                                    {% for modelo in modelos_pedido %}
                                                     <option value="{{modelo.modelo}}">{{modelo.modelo}}</option>
                                                     {% endfor %}
                                                 </select>
@@ -621,10 +621,7 @@
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <button id="ok" type="button" class="btn btn-primary" onclick="FiltrarContAsesor();">Buscar</button>
-                                                <button id="rContAsesor" type="button" class="btn btn-secondary"><i class="material-icons">cached</i></button>
-                                                {% if user.username == "admin" %}
-                                                <button type="submit" value="ContactoAsesor" name="tabla" id="exportContAsesor" class="btn btn-secondary"><i class="material-icons">description</i></button>
-                                                {% endif %}    
+                                                <button id="rContAsesor" type="button" class="btn btn-secondary" onclick="location.reload();">Recargar página</button>
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <div class="input-group mb-3">
@@ -639,6 +636,9 @@
                                         
                                     </div>
                                     <table id="tableP"
+                                            {% if user.username == "admin" %}
+                                            data-show-export="true"
+                                            {% endif %}   
                                            data-toolbar="#toolbar4"
                                            data-toggle="table"
                                            data-height="1200"

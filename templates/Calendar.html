@@ -65,6 +65,37 @@
 <body class="bg-light">
     {% include 'nav.html' %}
 
+    <div class="card-body p-4">
+        <form>
+            <div class="row">
+                <div class="col-lg-3 col-md-3">
+                    <div class="mb-4">
+                        <label for="exampleInputPassword1" class="form-label fw-semibold">Eventos hoy</label>
+                        <input type="int" class="form-control" id="evento_hoy" style="background-color: white;" placeholder="" readonly value="{% if general %}{{cantidad_hoy}}{% else %}{% for evento in eventos_hoy %}{% if evento.asesor == adviser.pk %}{{evento.cantidad}}{% endif %}{% endfor %}{% endif %}">
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="mb-4">
+                        <label for="exampleInputPassword1" class="form-label fw-semibold">Leads sin eventos</label>
+                        <input type="int" class="form-control" id="exampleInputtext" style="background-color: white;" placeholder="" readonly value="0">
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="mb-4">
+                        <label for="exampleInputPassword1" class="form-label fw-semibold">Eventos vencidos</label>
+                        <input type="int" class="form-control" id="exampleInputtext" style="background-color: white;" placeholder="" readonly value="0">
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3">
+                    <div class="mb-4">
+                        <label for="exampleInputPassword1" class="form-label fw-semibold">Eventos pendientes</label>
+                        <input type="int" class="form-control" id="evento_pendiente" style="background-color: white;" placeholder="" readonly value="{% if general %}{{cantidad_pendientes}}{% else %}{% for evento in eventos_pendientes %}{% if evento.asesor == adviser.pk %}{{evento.cantidad}}{% endif %}{% endfor %}{% endif %}">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+    
     <div class="container py-5" id="page-container">
         <div class="row">
             <h3 style="float: center; margin-left: 300px;">{{asesor_actual.nombre}}</h3>
@@ -105,7 +136,7 @@
                                     <label for="start_datetime" class="control-label">Telefono del Cliente</label>
                                     <select class="form-control" id="telefono_cliente" name="telefono_cliente"><option selected="selected" value="0">-- Telefono del Cliente --</option>
                                         {% for prospecto in prospectos %}
-                                            <option value="{{prospecto.telefono_cliente}}" selected>{{prospecto.telefono_cliente}}</option>
+                                            <option value="{{prospecto.prospecto.celular}}" selected>{{prospecto.prospecto.celular}}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -272,36 +303,7 @@
             </div>
         </div>
     </div>
-    <div class="card-body p-4">
-        <form>
-            <div class="row">
-                <div class="col-lg-3 col-md-3">
-                    <div class="mb-4">
-                        <label for="exampleInputPassword1" class="form-label fw-semibold">Eventos hoy</label>
-                        <input type="int" class="form-control" id="evento_hoy" style="background-color: white;" placeholder="" readonly value="{% if general %}{{cantidad_hoy}}{% else %}{% for evento in eventos_hoy %}{% if evento.asesor == adviser.pk %}{{evento.cantidad}}{% endif %}{% endfor %}{% endif %}">
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3">
-                    <div class="mb-4">
-                        <label for="exampleInputPassword1" class="form-label fw-semibold">Leads sin eventos</label>
-                        <input type="int" class="form-control" id="exampleInputtext" style="background-color: white;" placeholder="" readonly value="0">
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3">
-                    <div class="mb-4">
-                        <label for="exampleInputPassword1" class="form-label fw-semibold">Eventos vencidos</label>
-                        <input type="int" class="form-control" id="exampleInputtext" style="background-color: white;" placeholder="" readonly value="0">
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3">
-                    <div class="mb-4">
-                        <label for="exampleInputPassword1" class="form-label fw-semibold">Eventos pendientes</label>
-                        <input type="int" class="form-control" id="evento_pendiente" style="background-color: white;" placeholder="" readonly value="{% if general %}{{cantidad_pendientes}}{% else %}{% for evento in eventos_pendientes %}{% if evento.asesor == adviser.pk %}{{evento.cantidad}}{% endif %}{% endfor %}{% endif %}">
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
+    
     
     <!-- Event Details Modal -->
 
@@ -407,9 +409,11 @@
 
     function ir_detalle(){
         var title2= document.getElementById("title").innerHTML;
+        var telefono= document.getElementById("telefono").innerHTML;
 
         data = {}
         data.title2 = title2
+        data.telefono = telefono
         
         console.log("hola")
         console.log(data)

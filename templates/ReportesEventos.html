@@ -148,7 +148,7 @@
                                                     <i class="material-icons">announcement</i>
                                                     <span class="count-numbers">
                                                         
-                                                        0
+                                                        {{cantidad_cumplidos}}
                                                     </span>
                                                     <a href="#Concretadas" style="color: #ffffff;" onclick="actualizar_cumplidos();"><span class="count-name">Eventos cumplidos</span></a>
                                                     <button type="submit" name="tabla" id="exportCapturados" class="btn btn-link" style="margin-bottom: 50px;"><i class="material-icons" style="font-size: 20px;">description</i></button>
@@ -166,7 +166,7 @@
                                                     <option value="Morato">Morato</option>
                                                 </select>
                                             </div>
-                                            <div class="form-group col-md-2" style="float: right; margin-right: 800px; " >
+                                            <div class="form-group col-md-2" style="float: right; margin-right: 600px; " >
                                                 <div class="input-group">
                                                     <div class="input-group-prepend">
                                                         <span class="input-group-text" id="basic-addon1">a:</span>
@@ -184,15 +184,13 @@
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <button id="ok" type="button" class="btn btn-primary" onclick="FiltrarCapturados();">Buscar</button>
-                                                <button id="rCaptura" type="button" class="btn btn-secondary"><i class="material-icons">cached</i></button>
-                                               {% if user.username == "admin" %}
-                                               <button type="submit" value="Capturados" name="tabla" id="exportCapturados" class="btn btn-secondary"><i class="material-icons">description</i></button>
-                                               {% endif %}
+                                                <button id="rCaptura" type="button" class="btn btn-secondary" onclick="location.reload();">Recargar página</button>
                                             </div>
-                                            
-                                            
                                     
                                         <table id="tableCapturados"
+                                                {% if user.username == "admin" %}
+                                                data-show-export="true"
+                                                {% endif %}
                                                data-toolbar="#toolbar"
                                                data-toggle="table"
                                                data-height="1200"
@@ -202,7 +200,7 @@
                                                data-sortable="true"
                                                data-show-columns="true"
                                                data-show-columns-search="true">
-                                            <thead class="table100-head table100 ver3 blue">
+                                            <thead id="thead_color" class="table100-head table100 ver3 blue">
                                                 <tr>
                                                         <th data-field="Borrar" data-sortable="false">
                                                             Foto
@@ -231,7 +229,7 @@
                                                         <td data-field="LeadsSinEventos">0</td>
                                                         <td data-field="EventosVencidos">0</td>
                                                         <td id="evento_pendiente{{asesor.id}}" data-field="EventosPendientes">{% for evento in eventos_pendientes %}{% if evento.asesor == asesor.pk %}{{evento.cantidad}}{% endif %}{% endfor %}</td>
-                                                        <td data-field="EventosCumplidos">0</td>
+                                                        <td id="evento_cumplido{{asesor.id}}" data-field="EventosCumplidos">{% for evento in eventos_cumplidos %}{% if evento.asesor == asesor.pk %}{{evento.cantidad}}{% endif %}{% endfor %}</td>
                                                         <td><a href="{% url 'dashboards:calendar_detail' asesor.id %}">Calendario</td>
                                                     </tr>
                                                 {% endfor %}
@@ -313,15 +311,20 @@
     </div>
 </form><script>
     {% for asesor in asesores %}
-    if ($('#evento_hoy{{asesor.id}}').html() == '') {
+      if ($('#evento_hoy{{asesor.id}}').html() == '') {
         document.getElementById("evento_hoy{{asesor.id}}").innerHTML = 0;
       }
       if ($('#evento_pendiente{{asesor.id}}').html() == '') {
         document.getElementById("evento_pendiente{{asesor.id}}").innerHTML = 0;
       }
+      if ($('#evento_cumplido{{asesor.id}}').html() == '') {
+        document.getElementById("evento_cumplido{{asesor.id}}").innerHTML = 0;
+      }
     {% endfor %}
 
     function actualizar_capturados(){
+        color = document.getElementById("thead_color")
+        color.className = "table100-head table100 ver3 blue";
         var asesores = document.getElementsByClassName("class_asesor")
         for (asesor in asesores){
             asesores[asesor].hidden = false;
@@ -329,6 +332,8 @@
     }
 
     function actualizar_hoy(){
+        color = document.getElementById("thead_color")
+        color.className = "table100-head table100 ver3 danger";
         var asesores = document.getElementsByClassName("class_asesor")
         for (asesor in asesores){
             tr = asesores[asesor].getElementsByTagName("td")[2].innerHTML;
@@ -344,6 +349,8 @@
     }
 
     function actualizar_vencidos(){
+        color = document.getElementById("thead_color")
+        color.className = "table100-head table100 ver3 morado";
         var asesores = document.getElementsByClassName("class_asesor")
         for (asesor in asesores){
             tr = asesores[asesor].getElementsByTagName("td")[4].innerHTML;
@@ -359,6 +366,8 @@
     }
 
     function actualizar_sin_eventos(){
+        color = document.getElementById("thead_color")
+        color.className = "table100-head table100 ver3 bg-warning";
         var asesores = document.getElementsByClassName("class_asesor")
         for (asesor in asesores){
             tr = asesores[asesor].getElementsByTagName("td")[3].innerHTML;
@@ -374,6 +383,8 @@
     }
 
     function actualizar_pendientes(){
+        color = document.getElementById("thead_color")
+        color.className = "table100-head table100 ver3 aqua";
         var asesores = document.getElementsByClassName("class_asesor")
         for (asesor in asesores){
             tr = asesores[asesor].getElementsByTagName("td")[5].innerHTML;
@@ -390,6 +401,8 @@
     }
 
     function actualizar_cumplidos(){
+        color = document.getElementById("thead_color")
+        color.className = "table100-head table100 ver3 success";
         var asesores = document.getElementsByClassName("class_asesor")
         for (asesor in asesores){
             tr = asesores[asesor].getElementsByTagName("td")[6].innerHTML;

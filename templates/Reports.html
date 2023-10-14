@@ -108,7 +108,7 @@
                                                     <i class="material-icons">announcement</i>
                                                     <span class="count-numbers">
                                                         
-                                                        0
+                                                        {{cantidad_concretados}}
                                                     </span>
                                                     <a href="#Concretadas" style="color: #ffffff;"><span class="count-name">Ventas Concretadas</span></a>
                                                 </div>
@@ -219,10 +219,7 @@
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <button id="ok" type="button" class="btn btn-primary" onclick="FiltrarCapturados();">Buscar</button>
-                                                <button id="rCaptura" type="button" class="btn btn-secondary"><i class="material-icons">cached</i></button>
-                                               {% if user.username == "admin" %}
-                                               <button type="submit" value="Capturados" name="tabla" id="exportCapturados" class="btn btn-secondary"><i class="material-icons">description</i></button>
-                                               {% endif %}
+                                                <button id="rCaptura" type="button" class="btn btn-secondary" onclick="location.reload();">Recargar página</button>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <div class="input-group mb-3">
@@ -235,6 +232,9 @@
                                         </div>
                                     </div>
                                         <table id="tableCapturados"
+                                               {% if user.username == "admin" %}
+                                                data-show-export="true"
+                                                {% endif %}
                                                data-toolbar="#toolbar"
                                                data-toggle="table"
                                                data-height="1200"
@@ -375,10 +375,7 @@
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <button id="ok" type="button" class="btn btn-primary" onclick="FiltrarSF();">Buscar</button>
-                                                <button id="rSF" type="button" class="btn btn-secondary"><i class="material-icons">cached</i></button>
-                                               {% if user.username == "admin" %}
-                                               <button type="submit" value="SF" name="tabla" id="exportInventario" class="btn btn-secondary"><i class="material-icons">description</i></button>
-                                               {% endif %}
+                                                <button id="rSF" type="button" class="btn btn-secondary" onclick="location.reload();">Recargar página</button>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <div class="input-group mb-3">
@@ -391,6 +388,9 @@
                                         </div>
                                     </div>
                                         <table id="tableSF"
+                                               {% if user.username == "admin" %}
+                                                data-show-export="true"
+                                                {% endif %}
                                                data-toolbar="#toolbar2"
                                                data-toggle="table"
                                                data-height="800"
@@ -407,6 +407,9 @@
                                                     </th>
                                                     <th data-field="FechaIngreso" data-sortable="true">
                                                         Fecha
+                                                    </th>
+                                                    <th data-field="FechaSepFac" data-sortable="true">
+                                                        Fecha Separado/Facturado
                                                     </th>
                                                     <th data-field="Cliente" data-sortable="true">
                                                         Cliente
@@ -440,6 +443,7 @@
                                                     <tr>
                                                         <td><a href="{% url 'dashboards:detallenuevo' lead.pk %}">Detalle</td>
                                                         <td>{{lead.fecha_apertura.date|date:'Y-m-d'}}</td>
+                                                        <td>{% for vehiculo in separados_y_facturados_marcas %}{% if vehiculo.lead == lead.pk %}{{vehiculo.fecha|date:'Y-m-d'}}{% endif %}{% endfor %}</td>
                                                         <td>{{lead.prospecto.nombre}} {{lead.prospecto.apellido_paterno}} {{lead.prospecto.apellido_materno}}</td>
                                                         <td>{{lead.prospecto.celular}}</td>
                                                         <td>{{lead.sala}}</td>
@@ -522,10 +526,7 @@
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <button id="ok" type="button" class="btn btn-primary" onclick="FiltrarDesistidas();">Buscar</button>
-                                                <button id="rDesistidas" type="button" class="btn btn-secondary"><i class="material-icons">cached</i></button>
-                                               {% if user.username == "admin" %}
-                                               <button type="submit" value="Desistidas" name="tabla" id="exportDesistidas" class="btn btn-secondary"><i class="material-icons">description</i></button>
-                                               {% endif %}
+                                                <button id="rDesistidas" type="button" class="btn btn-secondary" onclick="location.reload();">Recargar página</button>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <div class="input-group mb-3">
@@ -538,6 +539,9 @@
                                         </div>
                                     </div>
                                         <table id="tableDesistidas"
+                                               {% if user.username == "admin" %}
+                                                data-show-export="true"
+                                                {% endif %}
                                                data-toolbar="#toolbar3"
                                                data-toggle="table"
                                                data-height="800"
@@ -769,10 +773,7 @@
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <button id="ok" type="button" class="btn btn-primary" onclick="FiltrarConcretadas();">Buscar</button>
-                                                <button id="rConcretadas" type="button" class="btn btn-secondary"><i class="material-icons">cached</i></button>
-                                               {% if user.username == "admin" %}
-                                               <button type="submit" value="Concretadas" name="tabla" id="exportConcretadas" class="btn btn-secondary"><i class="material-icons">description</i></button>
-                                               {% endif %}
+                                                <button id="rConcretadas" type="button" class="btn btn-secondary" onclick="location.reload();">Recargar página</button>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <div class="input-group mb-3">
@@ -785,6 +786,9 @@
                                         </div>
                                     </div>
                                         <table id="tableConcretadas"
+                                               {% if user.username == "admin" %}
+                                                data-show-export="true"
+                                                {% endif %}
                                                data-toolbar="#toolbar4"
                                                data-toggle="table"
                                                data-height="800"
@@ -807,7 +811,21 @@
                                                     <th data-field="Respuesta" data-sortable="true">Respuesta</th>
                                                 </tr>
                                             </thead>
-                                            <tbody style="background-color:white;"></tbody>
+                                            <tbody style="background-color:white;">
+                                                {% for lead in leads_concretados %}
+                                                    <tr>
+                                                        <td><a href="{% url 'dashboards:detallenuevo' lead.pk %}">Detalle</td>
+                                                        <td></td>
+                                                        <td>{{lead.fecha_apertura.date|date:'Y-m-d'}}</td>
+                                                        <td>{{lead.prospecto.nombre}} {{lead.prospecto.apellido_paterno}} {{lead.prospecto.apellido_materno}}</td>
+                                                        <td>{{lead.prospecto.celular}}</td>
+                                                        <td>{{lead.sala}}</td>
+                                                        <td>{{lead.nombre_asesor}}</td>
+                                                        <td>{{lead.estado}}</td>
+                                                        <td>{{lead.respuesta}}</td>
+                                                    </tr>
+                                                {% endfor %}
+                                            </tbody>
                                         </table>
                                 </div>
 
@@ -864,10 +882,7 @@
                                             </div>
                                             <div class="form-group col-md3">
                                                 <button id="ok" type="button" class="btn btn-primary" onclick="FiltrarHistorial();">Buscar</button>
-                                                <button id="rHistorial" type="button" class="btn btn-secondary"><i class="material-icons">cached</i></button>
-                                               {% if user.username == "admin" %}
-                                               <button type="submit" value="Historial" name="tabla" id="exportHistorial" class="btn btn-secondary"><i class="material-icons">description</i></button>
-                                               {% endif %}
+                                                <button id="rHistorial" type="button" class="btn btn-secondary" onclick="location.reload();">Recargar página</button>
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <div class="input-group mb-3">
@@ -880,6 +895,9 @@
                                         </div>
                                     </div>
                                         <table id="tableHistorial"
+                                               {% if user.username == "admin" %}
+                                                data-show-export="true"
+                                                {% endif %}
                                                data-toolbar="#toolbar5"
                                                data-toggle="table"
                                                data-height="800"

@@ -1,7 +1,7 @@
 # Django
 import re
-from django.db.models import Q, Max, Subquery, Count
-from django.db.models.functions import Coalesce
+from django.db.models import Q, Max, Subquery, Count, F, Func, ExpressionWrapper, DurationField, IntegerField, DateTimeField
+from django.db.models.functions import Coalesce, ExtractDay, TruncDate, Now, Extract, Cast
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
@@ -10,6 +10,7 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy, reverse
 from django.utils import timezone
 from django.utils.decorators import method_decorator
+from django.utils.timezone import make_aware
 from django.views.decorators.csrf import csrf_exempt
 from django.views.generic import CreateView, ListView, TemplateView, DetailView, DeleteView, UpdateView
 from django.views.generic.base import View
@@ -30,6 +31,14 @@ from datetime import date, datetime, timedelta
 import json
 from openpyxl import load_workbook
 
+class DiffDays(Func):
+    function = 'DATE_PART'
+    template = "%(function)s('day', %(expressions)s)"
+
+class CastDate(Func):
+    function = 'date_trunc'
+    template = "%(function)s('day', %(expressions)s)"
+
 class LoginView(auth_views.LoginView):
     # Vista de Login
 
@@ -49,6 +58,8 @@ class CapturaView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = User.objects.get(username=self.request.user)
+        nombre = functions.separar_nombre(user.username)
+
         try:
             asesor_actual = Asesor.objects.get(nombre=functions.separar_nombre(user.username))
         except:
@@ -80,6 +91,7 @@ class CapturaView(LoginRequiredMixin, TemplateView):
         context["cantidad_morato"] = cantidad_morato
         context["cantidad_127"] = cantidad_127
         context["marcas"] = marcas
+        context["nombre"] = nombre
         context["today"] = today
         context["origenes_lead"] = origenes_lead
         context["user"] = user
@@ -131,23 +143,29 @@ class CapturaView(LoginRequiredMixin, TemplateView):
             anfitrion = r.get("Anfitrion", None)
             sala = r.get("Sala", None)
             nombre_asesor = r.get("Asesor", None)
-            marcas_interes = r.getlist("MarcasInteres", None)
-            modelo = r.getlist("Modelo", None)
-            color = r.getlist("Color", None)
-            marca_comentario = r.getlist("MarcaComentario", None)
+            marcas_interes = r.getlist("MarcasInteres[]", None)
+            modelo = json.loads(r.get("Modelo", None))
+            color = json.loads(r.get("Color", None))
+            marca_comentario = json.loads(r.get("MarcaComentario", None))
             print(marcas_interes)
             print(modelo)
             print(color)
             print(marca_comentario)
             m_lista = []
-            for m in range(len(modelo)):
-                m_lista.append({"marca": marcas_interes[m],
-                     "modelo": modelo[m],
-                     "color": color[m],
-                     "marca_comentario": marca_comentario[m],
-                     "codigo": None,
-                     "precio": None
-                    })
+            for ma in range(len(marcas_interes)):
+                for mo in range(len(modelo[ma])):
+                    print("aver la marca de interees")
+                    print(marcas_interes[ma])
+                    print(modelo[ma][mo])
+                    print(color[ma][mo])
+                    print(marca_comentario[ma][mo])
+                    m_lista.append({"marca": marcas_interes[ma],
+                        "modelo": modelo[ma][mo],
+                        "color": color[ma][mo],
+                        "marca_comentario": marca_comentario[ma][mo],
+                        "codigo": None,
+                        "precio": None
+                        })
             
             marcas = {"marcas": m_lista}
             comentario = r.get("Comentario", None)
@@ -161,10 +179,10 @@ class CapturaView(LoginRequiredMixin, TemplateView):
                                 apellido_materno=apellido_materno,
                                 celular=celular,
                                 correo=correo,
-                                fecha_captura=datetime.now(),
+                                fecha_captura=make_aware(datetime.now()),
                                 nombre_asesor=nombre_asesor,
                                 anfitrion=anfitrion,
-                                fecha_hora_asignacion_asesor=datetime.now(),
+                                fecha_hora_asignacion_asesor=make_aware(datetime.now()),
                                 politica_privacidad=politica_privacidad,
                                 )
             
@@ -178,35 +196,36 @@ class CapturaView(LoginRequiredMixin, TemplateView):
                                 status="Frío",
                                 interes="Venta",
                                 activo=True,
-                                fecha_apertura=datetime.now(),
+                                fecha_apertura=make_aware(datetime.now()),
                                 comentario=comentario,
                                 campania=campania,
                                 tipo_documento=tipo_documento,
                                 documento=documento,
                                 test_drive=test_drive,
                                 nombre_asesor=nombre_asesor,
-                                fecha_hora_asignacion_asesor=datetime.now(),
+                                fecha_hora_asignacion_asesor=make_aware(datetime.now()),
                                 nombre_anfitrion=anfitrion,
                                 )
             Historial.objects.create(lead=lead,
-                        fecha=datetime.now(),
+                        fecha=make_aware(datetime.now()),
                         responsable=user,
                         operacion=f"Creación Lead",
                         comentarios=comentario
                         )
-            VehiculosInteresLead.objects.create(lead=lead,
-                                            marca=marcas_interes[0],
-                                            modelo=modelo[0],
-                                            color=color[0],
-                                            comentario=marca_comentario[0],
-                                            peritaje=False,
-                                            cotizar=False,
-                                            aprobacion=False,
-                                            precio=False,
-                                            separado=False,
-                                            facturado=False,
-                                            mostrado=True
-                                            )
+            if marcas_interes:
+                VehiculosInteresLead.objects.create(lead=lead,
+                                                marca=marcas_interes[0],
+                                                modelo=modelo[0][0],
+                                                color=color[0][0],
+                                                comentario=marca_comentario[0][0],
+                                                peritaje=False,
+                                                cotizar=False,
+                                                aprobacion=False,
+                                                precio=False,
+                                                separado=False,
+                                                facturado=False,
+                                                mostrado=True
+                                                )
             return HttpResponseRedirect(reverse_lazy('dashboards:captura'))
 
 
@@ -444,6 +463,10 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
                     lead.fecha_primer_contacto = datetime.now()
                     tiempo_primer_contacto = datetime.now() - lead.fecha_hora_asignacion_asesor.replace(tzinfo=None)
                     lead.tiempo_primer_contacto = tiempo_primer_contacto.total_seconds() / 60
+                else:
+                    lead.fecha_cambio_de_etapa = datetime.now()
+                    tiempo_cambio_de_etapa = datetime.now() - lead.fecha_primer_contacto.replace(tzinfo=None)
+                    lead.tiempo_cambio_de_etapa = tiempo_cambio_de_etapa.total_seconds() / 60
             
             marcas_interes = request.POST.getlist("MarcasInteres[]", None)
             modelo = json.loads(request.POST.get("Modelo", None))
@@ -463,6 +486,21 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
             print(modelo)
             print("color")
             print(color)
+
+            if len(m_lista) == 0:
+                VehiculosInteresLead.objects.create(lead=lead,
+                                            marca=marcas_interes[0],
+                                            modelo=modelo[0][0],
+                                            color=color[0][0],
+                                            codigo_vehiculo=codigo[0][0],
+                                            precio=precio[0][0],
+                                            peritaje=False,
+                                            cotizar=False,
+                                            aprobacion=False,
+                                            separado=False,
+                                            facturado=False,
+                                            mostrado=True
+                                            )
             
             for ma in range(len(marcas_interes)):
                 for mo in range(len(modelo[ma])):
@@ -510,7 +548,6 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
                 lista_historial.append("Correo")
             prospecto.correo = request.POST.get("ProspectoCorreo")
             prospecto.anfitrion = request.POST.get("Lead_NombreAnfitrion")
-            prospecto.nombre_asesor = request.POST.get("ProspectoAsesor")
             if prospecto.contacto_nombre != request.POST.get("NombreContacto"):
                 lista_historial.append("Nombre Contacto")
             prospecto.contacto_nombre = request.POST.get("NombreContacto")
@@ -642,18 +679,24 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
             if mostrado == True:
                 VehiculosInteresLead.objects.filter(lead=lead, mostrado=True).delete()
             
+            try:
+                precio = int(vehiculo_acciones[4])
+            except:
+                precio = None
+
             VehiculosInteresLead.objects.create(lead=lead,
                                                 marca=vehiculo_acciones[0],
                                                 modelo=vehiculo_acciones[1],
                                                 color=vehiculo_acciones[2],
                                                 codigo_vehiculo=vehiculo_acciones[3],
+                                                precio=precio,
                                                 peritaje=False,
                                                 cotizar=False,
                                                 aprobacion=False,
-                                                precio=False,
                                                 separado=separado,
                                                 facturado=facturado,
-                                                mostrado=mostrado
+                                                mostrado=mostrado,
+                                                fecha=datetime.now()
                                         )
 
             Historial.objects.create(lead=lead,
@@ -730,7 +773,6 @@ class OperativoAnfitrionView(LoginRequiredMixin, TemplateView):
         except:
             asesor_actual = {}
             asesor_actual["pk"] = 0
-        print(user)
 
         calendario_general = True
         for grupo in self.request.user.groups.all():
@@ -744,13 +786,14 @@ class OperativoAnfitrionView(LoginRequiredMixin, TemplateView):
 
         mostrado_marcas = VehiculosInteresLead.objects.filter(mostrado=True).values("lead").distinct().values("lead", "marca", "modelo")
 
-        print(verificaciones)
 
-        anfitriones_agendados = leads_agendados.values("nombre_anfitrion")
-        tipos_solicitud_agendados = leads_agendados.values("tipo_solicitud_verificacion")
-        asesores_agendados = leads_agendados.values("nombre_asesor")
-        salas_agendados = leads_agendados.values("sala")
+        anfitriones_agendados = leads_agendados.order_by("nombre_anfitrion").values("nombre_anfitrion").distinct()
+        tipos_solicitud_agendados = leads_agendados.order_by("tipo_solicitud_verificacion").values("tipo_solicitud_verificacion").distinct()
+        asesores_agendados = leads_agendados.order_by("nombre_asesor").values("nombre_asesor").distinct()
+        salas_agendados = leads_agendados.order_by("sala").values("sala").distinct()
 
+        print(anfitriones_agendados)
+        
         context["anfitriones_agendados"] = anfitriones_agendados
         context["asesores_agendados"] = asesores_agendados
         context["asesor_actual"] = asesor_actual
@@ -793,50 +836,59 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
         functions.verificar_primer_contacto_todos_los_leads(leads)
 
         if calendario_general == False:
-            leads_no_contactado = Lead.objects.filter(etapa="No contactado", activo=True, nombre_asesor=user.username).order_by("-id")
-            leads_interaccion = Lead.objects.filter(etapa="Interaccion", activo=True, nombre_asesor=user.username).order_by("-id")
-            leads_oportunidad = Lead.objects.filter(etapa="Oportunidad", activo=True, nombre_asesor=user.username).order_by("-id")
-            leads_pedido = Lead.objects.filter(etapa="Pedido", activo=True, nombre_asesor=user.username).order_by("-id")
+            leads_no_contactado = Lead.objects.filter(etapa="No contactado", activo=True, nombre_asesor=functions.separar_nombre(user.username)).order_by("-id")
+            leads_interaccion = Lead.objects.filter(etapa="Interaccion", activo=True, nombre_asesor=functions.separar_nombre(user.username)).order_by("-id")
+            leads_oportunidad = Lead.objects.filter(etapa="Oportunidad", activo=True, nombre_asesor=functions.separar_nombre(user.username)).order_by("-id")
+            leads_pedido = Lead.objects.filter(etapa="Pedido", activo=True, nombre_asesor=functions.separar_nombre(user.username)).exclude(respuesta="Entrega finalizada").order_by("-id")
         else:
 
             leads_no_contactado = Lead.objects.filter(etapa="No contactado", activo=True, nombre_asesor__isnull=False).order_by("-id")
             leads_interaccion = Lead.objects.filter(etapa="Interaccion", activo=True, nombre_asesor__isnull=False).order_by("-id")
             leads_oportunidad = Lead.objects.filter(etapa="Oportunidad", activo=True, nombre_asesor__isnull=False).order_by("-id")
-            leads_pedido = Lead.objects.filter(etapa="Pedido", activo=True, nombre_asesor__isnull=False).order_by("-id")
+            leads_pedido = Lead.objects.filter(etapa="Pedido", activo=True, nombre_asesor__isnull=False).exclude(respuesta="Entrega finalizada").order_by("-id")
         respuestas = CatalogoRespuestasByEtapa.objects.all()
         estados = CatalogoRespuestasByEtapa.objects.all()
 
         mostrado_marcas = VehiculosInteresLead.objects.filter(mostrado=True).values("lead", "mostrado").distinct().annotate(latest=Max("id")).values("lead", "marca", "modelo")
 
-        origenes_lead_no_contactado = leads_no_contactado.values("origen_lead")
-        origenes_lead_interaccion = leads_interaccion.values("origen_lead")
-        origenes_lead_oportunidad = leads_oportunidad.values("origen_lead")
-        origenes_lead_pedido = leads_pedido.values("origen_lead")
+        origenes_lead_no_contactado = leads_no_contactado.order_by("origen_lead").values("origen_lead").distinct()
+        origenes_lead_interaccion = leads_interaccion.order_by("origen_lead").values("origen_lead").distinct()
+        origenes_lead_oportunidad = leads_oportunidad.order_by("origen_lead").values("origen_lead").distinct()
+        origenes_lead_pedido = leads_pedido.order_by("origen_lead").values("origen_lead").distinct()
 
-        respuestas_no_contactado = leads_no_contactado.values("respuesta")
-        respuestas_interaccion = leads_interaccion.values("respuesta")
-        respuestas_oportunidad = leads_oportunidad.values("respuesta")
-        respuestas_pedido = leads_pedido.values("respuesta")
+        respuestas_no_contactado = leads_no_contactado.order_by("respuesta").values("respuesta").distinct()
+        respuestas_interaccion = leads_interaccion.order_by("respuesta").values("respuesta").distinct()
+        respuestas_oportunidad = leads_oportunidad.order_by("respuesta").values("respuesta").distinct()
+        respuestas_pedido = leads_pedido.order_by("respuesta").values("respuesta").distinct()
 
-        estados_no_contactado = leads_no_contactado.values("estado")
-        estados_interaccion = leads_interaccion.values("estado")
-        estados_oportunidad = leads_oportunidad.values("estado")
-        estados_pedido = leads_pedido.values("estado")
+        estados_no_contactado = leads_no_contactado.order_by("estado").values("estado").distinct()
+        estados_interaccion = leads_interaccion.order_by("estado").values("estado").distinct()
+        estados_oportunidad = leads_oportunidad.order_by("estado").values("estado").distinct()
+        estados_pedido = leads_pedido.order_by("estado").values("estado").distinct()
 
-        asesores_no_contactado = leads_no_contactado.values("nombre_asesor")
-        asesores_interaccion = leads_interaccion.values("nombre_asesor")
-        asesores_oportunidad = leads_oportunidad.values("nombre_asesor")
-        asesores_pedido = leads_pedido.values("nombre_asesor")
+        asesores_no_contactado = leads_no_contactado.order_by("nombre_asesor").values("nombre_asesor").distinct()
+        asesores_interaccion = leads_interaccion.order_by("nombre_asesor").values("nombre_asesor").distinct()
+        asesores_oportunidad = leads_oportunidad.order_by("nombre_asesor").values("nombre_asesor").distinct()
+        asesores_pedido = leads_pedido.order_by("nombre_asesor").values("nombre_asesor").distinct()
 
-        salas_no_contactado = leads_no_contactado.values("sala")
-        salas_interaccion = leads_interaccion.values("sala")
-        salas_oportunidad = leads_oportunidad.values("sala")
-        salas_pedido = leads_pedido.values("sala")
+        salas_no_contactado = leads_no_contactado.order_by("sala").values("sala").distinct()
+        salas_interaccion = leads_interaccion.order_by("sala").values("sala").distinct()
+        salas_oportunidad = leads_oportunidad.order_by("sala").values("sala").distinct()
+        salas_pedido = leads_pedido.order_by("sala").values("sala").distinct()
 
-        mostrado_marcas_no_contactado = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_no_contactado).values("lead", "mostrado").distinct().annotate(latest=Max("id")).values("lead", "marca", "modelo")
-        mostrado_marcas_interaccion = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_interaccion).values("lead", "mostrado").distinct().annotate(latest=Max("id")).values("lead", "marca", "modelo")
-        mostrado_marcas_oportunidad = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_oportunidad).values("lead", "mostrado").distinct().annotate(latest=Max("id")).values("lead", "marca", "modelo")
-        mostrado_marcas_pedido = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_pedido).values("lead", "mostrado").distinct().annotate(latest=Max("id")).values("lead", "marca", "modelo")
+        marcas_no_contactado = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_no_contactado).values("marca").distinct()
+        marcas_interaccion = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_interaccion).values("marca").distinct()
+        marcas_oportunidad = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_oportunidad).values("marca").distinct()
+        marcas_pedido = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_pedido).values("marca").distinct()
+
+        modelos_no_contactado = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_no_contactado).values("modelo").distinct() 
+        modelos_interaccion = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_interaccion).values("modelo").distinct() 
+        modelos_oportunidad = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_oportunidad).values("modelo").distinct() 
+        modelos_pedido = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_pedido).values("modelo").distinct() 
+
+        print("marcas_pedido")
+        print(marcas_pedido)
+
 
         context["asesor_actual"] = asesor_actual
         context["asesores_no_contactado"] = asesores_no_contactado
@@ -857,11 +909,15 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
         context["leads_interaccion"] = leads_interaccion
         context["leads_oportunidad"] = leads_oportunidad
         context["leads_pedido"] = leads_pedido
+        context["marcas_no_contactado"] = marcas_no_contactado
+        context["marcas_interaccion"] = marcas_interaccion
+        context["marcas_oportunidad"] = marcas_oportunidad
+        context["marcas_pedido"] = marcas_pedido
+        context["modelos_no_contactado"] = modelos_no_contactado
+        context["modelos_interaccion"] = modelos_interaccion
+        context["modelos_oportunidad"] = modelos_oportunidad
+        context["modelos_pedido"] = modelos_pedido
         context["mostrado_marcas"] = mostrado_marcas
-        context["mostrado_marcas_no_contactado"] = mostrado_marcas_no_contactado
-        context["mostrado_marcas_interaccion"] = mostrado_marcas_interaccion
-        context["mostrado_marcas_oportunidad"] = mostrado_marcas_oportunidad
-        context["mostrado_marcas_pedido"] = mostrado_marcas_pedido
         context["origenes_lead_no_contactado"] = origenes_lead_no_contactado
         context["origenes_lead_interaccion"] = origenes_lead_interaccion
         context["origenes_lead_oportunidad"] = origenes_lead_oportunidad
@@ -912,6 +968,7 @@ class ReportesView(LoginRequiredMixin, TemplateView):
         leads_separados = Lead.objects.filter(pk__in=separados, activo=True).order_by("-id")
         leads_separados_y_facturados = Lead.objects.filter(pk__in=separados_y_facturados, activo=True).order_by("-id")
         leads_desistidos = Lead.objects.filter(etapa="Desistido", activo=True).order_by("-id")
+        leads_concretados = Lead.objects.filter(etapa="Pedido", respuesta="Entrega finalizada", activo=True).order_by("-id")
 
         historial = Historial.objects.filter(lead__in=leads_agendados).values("lead").annotate(Max("fecha"))
 
@@ -920,28 +977,30 @@ class ReportesView(LoginRequiredMixin, TemplateView):
         verificados = HistorialVerificaciones.objects.values("lead", "tipo_solicitud").distinct().order_by("-id")
 
         mostrado_marcas = VehiculosInteresLead.objects.filter(mostrado=True).values("lead").distinct().values("lead", "marca", "modelo", "codigo_vehiculo")
-        separados_y_facturados_marcas = VehiculosInteresLead.objects.filter(mostrado=False).values("lead").distinct().values("lead", "marca", "modelo", "codigo_vehiculo")
+        separados_y_facturados_marcas = VehiculosInteresLead.objects.filter(mostrado=False).values("lead").distinct().values("lead", "marca", "modelo", "codigo_vehiculo", "fecha")
 
         print(leads_separados_y_facturados)
 
-        origenes_lead_agendados = leads_agendados.values("origen_lead")
+        origenes_lead_agendados = leads_agendados.order_by("origen_lead").values("origen_lead").distinct()
         
-        respuestas_agendados = leads_agendados.values("respuesta")
-        respuestas_desistidos = leads_desistidos.values("respuesta")
+        respuestas_agendados = leads_agendados.order_by("respuesta").values("respuesta").distinct()
+        respuestas_desistidos = leads_desistidos.order_by("respuesta").values("respuesta").distinct()
         
-        estados_agendados = leads_agendados.values("estado")
-        estados_separados_y_facturados = leads_separados_y_facturados.values("estado")
-        estados_desistidos = leads_desistidos.values("estado")
+        estados_agendados = leads_agendados.order_by("estado").values("estado").distinct()
+        estados_separados_y_facturados = leads_separados_y_facturados.order_by("estado").values("estado").distinct()
+        estados_desistidos = leads_desistidos.order_by("estado").values("estado").distinct()
 
-        anfitriones_agendados = leads_agendados.values("nombre_anfitrion")
+        anfitriones_agendados = leads_agendados.order_by("nombre_anfitrion").values("nombre_anfitrion").distinct()
 
-        asesores_agendados = leads_agendados.values("nombre_asesor")
-        asesores_separados_y_facturados = leads_separados_y_facturados.values("nombre_asesor")
-        asesores_desistidos = leads_desistidos.values("nombre_asesor")
+        asesores_agendados = leads_agendados.order_by("nombre_asesor").values("nombre_asesor").distinct()
+        asesores_separados_y_facturados = leads_separados_y_facturados.order_by("nombre_asesor").values("nombre_asesor").distinct()
+        asesores_desistidos = leads_desistidos.order_by("nombre_asesor").values("nombre_asesor").distinct()
 
-        salas_agendados = leads_agendados.values("sala")
-        salas_separados_y_facturados = leads_separados_y_facturados.values("sala")
-        salas_desistidos = leads_desistidos.values("sala")
+        salas_agendados = leads_agendados.order_by("sala").values("sala").distinct()
+        salas_separados_y_facturados = leads_separados_y_facturados.order_by("sala").values("sala").distinct()
+        salas_desistidos = leads_desistidos.order_by("sala").values("sala").distinct()
+
+        print(salas_agendados)
 
         mostrado_marcas_agendados = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_agendados).values("lead", "mostrado").distinct().annotate(latest=Max("id")).values("lead", "marca", "modelo")
         mostrado_marcas_separados_y_facturados = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_separados_y_facturados).values("lead", "mostrado").distinct().annotate(latest=Max("id")).values("lead", "marca", "modelo")
@@ -954,6 +1013,7 @@ class ReportesView(LoginRequiredMixin, TemplateView):
         context["asesores_desistidos"] = asesores_desistidos
         context["calendario_general"] = calendario_general
         context["cantidad_agendados"] = leads_agendados.count()
+        context["cantidad_concretados"] = leads_concretados.count()
         context["cantidad_desistidos"] = leads_desistidos.count()
         context["cantidad_historial"] = historial.count()
         context["cantidad_separados_y_facturados"] = leads_separados_y_facturados.count()
@@ -962,6 +1022,7 @@ class ReportesView(LoginRequiredMixin, TemplateView):
         context["estados_desistidos"] = estados_desistidos
         context["historial"] = historial
         context["leads_agendados"] = leads_agendados
+        context["leads_concretados"] = leads_concretados
         context["leads_desistidos"] = leads_desistidos
         context["leads_facturados"] = leads_facturados
         context["leads_separados"] = leads_separados
@@ -1003,23 +1064,35 @@ class TiemposView(LoginRequiredMixin, TemplateView):
             if grupo.name == "Asesor":
                 calendario_general = False
 
-        leads_tiempos = Lead.objects.filter(tiempo_primer_contacto__isnull=False, activo=True).order_by("-id")
+        leads_tiempos = Lead.objects.filter(tiempo_primer_contacto__isnull=False, activo=True).annotate(dias_totales=(ExpressionWrapper((Cast(datetime.now(), output_field=DateTimeField())) - F('fecha_hora_asignacion_asesor'), output_field=IntegerField())) / 86400000000).annotate(minutos_totales=F("dias_totales") * 1440).order_by("-id")
         leads_verificados = Lead.objects.filter(estado_llamada_verificacion__isnull=False, activo=True).order_by("-id")
 
         verificados = HistorialVerificaciones.objects.values("lead", "tipo_solicitud").distinct().order_by("-id")
 
         mostrado_marcas = VehiculosInteresLead.objects.filter(mostrado=True).values("lead").distinct().values("lead", "marca", "modelo")
 
-        print(verificados)
-        print(mostrado_marcas)
+        origenes_lead_tiempos = leads_tiempos.order_by("origen_lead").values("origen_lead").distinct()
+        respuestas_tiempos = leads_tiempos.order_by("respuesta").values("respuesta").distinct()
+        estados_tiempos = leads_tiempos.order_by("estado").values("estado").distinct()
+        asesores_tiempos = leads_tiempos.order_by("nombre_asesor").values("nombre_asesor").distinct()
+        salas_tiempos = leads_tiempos.order_by("sala").values("sala").distinct()
+        marcas_tiempos = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_tiempos).values("marca").distinct()
+        modelos_tiempos = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_tiempos).values("modelo").distinct() 
 
         context["asesor_actual"] = asesor_actual
+        context["asesores_tiempos"] = asesores_tiempos
         context["calendario_general"] = calendario_general
         context["cantidad_tiempos"] = leads_tiempos.count()
         context["cantidad_verificados"] = leads_verificados.count()
+        context["estados_tiempos"] = estados_tiempos
         context["leads_tiempos"] = leads_tiempos
         context["leads_verificados"] = leads_verificados
+        context["marcas_tiempos"] = marcas_tiempos
+        context["modelos_tiempos"] = modelos_tiempos
         context["mostrado_marcas"] = mostrado_marcas
+        context["origenes_lead_tiempos"] = origenes_lead_tiempos
+        context["respuestas_tiempos"] = respuestas_tiempos
+        context["salas_tiempos"] = salas_tiempos
         context["user"] = user
         context["verificados"] = verificados
 
@@ -1052,13 +1125,29 @@ class AnuladosView(LoginRequiredMixin, TemplateView):
 
         mostrado_marcas = VehiculosInteresLead.objects.filter(mostrado=True).values("lead").distinct().values("lead", "marca", "modelo")
 
+
+        origenes_lead_anulados = leads_anulados.order_by("origen_lead").values("origen_lead").distinct()
+        respuestas_anulados = leads_anulados.order_by("respuesta").values("respuesta").distinct()
+        estados_anulados = leads_anulados.order_by("estado").values("estado").distinct()
+        asesores_anulados = leads_anulados.order_by("nombre_asesor").values("nombre_asesor").distinct()
+        salas_anulados = leads_anulados.order_by("sala").values("sala").distinct()
+        marcas_anulados = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_anulados).values("marca").distinct()
+        modelos_anulados = VehiculosInteresLead.objects.filter(mostrado=True).filter(lead__in=leads_anulados).values("modelo").distinct() 
+        
         context["asesor_actual"] = asesor_actual
+        context["asesores_anulados"] = asesores_anulados
         context["calendario_general"] = calendario_general
         context["cantidad_anulados"] = leads_anulados.count()
         context["cantidad_verificados"] = leads_verificados.count()
+        context["estados_anulados"] = estados_anulados
         context["leads_anulados"] = leads_anulados
         context["leads_verificados"] = leads_verificados
+        context["marcas_anulados"] = marcas_anulados
+        context["modelos_anulados"] = modelos_anulados
         context["mostrado_marcas"] = mostrado_marcas
+        context["origenes_lead_anulados"] = origenes_lead_anulados
+        context["respuestas_anulados"] = respuestas_anulados
+        context["salas_anulados"] = salas_anulados
         context["user"] = user
         context["verificados"] = verificados
 
@@ -1117,7 +1206,7 @@ class ReportesEventosView(LoginRequiredMixin, TemplateView):
             if grupo.name == "Asesor":
                 calendario_general = False
 
-        leads_activos = Lead.objects.filter(activo=True)
+        leads_activos = Lead.objects.filter(activo=True, nombre_asesor__isnull=False)
         asesores = Asesor.objects.all()
         asesores_127 = Asesor.objects.filter(sala="127")
         asesores_morato = Asesor.objects.filter(sala="Morato")
@@ -1127,13 +1216,16 @@ class ReportesEventosView(LoginRequiredMixin, TemplateView):
         eventos_hoy = Evento.objects.filter(fecha_hora__range=(today_min, today_max)).values("asesor").annotate(cantidad=Count("pk"))
         cantidad_pendiente = Evento.objects.filter(fecha_hora__gt=today_max).count()
         eventos_pendientes = Evento.objects.filter(fecha_hora__gt=today_max).values("asesor").annotate(cantidad=Count("pk"))
+        cantidad_cumplidos = Evento.objects.filter(fecha_hora__gt=today_max).count()
+        eventos_cumplidos = Evento.objects.filter(cumplido=True).values("asesor").annotate(cantidad=Count("pk"))
 
         print(asesores)
         print("eventos_hoy")
         print(eventos_hoy)
         print(eventos_hoy.values("asesor"))
 
-        print(eventos_pendientes)
+        print("eventos_cumplidos")
+        print(eventos_cumplidos)
 
         context["asesor_actual"] = asesor_actual
         context["asesores"] = asesores
@@ -1141,8 +1233,10 @@ class ReportesEventosView(LoginRequiredMixin, TemplateView):
         context["asesores_morato"] = asesores_morato
         context["calendario_general"] = calendario_general
         context["cantidad_activos"] = leads_activos.count()
+        context["cantidad_cumplidos"] = cantidad_cumplidos
         context["cantidad_hoy"] = cantidad_hoy
         context["cantidad_pendientes"] = cantidad_pendiente
+        context["eventos_cumplidos"] = eventos_cumplidos
         context["eventos_hoy"] = eventos_hoy
         context["eventos_pendientes"] = eventos_pendientes
         context["leads_activos"] = leads_activos
@@ -1327,7 +1421,7 @@ class CalendarDetailView(LoginRequiredMixin, DetailView):
 
         general = False
 
-        prospectos = eventos.values("telefono_cliente").distinct()
+        prospectos = Lead.objects.filter(nombre_asesor=functions.separar_nombre(user.username)).distinct()
 
         print(prospectos)
 
@@ -1351,6 +1445,7 @@ class CalendarDetailView(LoginRequiredMixin, DetailView):
 
     def post(self, request, pk):
         r = request.POST
+        adviser = self.get_object()
         user = User.objects.get(username=self.request.user)
         
         print(r)
@@ -1379,9 +1474,16 @@ class CalendarDetailView(LoginRequiredMixin, DetailView):
             return HttpResponseRedirect(reverse_lazy('dashboards:calendar_detail', kwargs={"pk": pk}))
         if r.get("title2", None):
             nombre = r.get("title2", None)
-            evento = Evento.objects.get(nombre=nombre).lead.pk
+            telefono = r.get("telefono", None)
+            try:
+                Lead.objects.get(prospecto__celular=telefono, nombre_asesor=adviser.nombre)
+                evento = Evento.objects.get(nombre=nombre).lead.pk
             
-            return JsonResponse(evento, safe=False)
+                return JsonResponse(evento, safe=False)
+            except:
+                pass
+
+            
         if r.get("title_cumplido", None):
             nombre = r.get("title_cumplido", None)
             evento = Evento.objects.get(nombre=nombre)

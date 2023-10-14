@@ -296,7 +296,7 @@
                                                 <div class="col-lg-3 col-md-3">
                                                     <div class="mb-4">
                                                         <label for="exampleInputPassword1" class="form-label fw-semibold">Valor Vehículo:</label>
-                                                        <input type="number" class="form-control" id="valor_retoma" name="valor_retoma" placeholder="">
+                                                        <input type="number" class="form-control" id="valor_retoma" name="valor_retoma" placeholder="" onchange="actualizar_modelo_retoma2();">
                                                     </div>
                                                 </div>
                 
@@ -363,7 +363,7 @@
                                                         </td>
                                                         <td>
                                                             <label class="mb-0 fs-3">Seleccionar</label>
-                                                            <input type="checkbox" id="vehiculo_acciones" name="vehiculo_acciones" value="{{carro.marca}}/{{carro.modelo}}/{{carro.color}}/{{carro.codigo}}" onchange="actualizar_modelo_acciones(this);">
+                                                            <input type="checkbox" id="vehiculo_acciones" name="vehiculo_acciones" value="{{carro.marca}}/{{carro.modelo}}/{{carro.color}}/{{carro.codigo}}/{{carro.precio}}" onchange="actualizar_modelo_acciones(this);">
                                                         </td>
                                                       </tr>
                                                       {% endfor %}
@@ -542,6 +542,12 @@
                                         </div>                   
                                     </div>
                                     <div class="form-row">
+                                        <div class="col-lg-6">
+                                            <div class="mb-4">
+                                                <label for="EventoCliente" class="col-form-label">Nombre del Cliente:</label>
+                                                <input type="text" class="form-control" id="EventoCliente" value="{{prospecto.nombre}} {{prospecto.apellido_paterno}} {{prospecto.apellido_materno}}" readonly>
+                                            </div>
+                                        </div>
                                         <div class="col-lg-6">
                                             <div class="mb-4">
                                                 <label for="EventoTelefono" class="col-form-label">Telefono del Cliente:</label>
@@ -932,6 +938,28 @@
             $("#total_restante").attr("value",  parseInt($("#total_retoma").val()) - parseInt($("#valor_retoma").val()));
         }
     }
+
+    function actualizar_modelo_retoma2()
+    {
+    checkboxes = document.getElementsByName('retoma_vehiculo');
+        for(var i=0, n=checkboxes.length;i<n;i++) {
+            if(checkboxes[i].checked){
+                modelo = checkboxes[i].value;
+            }
+          }
+    console.log("modelito")
+    console.log(modelo)
+    {% for carro in marcas_interes.marcas %}
+    vehiculo = "{{carro.marca}} {{carro.modelo}}"
+    if(vehiculo == modelo.value){
+        $("#total_retoma").attr("value", "{{carro.precio}}");
+        var precio = "{{carro.precio}}"
+    }
+    {% endfor %}
+    if($('#valor_retoma').val()) {
+        $("#total_restante").attr("value",  parseInt($("#total_retoma").val()) - parseInt($("#valor_retoma").val()));
+    }
+}
     
     function actualizar_modelo_acciones(modelo)
         {
@@ -1935,12 +1963,18 @@
 
     function SelectChanged() {
         var temp = $("#MarcasInteres").val();
-        $('#Marcas').empty();
         $.each(temp, function (ind, elem) {
-
-            var item = '<div id="toolbar" id="Coleccion" name="Coleccion"><input hidden type="text" id="Marca'+ind+'" name="Marca'+ind+'" value="'+elem+'"><input id="NumLineaPrograma' + ind + '" name="NumLineaPrograma' + ind + '" value="0" hidden type="number" /><button type="button" id="add' + ind + '" class="btn btn-primary btn-sm" onclick="add(' + ind + ');"><i class="material-icons r">add</i> Modelo de Vehiculo</button></div><table id="table' + ind + '" data-toggle="table" data-detail-view="true" data-detail-formatter="detailFormatter"><thead><tr class="tr-class-1"><th class="form-label fw-semibold" colspan="3">Marca ' + elem + '</th></tr><tr class="tr-class-2"><div class="col-lg-3 col-md-3"><th class="form-label fw-semibold" data-field="Modelo">Modelo Vehículo</th></div><div class="col-lg-3 col-md-3"><th class="form-label fw-semibold" data-field="Color">Color Vehículo</th></div><div class="col-lg-3 col-md-3"><th class="form-label fw-semibold" data-field="Código">Código Vehículo</th></div><div class="col-lg-3 col-md-3"><th class="form-label fw-semibold" data-field="Precio">Precio Vehículo</th></div></tr></thead><tbody></tbody></table><hr id="Division" />';
-            $("#Marcas").append(item);
-
+            marcas = $("[name='Coleccion'] input").get()
+            marcas_array = []
+            for (marca in marcas){
+                marcas_array.push(marcas[marca].value)
+            }
+            console.log($("[name='Coleccion']").get().length)
+            indice = $("[name='Coleccion']").get().length
+            if (!(marcas_array.includes(elem))){
+                var item = '<div id="Coleccion" name="Coleccion"><input hidden type="text" id="Marca'+indice+'" name="Marca'+indice+'" value="'+elem+'"><input id="NumLineaPrograma' + indice + '" name="NumLineaPrograma' + indice + '" value="0" hidden type="number" /><button type="button" id="add' + indice + '" class="btn btn-primary btn-sm" onclick="add(' + indice + ');"><i class="material-icons r">add</i> Modelo de Vehiculo</button></div><table id="table' + indice + '" data-toggle="table" data-detail-view="true" data-detail-formatter="detailFormatter"><thead><tr class="tr-class-1"><th class="form-label fw-semibold" colspan="3">Marca ' + elem + '</th></tr><tr class="tr-class-2"><div class="col-lg-3 col-md-3"><th class="form-label fw-semibold" data-field="Modelo">Modelo Vehículo</th></div><div class="col-lg-3 col-md-3"><th class="form-label fw-semibold" data-field="Color">Color Vehículo</th></div><div class="col-lg-3 col-md-3"><th class="form-label fw-semibold" data-field="Código">Código Vehículo</th></div><div class="col-lg-3 col-md-3"><th class="form-label fw-semibold" data-field="Precio">Precio Vehículo</th></div></tr></thead><tbody></tbody></table><hr id="Division" />';
+                $("#Marcas").append(item);
+            }
         });
         $("#NumMarcas").val(temp.length);
     }

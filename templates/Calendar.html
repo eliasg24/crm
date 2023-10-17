@@ -65,44 +65,49 @@
 <body class="bg-light">
     {% include 'nav.html' %}
 
-    <div class="card-body p-4">
-        <form>
-            <div class="row">
-                <div class="col-lg-3 col-md-3">
-                    <div class="mb-4">
-                        <label for="exampleInputPassword1" class="form-label fw-semibold">Eventos hoy</label>
-                        <input type="int" class="form-control" id="evento_hoy" style="background-color: white;" placeholder="" readonly value="{% if general %}{{cantidad_hoy}}{% else %}{% for evento in eventos_hoy %}{% if evento.asesor == adviser.pk %}{{evento.cantidad}}{% endif %}{% endfor %}{% endif %}">
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3">
-                    <div class="mb-4">
-                        <label for="exampleInputPassword1" class="form-label fw-semibold">Leads sin eventos</label>
-                        <input type="int" class="form-control" id="exampleInputtext" style="background-color: white;" placeholder="" readonly value="0">
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3">
-                    <div class="mb-4">
-                        <label for="exampleInputPassword1" class="form-label fw-semibold">Eventos vencidos</label>
-                        <input type="int" class="form-control" id="exampleInputtext" style="background-color: white;" placeholder="" readonly value="0">
-                    </div>
-                </div>
-                <div class="col-lg-3 col-md-3">
-                    <div class="mb-4">
-                        <label for="exampleInputPassword1" class="form-label fw-semibold">Eventos pendientes</label>
-                        <input type="int" class="form-control" id="evento_pendiente" style="background-color: white;" placeholder="" readonly value="{% if general %}{{cantidad_pendientes}}{% else %}{% for evento in eventos_pendientes %}{% if evento.asesor == adviser.pk %}{{evento.cantidad}}{% endif %}{% endfor %}{% endif %}">
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
-    
-    <div class="container py-5" id="page-container">
+    <div id="page-container" style="width: 90vw; margin: 0 auto;">
         <div class="row">
-            <h3 style="float: center; margin-left: 300px;">{{asesor_actual.nombre}}</h3>
-            <div class="col-md-9">
+            <h3 style="float: center; margin-left: 570px;">{{asesor_actual.nombre}}</h3>
+            <div id="div1" class="col-md-2 card-body p-4" style="float: left">
+                <form>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-4">
+                                <label for="exampleInputPassword1" class="form-label fw-semibold">Eventos hoy</label>
+                                <input type="int" class="form-control" id="evento_hoy" style="background-color: white;" placeholder="" readonly value="{% if general %}{{cantidad_hoy}}{% else %}{% for evento in eventos_hoy %}{% if evento.asesor == adviser.pk %}{{evento.cantidad}}{% endif %}{% endfor %}{% endif %}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-4">
+                                <label for="exampleInputPassword1" class="form-label fw-semibold">Leads sin eventos</label>
+                                <input type="int" class="form-control" id="exampleInputtext" style="background-color: white;" placeholder="" readonly value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-4">
+                                <label for="exampleInputPassword1" class="form-label fw-semibold">Eventos vencidos</label>
+                                <input type="int" class="form-control" id="exampleInputtext" style="background-color: white;" placeholder="" readonly value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="mb-4">
+                                <label for="exampleInputPassword1" class="form-label fw-semibold">Eventos pendientes</label>
+                                <input type="int" class="form-control" id="evento_pendiente" style="background-color: white;" placeholder="" readonly value="{% if general %}{{cantidad_pendientes}}{% else %}{% for evento in eventos_pendientes %}{% if evento.asesor == adviser.pk %}{{evento.cantidad}}{% endif %}{% endfor %}{% endif %}">
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div id="div2" class="col-md-7">
                 <div id="calendar"></div>
             </div>
-            <div class="col-md-3">
+            <div id="div3" class="col-md-3">
                 {% if mostrar_evento %}
                 <div class="cardt rounded-0 shadow">
                     <div class="card-header bg-gradient bg-primary text-light">
@@ -189,118 +194,118 @@
             </div>
         </div>
     </div>
-    <!-- Event Details Modal -->
-    <div class="modal fade" tabindex="-1" data-bs-backdrop="static" id="event-details-modal">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content rounded-0">
-                <div class="modal-header rounded-0">
-                    <h5 class="modal-title">Detalles de evento</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body rounded-0">
-                    <div class="container-fluid">
-                        <dl>
-                            <dt class="text-muted">Nombre</dt>
-                            <dd id="title" class="fw-bold fs-4"></dd>
-                            <dt class="text-muted">Cliente</dt>
-                            <dd id="cliente" class=""></dd>
-                            <dt class="text-muted">Telefono</dt>
-                            <dd id="telefono" class=""></dd>
-                            <dt class="text-muted">Estado</dt>
-                            <dd id="estado" class=""></dd>
-                            <dt class="text-muted">Observaciones</dt>
-                            <dd id="description" class=""></dd>
-                            <dt class="text-muted">Fecha y hora</dt>
-                            <dd id="start" class=""></dd>
-                            <dt class="text-muted">Tipo de evento</dt>
-                            <dd id="tipo_evento" class=""></dd>
-                            <dt class="text-muted">Tiempo de evento</dt>
-                            <dd id="tiempo_evento" class=""></dd>
-                            <dt class="text-muted">Cumplido</dt>
-                            <dd id="cumplido" class=""></dd>
-                            <dt class="text-muted" id="fechahoracumplido">Fecha y hora cumplido</dt>
-                            <dd id="fecha_hora_cumplido" class=""></dd>
-                        </dl>
+</div>
+</div>
+<!-- Event Details Modal -->
+<div class="modal fade" tabindex="-1" data-bs-backdrop="static" id="event-details-modal">
+<div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content rounded-0">
+        <div class="modal-header rounded-0">
+            <h5 class="modal-title">Detalles de evento</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body rounded-0">
+            <div class="container-fluid">
+                <dl>
+                    <dt class="text-muted">Nombre</dt>
+                    <dd id="title" class="fw-bold fs-4"></dd>
+                    <dt class="text-muted">Cliente</dt>
+                    <dd id="cliente" class=""></dd>
+                    <dt class="text-muted">Telefono</dt>
+                    <dd id="telefono" class=""></dd>
+                    <dt class="text-muted">Estado</dt>
+                    <dd id="estado" class=""></dd>
+                    <dt class="text-muted">Observaciones</dt>
+                    <dd id="description" class=""></dd>
+                    <dt class="text-muted">Fecha y hora</dt>
+                    <dd id="start" class=""></dd>
+                    <dt class="text-muted">Tipo de evento</dt>
+                    <dd id="tipo_evento" class=""></dd>
+                    <dt class="text-muted">Tiempo de evento</dt>
+                    <dd id="tiempo_evento" class=""></dd>
+                    <dt class="text-muted">Cumplido</dt>
+                    <dd id="cumplido" class=""></dd>
+                    <dt class="text-muted" id="fechahoracumplido">Fecha y hora cumplido</dt>
+                    <dd id="fecha_hora_cumplido" class=""></dd>
+                </dl>
+            </div>
+        </div>
+        <div class="modal-footer rounded-0">
+            <div class="text-end">
+                <button type="button" class="btn btn-warning btn-sm rounded-0" data-id="" onclick="ir_detalle()">Detalle</button>
+                <button type="button" class="btn btn-success btn-sm rounded-0" id="btn_cumplir_evento" onclick="cumplir_evento()">Cumplido</button>
+                <button type="button" class="btn btn-primary btn-sm rounded-0" id="btn_editar_evento" data-toggle="modal" data-target="#ModalEvento" onclick="editar_evento()">Editar</button>
+                <button type="button" class="btn btn-danger btn-sm rounded-0" id="btn_eliminar_evento" onclick="eliminar_evento()">Eliminar</button>
+                <button type="button" class="btn btn-secondary btn-sm rounded-0" data-bs-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+        <div class="modal fade bd-example-modal-lg" id="ModalEvento" tabindex="-1" role="dialog" aria-labelledby="exampleModalPreviewLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5>Crear Evento</h5>
+                        <button class="close" data-dismiss="modal">&times;</button>
                     </div>
-                </div>
-                <div class="modal-footer rounded-0">
-                    <div class="text-end">
-                        <button type="button" class="btn btn-warning btn-sm rounded-0" data-id="" onclick="ir_detalle()">Detalle</button>
-                        <button type="button" class="btn btn-success btn-sm rounded-0" id="btn_cumplir_evento" onclick="cumplir_evento()">Cumplido</button>
-                        <button type="button" class="btn btn-primary btn-sm rounded-0" id="btn_editar_evento" data-toggle="modal" data-target="#ModalEvento" onclick="editar_evento()">Editar</button>
-                        <button type="button" class="btn btn-danger btn-sm rounded-0" id="btn_eliminar_evento" onclick="eliminar_evento()">Eliminar</button>
-                        <button type="button" class="btn btn-secondary btn-sm rounded-0" data-bs-dismiss="modal">Cerrar</button>
-                    </div>
-                </div>
-                <div class="modal fade bd-example-modal-lg" id="ModalEvento" tabindex="-1" role="dialog" aria-labelledby="exampleModalPreviewLabel" aria-hidden="true">
-                    <div class="modal-dialog modal-lg" role="document">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5>Crear Evento</h5>
-                                <button class="close" data-dismiss="modal">&times;</button>
-                            </div>
-                            <div class="modal-body small">
-                                <div class="form-row">
-                                    <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="EventoNombre" class="col-form-label">Nombre evento:</label>
-                                            <input type="text" class="form-control" id="EventoNombre">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="EventoTipo" class="col-form-label">Tipo evento:</label>
-                                            <select class="form-control" id="EventoTipo" name="EventoTipo"><option selected="selected" value="0">-- Tipo de evento --</option>
-                                                <option value="Testdrive">Testdrive</option>
-                                                <option value="Peritaje">Peritaje</option>
-                                                <option value="Whatsapp">Whatsapp</option>
-                                            </select>
-                                        </div>
-                                    </div>                   
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="EventoCliente" class="col-form-label">Cliente:</label>
-                                            <input type="text" class="form-control" id="EventoCliente">
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="EventoObservaciones" class="col-form-label">Observaciones:</label>
-                                            <input type="text" class="form-control" id="EventoObservaciones">
-                                        </div>
-                                    </div>         
-                                </div>
-                                <div class="form-row">
-                                    <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="EventoAsesor" class="col-form-label">Asesor:</label>
-                                            <select class="form-control" id="EventoAsesor" name="EventoAsesor"><option selected="selected" value="0">-- Asesor --</option>
-                                                {% for asesor in asesores %}
-                                                <option value="{{asesor.nombre}}">{{asesor.nombre}}</option>
-                                                {% endfor %}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <div class="col-lg-6">
-                                        <div class="mb-4">
-                                            <label for="EventoFechaHora" class="col-form-label">Fecha y hora:</label>
-                                            <input type="datetime-local" class="form-control" id="EventoFechaHora">
-                                        </div>
-                                    </div>         
-                                    
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary" onclick="subir_formulario_evento();">Confirmar</button>
+                    <div class="modal-body small">
+                        <div class="form-row">
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="EventoNombre" class="col-form-label">Nombre evento:</label>
+                                    <input type="text" class="form-control" id="EventoNombre">
                                 </div>
                             </div>
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="EventoTipo" class="col-form-label">Tipo evento:</label>
+                                    <select class="form-control" id="EventoTipo" name="EventoTipo"><option selected="selected" value="0">-- Tipo de evento --</option>
+                                        <option value="Testdrive">Testdrive</option>
+                                        <option value="Peritaje">Peritaje</option>
+                                        <option value="Whatsapp">Whatsapp</option>
+                                    </select>
+                                </div>
+                            </div>                   
+                        </div>
+                        <div class="form-row">
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="EventoCliente" class="col-form-label">Cliente:</label>
+                                    <input type="text" class="form-control" id="EventoCliente">
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="EventoObservaciones" class="col-form-label">Observaciones:</label>
+                                    <input type="text" class="form-control" id="EventoObservaciones">
+                                </div>
+                            </div>         
+                        </div>
+                        <div class="form-row">
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="EventoAsesor" class="col-form-label">Asesor:</label>
+                                    <select class="form-control" id="EventoAsesor" name="EventoAsesor"><option selected="selected" value="0">-- Asesor --</option>
+                                        {% for asesor in asesores %}
+                                        <option value="{{asesor.nombre}}">{{asesor.nombre}}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="mb-4">
+                                    <label for="EventoFechaHora" class="col-form-label">Fecha y hora:</label>
+                                    <input type="datetime-local" class="form-control" id="EventoFechaHora">
+                                </div>
+                            </div>         
+                            
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="subir_formulario_evento();">Confirmar</button>
                         </div>
                     </div>
-                    
                 </div>
             </div>
+            
         </div>
     </div>
     

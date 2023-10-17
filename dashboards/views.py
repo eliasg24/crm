@@ -66,6 +66,61 @@ class CapturaView(LoginRequiredMixin, TemplateView):
             asesor_actual = {}
             asesor_actual["pk"] = 0
 
+        leads = Lead.objects.all()
+
+        """for lead in leads:
+            if lead.respuesta == "Agenda cita":
+                lead.respuesta = "Enviar información"
+            elif lead.respuesta == "Enviar catalogo / Informacion":
+                lead.respuesta = "Enviar información"
+            elif lead.respuesta == "Hacer una nueva llamada_ Cita // fecha":
+                lead.respuesta = "Llamada de seguimiento"
+            elif lead.respuesta == "Interes mediano plazo / Fecha":
+                lead.respuesta = "Interés mediano plazo / Fecha"
+            elif lead.respuesta == "Interes largo plazo / Fecha":
+                lead.respuesta = "Interés a largo plazo / Fecha"
+            elif lead.respuesta == "En otra ciudad posibilidad traslado":
+                lead.respuesta = "Llamada de seguimiento"
+            elif lead.respuesta == "Vh excede su presupuesto":
+                lead.respuesta = "En el momento no hay vh de interés"
+            elif lead.respuesta == "No contesta / volver a llamar":
+                lead.respuesta = "No contesta / Volver a llamar"
+            elif lead.respuesta == "No esta el vh de su interes":
+                lead.respuesta = "En el momento no hay vh de interés"
+            elif lead.respuesta == "Llamada realizada" or lead.respuesta == "Llamada Realizada":
+                lead.respuesta = "No contesta / Volver a llamar"
+            elif lead.respuesta == "Mensaje enviado a whatsapp":
+                lead.respuesta = "Esperando respuesta WhatsApp"
+            elif lead.respuesta == "Se deja mensaje de voz":
+                lead.respuesta = "Esperando respuesta WhatsApp"
+            elif lead.respuesta == "Interes mediano plazo / Fecha":
+                lead.respuesta = "Interés mediano plazo / Fecha"
+            elif lead.respuesta == "Interes largo plazo / Fecha":
+                lead.respuesta = "Interés a largo plazo / Fecha"
+            elif lead.respuesta == "Esta interesado en otro vehiculo":
+                lead.respuesta = "En el momento no hay vh de interés"
+            elif lead.respuesta == "En el momento no hay vh de interes":
+                lead.respuesta = "En el momento no hay vh de interés"
+            elif lead.respuesta == "Espera de aprobacion de Credito":
+                lead.respuesta = "En estudio de crédito"
+            elif lead.respuesta == "Aceptacion de documentos":
+                lead.respuesta = "En estudio de crédito"
+            elif lead.respuesta == "Test drive":
+                lead.respuesta = "Negociación"
+            elif lead.respuesta == "Negociacion":
+                lead.respuesta = "Negociación"
+            elif lead.respuesta == "Marca/ Modelo no se encuntra disponible":
+                lead.respuesta = "En el momento no hay vh de interés"
+            elif lead.respuesta == "Alistamiento mecanico basico":
+                lead.respuesta = "Alistamiento"
+            elif lead.respuesta == "Entrega del vehiculo":
+                lead.respuesta = "Verificación"
+            elif lead.respuesta == "Entregado":
+                lead.respuesta = "Entrega finalizada"
+            elif lead.respuesta == "Separación":
+                lead.respuesta = "Separación"
+            lead.save()"""
+
         calendario_general = True
         origenes_lead = Catalogo.objects.filter(clasificacion="Origen Lead")
         for grupo in self.request.user.groups.all():
@@ -79,12 +134,12 @@ class CapturaView(LoginRequiredMixin, TemplateView):
         marcas = CatalogoModelo.objects.all().values("marca").distinct()
 
         now = datetime.now()
-
+        
         cantidad_morato = Lead.objects.filter(sala="Morato", fecha_apertura__month=now.month).count()
+
         cantidad_127 = Lead.objects.filter(sala="127", fecha_apertura__month=now.month).count()
 
         today = datetime.now()
-
 
         context["asesor_actual"] = asesor_actual
         context["calendario_general"] = calendario_general

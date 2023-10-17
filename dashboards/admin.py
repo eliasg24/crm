@@ -68,7 +68,8 @@ class ProspectoAdmin(admin.ModelAdmin):
 class LeadAdmin(admin.ModelAdmin):
     # Admin del Lead
     list_display = ('id', 'prospecto', "nombre_asesor")
-    list_filter = ('origen_lead',)
+    list_filter = ("etapa", "respuesta", 'origen_lead',)
+    search_fields= ["id",]
 
 @admin.register(Historial)
 class HistorialAdmin(admin.ModelAdmin):

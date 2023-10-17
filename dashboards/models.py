@@ -239,7 +239,7 @@ class Lead(models.Model):
 
     prospecto = models.ForeignKey("Prospecto", on_delete=models.CASCADE)
     origen_lead = models.CharField(max_length=50)
-    marcas_interes = models.CharField(max_length=3000, null=True)
+    marcas_interes = models.CharField(max_length=3000, null=True, blank=True)
     forma_pago = models.CharField(max_length=50, null=True, blank=True)
     sala = models.CharField(max_length=50, null=True)
     etapa = models.CharField(max_length=100, null=True)

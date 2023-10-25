@@ -116,7 +116,7 @@ class CapturaView(LoginRequiredMixin, TemplateView):
                     grupo = Group.objects.get(name=group)
                     user.groups.add(grupo)"""
 
-        for lead in leads:
+        """for lead in leads:
             lead.tiempo_cambio_de_etapa = None
             print(lead)
             if lead.etapa == "Contacto Asesor" and lead.respuesta == "No contesta / volver a llamar":
@@ -210,7 +210,7 @@ class CapturaView(LoginRequiredMixin, TemplateView):
             try:
                 lead.save()
             except:
-                lead.delete()
+                lead.delete()"""
 
         calendario_general = True
         origenes_lead = Catalogo.objects.filter(clasificacion="Origen Lead")

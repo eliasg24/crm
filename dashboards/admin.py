@@ -21,7 +21,7 @@ class UserAdmin(BaseUserAdmin):
         return ' '.join(groups)
     group.short_description = 'Groups'
 
-    list_display = ('username', "group")
+    list_display = ('id', 'username', "group", "is_active")
     list_filter = ('groups',)
 
 admin.site.unregister(User)
@@ -67,8 +67,8 @@ class ProspectoAdmin(admin.ModelAdmin):
 @admin.register(Lead)
 class LeadAdmin(admin.ModelAdmin):
     # Admin del Lead
-    list_display = ('id', 'prospecto', "nombre_asesor")
-    list_filter = ("etapa", "respuesta", 'origen_lead',)
+    list_display = ('id', 'prospecto', "nombre_asesor", "activo", "fecha_apertura")
+    list_filter = (("nombre_asesor", admin.EmptyFieldListFilter), "activo", "etapa", "respuesta", 'origen_lead', "tiempo_cambio_de_etapa")
     search_fields= ["id",]
 
 @admin.register(Historial)

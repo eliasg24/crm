@@ -48,12 +48,12 @@
         
 
 
-<form action="/Leads/WriteDataToExcel" method="post"><input name="__RequestVerificationToken" type="hidden" value="-TXw1Sm9EDQ9Fj4mDz8T0eL2-9_WTwsBvIBAQJxt0e9vFQAh6miYMkjMMBPVURSleZDlE-1daEOhBRL6lCXfK58RbnCwIZVK84Tt-uqd00w1" />    <!--container principal-->
+<input name="__RequestVerificationToken" type="hidden" value="-TXw1Sm9EDQ9Fj4mDz8T0eL2-9_WTwsBvIBAQJxt0e9vFQAh6miYMkjMMBPVURSleZDlE-1daEOhBRL6lCXfK58RbnCwIZVK84Tt-uqd00w1" />    <!--container principal-->
     <div class="main-panel">
         <div class="main-content">
             <div class="content-wrapper">
                 <div class="container-fluid">
-                    <form>
+                    
                         <h4 style="margin:20px;">Venta - Reportes</h4>
                         <div style="box-shadow:none;">
                             <div class="card-header border-0" style="background-color: #eee;">
@@ -238,12 +238,11 @@
                                                data-toolbar="#toolbar"
                                                data-toggle="table"
                                                data-height="1200"
-                                               data-pagination="true"
-                                               data-side-pagination="server"
                                                data-sort-class="table-active"
                                                data-sortable="true"
                                                data-show-columns="true"
-                                               data-show-columns-search="true">
+                                               data-show-columns-search="true"
+                                               data-lengthMenu= "[10, 25, 50, 75, 100]">
                                             <thead class="table100-head table100 ver3 blue">
                                                 <tr>
                                                         <th data-field="Borrar" data-sortable="false">
@@ -257,15 +256,10 @@
                                                         Cliente
                                                     </th>
                                                     <th data-field="Telefono" data-sortable="true">Telefono</th>
-                                                    <th data-field="Correo" data-visible="false">Correo</th>
                                                     <th data-field="Anfitrion" data-sortable="true">
                                                         Anfitrión
                                                     </th>
-                                                    <th data-field="TipoDocumento" data-visible="false">Tipo Documento</th>
-                                                    <th data-field="Documento" data-visible="false">Documento</th>
                                                     <th data-field="Campania">Campaña</th>
-                                                    <th data-field="Marcas" data-visible="false">Marcas</th>
-                                                    <th data-field="Modelos" data-visible="false">Modelos</th>
                                                     <th data-field="Respuesta" data-sortable="true">
                                                         Respuesta
                                                     </th>
@@ -288,13 +282,8 @@
                                                         <td>{{lead.fecha_apertura.date|date:'Y-m-d'}}</td>
                                                         <td>{{lead.prospecto.nombre}} {{lead.prospecto.apellido_paterno}} {{lead.prospecto.apellido_materno}}</td>
                                                         <td>{{lead.prospecto.celular}}</td>
-                                                        <td>{{lead.prospecto.correo}}</td>
                                                         <td>{{lead.nombre_anfitrion}}</td>
-                                                        <td>{{lead.tipo_documento}}</td>
-                                                        <td>{{lead.documento}}</td>
                                                         <td>{{lead.campania}}</td>
-                                                        <td>{% for mostrado in mostrado_marcas %}{% if mostrado.lead == lead.pk %}{{mostrado.marca}}{% endif %}{% endfor %}</td>
-                                                        <td>{% for mostrado in mostrado_marcas %}{% if mostrado.lead == lead.pk %}{{mostrado.modelo}}{% endif %}{% endfor %}</td>
                                                         <td>{{lead.respuesta}}</td>
                                                         <td>{{lead.estado}}</td>
                                                         <td>{{lead.origen_lead}}</td>
@@ -305,6 +294,38 @@
                                                 {% endfor %}
                                             </tbody>
                                         </table>
+                                    <div class="float-right pagination" style="margin-top: 20px; vertical-align: top;
+                                    display: inline-block;">
+                                        <ul class="pagination">
+                                            <li class="page-item page-pre disabled">
+                                                <a class="page-link" aria-label="previous page" href="javascript:void(0)">‹</a>
+                                            </li>
+                                            <li id="page{{pages_capturados}}" class="page-item active">
+                                                <button class="page-link" aria-label="to page 1" onclick="cambiar_pagina({{pages_capturados}});">{{pages_capturados}}</button>
+                                            </li>
+                                            <li id="page{{pages_capturados|add:1}}" class="page-item">
+                                                <button class="page-link" aria-label="" onclick="cambiar_pagina({{pages_capturados|add:1}});">{{pages_capturados|add:1}}</button>
+                                            </li>
+                                            <li id="page{{pages_capturados|add:2}}" class="page-item">
+                                                <button class="page-link" aria-label="" onclick="cambiar_pagina({{pages_capturados|add:2}});">{{pages_capturados|add:2}}</button>
+                                            </li>
+                                            <li id="page{{pages_capturados|add:3}}" class="page-item">
+                                                <button class="page-link" aria-label="" onclick="cambiar_pagina({{pages_capturados|add:3}});">{{pages_capturados|add:3}}</button>
+                                            </li>
+                                            <li id="page{{pages_capturados|add:4}}" class="page-item">
+                                                <button class="page-link" aria-label="" onclick="cambiar_pagina({{pages_capturados|add:4}});">{{pages_capturados|add:4}}</button>
+                                            </li>
+                                            <li class="page-item disabled">
+                                                <button class="page-link" aria-label="">...</button>
+                                            </li>
+                                            <li id="page{{pages_capturados|add:9}}" class="page-item">
+                                                <button class="page-link" aria-label="" onclick="cambiar_pagina({{pages_capturados|add:9}});">{{pages_capturados|add:9}}</button>
+                                            </li>
+                                            <li class="page-item page-next">
+                                                <button class="page-link" aria-label="" onclick="cambiar_pagina(2);">›</button>
+                                            </li>
+                                        </ul>
+                                    </div>
                                 </div>
 
                                 <div class="widget-list" id="SF">
@@ -395,11 +416,12 @@
                                                data-toggle="table"
                                                data-height="800"
                                                data-pagination="true"
-                                               data-side-pagination="server"
                                                data-sort-class="table-active"
                                                data-sortable="true"
                                                data-show-columns="true"
-                                               data-show-columns-search="true">
+                                               data-show-columns-search="true"
+                                               data-paging= 'true'
+                                               data-lengthMenu= "[10, 25, 50, 75, 100]">
                                             <thead class="table100-head table100 ver3 success">
                                                 <tr>
                                                     <th data-field="Detalle" data-sortable="false">
@@ -546,11 +568,12 @@
                                                data-toggle="table"
                                                data-height="800"
                                                data-pagination="true"
-                                               data-side-pagination="server"
                                                data-sort-class="table-active"
                                                data-sortable="true"
                                                data-show-columns="true"
-                                               data-show-columns-search="true">
+                                               data-show-columns-search="true"
+                                               data-paging= 'true'
+                                               data-lengthMenu= "[10, 25, 50, 75, 100]">
                                             <thead class="table100-head table100 ver3 morado">
                                                 <tr>
                                                     <th data-field="Detalle" data-sortable="false">Detalle</th>
@@ -793,11 +816,13 @@
                                                data-toggle="table"
                                                data-height="800"
                                                data-pagination="true"
-                                               data-side-pagination="server"
                                                data-sort-class="table-active"
                                                data-sortable="true"
                                                data-show-columns="true"
-                                               data-show-columns-search="true">
+                                               data-show-columns-search="true"
+                                               data-paging= 'true'
+                                               data-lengthMenu= "[10, 25, 50, 75, 100]">
+                                               
                                             <thead class="table100-head table100 ver3 bg-warning">
                                                 <tr>
                                                     <th data-field="Detalle">Detalle</th>
@@ -902,11 +927,12 @@
                                                data-toggle="table"
                                                data-height="800"
                                                data-pagination="true"
-                                               data-side-pagination="server"
                                                data-sort-class="table-active"
                                                data-sortable="true"
                                                data-show-columns="true"
-                                               data-show-columns-search="true">
+                                               data-show-columns-search="true"
+                                               data-paging= 'true'
+                                               data-lengthMenu= "[10, 25, 50, 75, 100]">
                                             <thead class="table100-head table100 ver3 aqua">
                                                 <tr>
                                                     <th data-field="Detalle">Detalle</th>
@@ -936,15 +962,17 @@
                                                 {% endfor %}
                                             </tbody>
                                         </table>
+                                        
                                 </div>
                             </div>
                         </div>
-                    </form>
                 </div>
             </div>
         </div>
     </div>
-</form><script>
+    <script src="https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js"></script>
+
+<script>
     $(document).ready(function () {
         $('#dtBasicExample').DataTable({
             "scrollY": "300px",
@@ -1037,12 +1065,63 @@
     });
 </script>
 <script>
+
+    function cambiar_pagina(pagina){
+
+        data = {}
+        data.pages_agendados = pagina
+        
+        console.log("hola")
+        console.log(data)
+        $.ajax({
+            type: "post", // "post" "get" "delete" "put"
+            data: data, // PREFERIBLEMENTE JSON
+            cache: false,
+            headers: {
+              "X-CSRFToken": Cookies.get("csrftoken")
+            },
+            success: function (response) {
+                console.log("response")
+                console.log(response)
+                $('#tableCapturados > tbody').empty();
+                $(response).each(function (index, lead) {
+                    var fecha_apertura = lead.fecha_apertura.substr(0,4)+"-"+lead.fecha_apertura.substr(5,2)+"-"+lead.fecha_apertura.substr(8,2);
+                    var fila='<tr><td><button id="DeleteProspecto" type="button" class="btn btn-danger" onclick="BorrarLead(54928)"><i class="large material-icons r"> cancel</i></button></td>';
+                    fila+=`<td><a href="{% url 'dashboards:detallenuevo' 1234 %}">Detalle</td>`.replace(/1234/, lead.id);
+                    fila+=`<td>` + fecha_apertura + `</td>`;
+                    fila+=`<td>` + lead.prospecto__nombre + `</td>`;
+                    fila+=`<td>` + lead.prospecto__celular + `</td>`;
+                    fila+=`<td>` + lead.nombre_anfitrion + `</td>`;
+                    fila+=`<td>` + lead.campania + `</td>`;
+                    fila+=`<td>` + lead.respuesta + `</td>`;
+                    fila+=`<td>` + lead.estado + `</td>`;
+                    fila+=`<td>` + lead.origen_lead + `</td>`;
+                    fila+=`<td>` + lead.sala + `</td>`;
+                    fila+=`<td>` + lead.nombre_asesor + `</td>`;
+                    if (lead.estado_llamada_verificacion){
+                        fila+=`<td>SI</td>`;
+                    }
+                    else {
+                        fila+=`<td>NO</td>`;
+                    }
+                    page = "#page" + pagina
+                    $('#tableCapturados > tbody').append(fila);
+                    for (var i=0; i < 11; i++){
+                        remove_page = "#page" + i
+                        $(remove_page).removeClass("active");
+
+                    }
+                    $(page).addClass("active");
+                })
+              }
+          })
+    }
+
+
+
+
     var baseUrl = window.location.protocol + "//" + window.location.hostname + (window.location.port ? ':' + window.location.port : '');
-    var $tableCap = $('#tableCapturados')
-    var $tableSF = $('#tableSF')
-    var $tableDes = $('#tableDesistidas')
-    var $tableCon = $('#tableConcretadas')
-    var $tableHis = $('#tableHistorial')
+    
 
 
     $("#Capturados_OrigenIngreso").change(function () {

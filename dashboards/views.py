@@ -67,8 +67,96 @@ class CapturaView(LoginRequiredMixin, TemplateView):
             asesor_actual["pk"] = 0
 
         leads = Lead.objects.all()
+        prospectos = Prospecto.objects.all()
 
-        """for lead in leads:
+        """for row in sheet.iter_rows(min_row=2):
+            username = row[6].value
+            activo = row[8].value
+            if activo == "Inactivo" or activo == "AsesorInactivo":
+                activo = False
+            else:
+                activo = True
+            if username != "null" and username != "NULL" and username != "":
+                user = User.objects.get(username=username)
+                user.is_active = activo
+                user.save()"""
+
+        """for row in sheet.iter_rows(min_row=2):
+            name = row[1].value
+            group = row[3].value
+            correo = row[5].value
+            username = row[6].value
+            password = row[7].value
+            if username != "null" and username != "NULL" and username != "":
+                user = User.objects.create(username=username, 
+                                        password=password,
+                                        first_name=name,
+                                        email=correo)
+                if_grupo = True
+                if group == "AdminCompras":
+                    group = "Admin Compras"
+                elif group == "Anfitrion":
+                    group = "Anfitrión"
+                elif group == "Anfitrion/PefiladoraInactivo":
+                    group = "Anfitrión"
+                elif group == "AnfitrionInactivo":
+                    group = "Anfitrión"
+                elif group == "AsesorInactivo":
+                    group = "Asesor"
+                elif group == "CompradorInactivo":
+                    group = "Comprador"
+                elif group == "Jefe de Sala":
+                    group = "Jefe de sala"
+                elif group == "PeritoInactivo":
+                    group = "Perito"
+                elif group == "Lider CRM":
+                    if_grupo = False
+                
+                if if_grupo:
+                    grupo = Group.objects.get(name=group)
+                    user.groups.add(grupo)"""
+
+        for lead in leads:
+            lead.tiempo_cambio_de_etapa = None
+            print(lead)
+            if lead.etapa == "Contacto Asesor" and lead.respuesta == "No contesta / volver a llamar":
+                lead.etapa = "No contactado"
+            elif lead.etapa == "Contacto Asesor" and lead.respuesta == "Llamada realizada":
+                lead.etapa = "No contactado"
+            elif lead.etapa == "Contacto Asesor" and lead.respuesta == "Llamada Realizada":
+                lead.etapa = "No contactado"
+            elif lead.etapa == "Contacto Asesor" and lead.respuesta == "Mensaje enviado a whatsapp":
+                lead.etapa = "No contactado"
+            elif lead.etapa == "Contacto Asesor" and lead.respuesta == "Se deja mensaje de voz":
+                lead.etapa = "No contactado"
+            elif lead.etapa == "Contacto Asesor":
+                lead.etapa = "Interaccion"
+            elif lead.etapa == "Contacto asesor" and lead.respuesta == "No contesta / volver a llamar":
+                lead.etapa = "No contactado"
+            elif lead.etapa == "Contacto asesor" and lead.respuesta == "Llamada realizada":
+                lead.etapa = "No contactado"
+            elif lead.etapa == "Contacto asesor" and lead.respuesta == "Llamada Realizada":
+                lead.etapa = "No contactado"
+            elif lead.etapa == "Contacto asesor" and lead.respuesta == "Mensaje enviado a whatsapp":
+                lead.etapa = "No contactado"
+            elif lead.etapa == "Contacto asesor" and lead.respuesta == "Se deja mensaje de voz":
+                lead.etapa = "No contactado"
+            elif lead.etapa == "Contacto asesor":
+                lead.etapa = "Interaccion"
+            elif lead.etapa == "Seguimiento" and lead.respuesta == "Espera de aprobacion de Credito":
+                lead.etapa = "Oportunidad"
+            elif lead.etapa == "Seguimiento" and lead.respuesta == "Aceptacion de documentos":
+                lead.etapa = "Oportunidad"
+            elif lead.etapa == "Seguimiento" and lead.respuesta == "Test drive":
+                lead.etapa = "Oportunidad"
+            elif lead.etapa == "Seguimiento" and lead.respuesta == "Negociacion":
+                lead.etapa = "Oportunidad"
+            elif lead.etapa == "Seguimiento":
+                lead.etapa = "Interaccion"
+            elif lead.etapa == "Venta y Entrega":
+                lead.etapa = "Pedido"
+            elif lead.etapa == "Venta y entrega":
+                lead.etapa = "Pedido"
             if lead.respuesta == "Agenda cita":
                 lead.respuesta = "Enviar información"
             elif lead.respuesta == "Enviar catalogo / Informacion":
@@ -119,7 +207,10 @@ class CapturaView(LoginRequiredMixin, TemplateView):
                 lead.respuesta = "Entrega finalizada"
             elif lead.respuesta == "Separación":
                 lead.respuesta = "Separación"
-            lead.save()"""
+            try:
+                lead.save()
+            except:
+                lead.delete()
 
         calendario_general = True
         origenes_lead = Catalogo.objects.filter(clasificacion="Origen Lead")
@@ -451,20 +542,30 @@ class DetalleClienteNuevoView(LoginRequiredMixin, DetailView):
             sala = None
         asesores = Asesor.objects.filter(sala=sala)
 
-        dias_totales = (datetime.now() - lead.fecha_hora_asignacion_asesor.replace(tzinfo=None)).days
+        if lead.fecha_hora_asignacion_asesor:
 
-        tiempo_diferencia = int((datetime.now() - lead.fecha_hora_asignacion_asesor.replace(tzinfo=None)).total_seconds() / 60)
-        
-        print(datetime.now())
-        print(lead.fecha_hora_asignacion_asesor.replace(tzinfo=None))
-        print((datetime.now() - lead.fecha_hora_asignacion_asesor.replace(tzinfo=None)).total_seconds())
-        print(tiempo_diferencia)
-        print(lead.tiempo_primer_contacto)
+            dias_totales = (datetime.now() - lead.fecha_hora_asignacion_asesor).days
 
-        if lead.tiempo_primer_contacto or tiempo_diferencia:
-            functions.verificar_primer_contacto(lead, prospecto, tiempo_diferencia)
+            tiempo_diferencia = int((datetime.now() - lead.fecha_hora_asignacion_asesor).total_seconds() / 60)
         
-        marcas_interes = eval(lead.marcas_interes)
+            print(datetime.now())
+            print(lead.fecha_hora_asignacion_asesor)
+            print((datetime.now() - lead.fecha_hora_asignacion_asesor).total_seconds())
+            print(tiempo_diferencia)
+            print(lead.tiempo_primer_contacto)
+
+            if lead.tiempo_primer_contacto or tiempo_diferencia:
+                functions.verificar_primer_contacto(lead, prospecto, tiempo_diferencia)
+
+        else:
+            dias_totales = 0
+            tiempo_diferencia = 0
+
+        if lead.marcas_interes:
+        
+            marcas_interes = eval(lead.marcas_interes)
+        else:
+            marcas_interes = ""
         marcas = CatalogoModelo.objects.all().values("marca").distinct()
         etapas = CatalogoRespuestasByEtapa.objects.values("etapa").distinct()
         respuestas = CatalogoRespuestasByEtapa.objects.filter(etapa=lead.etapa).values("respuesta").distinct()
@@ -1076,16 +1177,17 @@ class ReportesView(LoginRequiredMixin, TemplateView):
         context["estados_separados_y_facturados"] = estados_separados_y_facturados
         context["estados_desistidos"] = estados_desistidos
         context["historial"] = historial
-        context["leads_agendados"] = leads_agendados
-        context["leads_concretados"] = leads_concretados
-        context["leads_desistidos"] = leads_desistidos
-        context["leads_facturados"] = leads_facturados
-        context["leads_separados"] = leads_separados
-        context["leads_separados_y_facturados"] = leads_separados_y_facturados
+        context["leads_agendados"] = leads_agendados[0:15]
+        context["leads_concretados"] = leads_concretados[0:100]
+        context["leads_desistidos"] = leads_desistidos[0:100]
+        context["leads_facturados"] = leads_facturados[0:100]
+        context["leads_separados"] = leads_separados[0:100]
+        context["leads_separados_y_facturados"] = leads_separados_y_facturados[0:100]
         context["mostrado_marcas"] = mostrado_marcas
         context["mostrado_marcas_agendados"] = mostrado_marcas_agendados
         context["mostrado_marcas_separados_y_facturados"] = mostrado_marcas_separados_y_facturados
         context["mostrado_marcas_desistidos"] = mostrado_marcas_desistidos
+        context["pages_capturados"] = 1
         context["origenes_lead_agendados"] = origenes_lead_agendados
         context["respuestas_agendados"] = respuestas_agendados
         context["respuestas_desistidos"] = respuestas_desistidos
@@ -1098,6 +1200,18 @@ class ReportesView(LoginRequiredMixin, TemplateView):
         context["verificados"] = verificados
 
         return context
+    
+    def post(self, request):
+        if request.POST.get("pages_agendados"):
+            page_min = (int(request.POST.get("pages_agendados")) - 1) * 15
+            page_max = int(request.POST.get("pages_agendados")) * 15
+            leads_agendados = Lead.objects.filter(nombre_asesor__isnull=False, activo=True).order_by("-id")[page_min:page_max]
+            leads_agendados = list(leads_agendados.values("pk", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
+            print(page_min)
+            print(page_max)
+            print(leads_agendados)
+            return JsonResponse(leads_agendados, safe=False)
+
     
 class TiemposView(LoginRequiredMixin, TemplateView):
     # Vista de Tiempos

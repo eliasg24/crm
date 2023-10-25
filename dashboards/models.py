@@ -348,7 +348,7 @@ class Prospecto(models.Model):
     nombre = models.CharField(max_length=50)
     apellido_paterno = models.CharField(max_length=50)
     apellido_materno = models.CharField(max_length=50)
-    celular = models.CharField(max_length=15)
+    celular = models.CharField(max_length=15, null=True, blank=True)
     correo = models.CharField(max_length=100)
     fecha_nacimiento = models.DateField(null=True, blank=True)
     ciudad = models.CharField(max_length=50, null=True, blank=True)
@@ -365,7 +365,7 @@ class Prospecto(models.Model):
     nombre_asesor = models.CharField(max_length=100, null=True)
     correo_asesor = models.CharField(max_length=100, null=True, blank=True)
     anfitrion = models.CharField(max_length=50)
-    fecha_hora_asignacion_asesor = models.DateTimeField(null=True)
+    fecha_hora_asignacion_asesor = models.DateTimeField(null=True, blank=True)
     cliente = models.BooleanField(null=True)
     politica_privacidad = models.BooleanField()
 

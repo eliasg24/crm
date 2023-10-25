@@ -20,7 +20,8 @@ def verificar_primer_contacto(lead, prospecto, tiempo_diferencia):
 
 
 def verificar_primer_contacto_todos_los_leads(leads):
-    for lead in leads:
+    
+    """for lead in leads:
         try:
             tiempo_diferencia = int((datetime.now() - lead.fecha_hora_asignacion_asesor.replace(tzinfo=None)).total_seconds() / 60)
             
@@ -41,7 +42,8 @@ def verificar_primer_contacto_todos_los_leads(leads):
                         lead.save()
                         prospecto.save()
         except:
-            pass
+            pass"""
+    pass
 
 
 def separar_nombre(nombre):

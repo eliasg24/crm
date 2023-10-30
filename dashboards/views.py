@@ -1858,7 +1858,7 @@ class ReportesView(LoginRequiredMixin, TemplateView):
     
     def post(self, request):
 
-        leads = Lead.objects.all()
+        leads = Lead.objects.filter(activo=True, nombre_asesor__isnull=False).order_by("-id")
 
         origen_lead_capturados = request.POST.get("origen_lead_capturados")
         respuesta_capturados = request.POST.get("respuesta_capturados")
@@ -1941,7 +1941,7 @@ class ReportesView(LoginRequiredMixin, TemplateView):
             page_min = (int(request.POST.get("pages_capturados")) - 1) * 15
             page_max = int(request.POST.get("pages_capturados")) * 15
             leads_agendados = Lead.objects.filter(nombre_asesor__isnull=False, activo=True).order_by("-id")[page_min:page_max]
-            leads_agendados = list(leads_agendados.values("pk", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
+            leads_agendados = list(leads_agendados.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             print(page_min)
             print(page_max)
             print(leads_agendados)
@@ -1951,7 +1951,7 @@ class ReportesView(LoginRequiredMixin, TemplateView):
             page_max = int(request.POST.get("pages_sep_y_fac")) * 15
             separados_y_facturados = VehiculosInteresLead.objects.filter(Q(separado=True) | Q(facturado=True)).values_list("lead").distinct()
             leads_separados_y_facturados = Lead.objects.filter(pk__in=separados_y_facturados, activo=True).order_by("-id")[page_min:page_max]
-            leads_separados_y_facturados = list(leads_separados_y_facturados.values("pk", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
+            leads_separados_y_facturados = list(leads_separados_y_facturados.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             print(page_min)
             print(page_max)
             return JsonResponse(leads_separados_y_facturados, safe=False)
@@ -1959,7 +1959,7 @@ class ReportesView(LoginRequiredMixin, TemplateView):
             page_min = (int(request.POST.get("pages_desistidos")) - 1) * 15
             page_max = int(request.POST.get("pages_desistidos")) * 15
             leads_desistidos = Lead.objects.filter(etapa="Desistido", activo=True).order_by("-id")[page_min:page_max]
-            leads_desistidos = list(leads_desistidos.values("pk", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
+            leads_desistidos = list(leads_desistidos.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             print(page_min)
             print(page_max)
             return JsonResponse(leads_desistidos, safe=False)
@@ -2012,7 +2012,7 @@ class ReportesView(LoginRequiredMixin, TemplateView):
 
             leads_capturados = leads_capturados[page_min:page_max]
             
-            leads_capturados = list(leads_capturados.values("pk", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
+            leads_capturados = list(leads_capturados.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             leads_capturados.append(cantidad_filtrado_pag)
             print(page_min)
             print(page_max)
@@ -2067,7 +2067,7 @@ class ReportesView(LoginRequiredMixin, TemplateView):
 
             leads_desistidos = leads_desistidos[page_min:page_max]
             
-            leads_desistidos = list(leads_desistidos.values("pk", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
+            leads_desistidos = list(leads_desistidos.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             leads_desistidos.append(cantidad_filtrado_pag)
             print(page_min)
             print(page_max)

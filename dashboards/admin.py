@@ -38,7 +38,7 @@ class PermissionAdmin(admin.ModelAdmin):
 class AsesorAdmin(admin.ModelAdmin):
     # Admin del Asesor
     list_display = ('id', 'nombre', 'sala', "habilitado")
-    list_filter = ('sala',)
+    list_filter = ('sala', "habilitado")
 
 @admin.register(CatalogoRespuestasByEtapa)
 class CatalogoRespuestasByEtapaAdmin(admin.ModelAdmin):
@@ -63,6 +63,7 @@ class ProspectoAdmin(admin.ModelAdmin):
     # Admin del Prospecto
     list_display = ('id', 'nombre')
     list_filter = ('nombre',)
+    search_fields= ["id",]
 
 @admin.register(Lead)
 class LeadAdmin(admin.ModelAdmin):

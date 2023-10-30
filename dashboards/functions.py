@@ -3,7 +3,7 @@ from datetime import date, datetime, timedelta
 import re
 
 def verificar_primer_contacto(lead, prospecto, tiempo_diferencia):
-    if lead.tiempo_primer_contacto:
+    """if lead.tiempo_primer_contacto:
         if lead.tiempo_primer_contacto >= 60:
             print("aver esto otro")
             lead.nombre_asesor = None
@@ -16,7 +16,7 @@ def verificar_primer_contacto(lead, prospecto, tiempo_diferencia):
             lead.nombre_asesor = None
             prospecto.nombre_asesor = None
             lead.save()
-            prospecto.save()
+            prospecto.save()"""
 
 
 def verificar_primer_contacto_todos_los_leads(leads):

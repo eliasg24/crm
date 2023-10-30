@@ -70,7 +70,7 @@
                                                                 <div class="col-lg-3 col-md-3">
                                                                     <div class="mb-4">
                                                                         <label for="exampleInputPassword1" class="form-label fw-semibold">Fecha y hora de la captura</label>
-                                                                        <input type="date" class="form-control" id="exampleInputtext" style="background-color: white;" placeholder="" readonly value="{{prospecto.fecha_captura.date|date:'Y-m-d'}}">
+                                                                        <input type="date" class="form-control" id="exampleInputtext" style="background-color: white;" placeholder="" readonly value="{{lead.fecha_apertura.date|date:'Y-m-d'}}">
                                                                     </div>
                                                                 </div>
                                                                 <div class="col-lg-3 col-md-3">
@@ -789,7 +789,7 @@
                                         <h6 class="mb-0">Sala</h6>
                                     </div>
                                     <div class="col-sm-8 text-default">
-                                        {% if sala %}{{sala}}{% endif %}
+                                        {% if lead.sala %}{{lead.sala}}{% endif %}
                                     </div>
                                 </div>
                                 <hr>

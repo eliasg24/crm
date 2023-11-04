@@ -66,8 +66,23 @@ class CapturaView(LoginRequiredMixin, TemplateView):
             asesor_actual = {}
             asesor_actual["pk"] = 0
 
+        now = datetime.now()
+        
         leads = Lead.objects.all()
         prospectos = Prospecto.objects.all()
+
+        """for lead in leads:
+            lead.tiempo_cambio_de_etapa = None
+            print(lead)
+            lead.save()"""
+
+        """for lead in leads:
+            fecha_apertura = lead.fecha_apertura
+            fecha = datetime(fecha_apertura.year, fecha_apertura.month, fecha_apertura.day)
+            lead.fecha_apertura = fecha
+            print(lead)
+            lead.save()"""
+            
 
         """for row in sheet.iter_rows(min_row=2):
             username = row[6].value
@@ -229,11 +244,10 @@ class CapturaView(LoginRequiredMixin, TemplateView):
 
         marcas = CatalogoModelo.objects.all().values("marca").distinct()
 
-        now = datetime.now()
         
-        cantidad_morato = Lead.objects.filter(sala="Morato", fecha_apertura__month=now.month).count()
+        cantidad_morato = Lead.objects.filter(sala="Morato", fecha_apertura__month=now.month, fecha_apertura__year=now.year).count()
 
-        cantidad_127 = Lead.objects.filter(sala="127", fecha_apertura__month=now.month).count()
+        cantidad_127 = Lead.objects.filter(sala="127", fecha_apertura__month=now.month, fecha_apertura__year=now.year).count()
 
         today = datetime.now()
 
@@ -964,8 +978,6 @@ class OperativoAnfitrionView(LoginRequiredMixin, TemplateView):
         else:
             cantidad_primer_contacto_pag = leads_primer_contacto.count() // 15 + 1
 
-
-
         context["anfitriones_agendados"] = anfitriones_agendados
         context["asesores_agendados"] = asesores_agendados
         context["asesor_actual"] = asesor_actual
@@ -1026,8 +1038,6 @@ class OperativoAnfitrionView(LoginRequiredMixin, TemplateView):
                 hasta_verificacion = datetime.strptime(hasta_verificacion, '%Y-%m-%d').date()
                 leads = leads.filter(fecha_apertura__lte=hasta_verificacion)
 
-
-        
         anfitrion_agendados = request.POST.get("anfitrion_agendados")
         verificado_agendados = request.POST.get("verificado_agendados")
         tipo_solicitud_agendados = request.POST.get("tipo_solicitud_agendados")
@@ -1035,6 +1045,7 @@ class OperativoAnfitrionView(LoginRequiredMixin, TemplateView):
         sala_agendados = request.POST.get("sala_agendados")
         desde_agendados = request.POST.get("desde_agendados")
         hasta_agendados = request.POST.get("hasta_agendados")
+        search_agendados = request.POST.get("search_agendados")
 
         try:
             json.loads(request.POST.get("if_filtrar_agendados"))
@@ -1062,12 +1073,14 @@ class OperativoAnfitrionView(LoginRequiredMixin, TemplateView):
             if hasta_agendados:
                 hasta_agendados = datetime.strptime(hasta_agendados, '%Y-%m-%d').date()
                 leads = leads.filter(fecha_apertura__lte=hasta_agendados)
+            if search_agendados:
+                leads = leads.filter(prospecto__nombre__icontains=search_agendados) | leads.filter(prospecto__celular__icontains=search_agendados)
 
         if request.POST.get("pages_primer_contacto"):
             page_min = (int(request.POST.get("pages_primer_contacto")) - 1) * 15
             page_max = int(request.POST.get("pages_primer_contacto")) * 15
-            leads_primer_contacto = Lead.objects.filter(nombre_asesor__isnull=True, activo=True).order_by("-id")[page_min:page_max]
-            leads_primer_contacto = list(leads_primer_contacto.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
+            leads_primer_contacto = leads.filter(nombre_asesor__isnull=True, activo=True).order_by("-id")[page_min:page_max]
+            leads_primer_contacto = list(leads_primer_contacto.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__apellido_paterno",  "prospecto__apellido_materno", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             return JsonResponse(leads_primer_contacto, safe=False)
         if request.POST.get("pages_verificacion"):
             page_min = (int(request.POST.get("pages_verificacion")) - 1) * 15
@@ -1078,8 +1091,8 @@ class OperativoAnfitrionView(LoginRequiredMixin, TemplateView):
         if request.POST.get("pages_agendados"):
             page_min = (int(request.POST.get("pages_agendados")) - 1) * 15
             page_max = int(request.POST.get("pages_agendados")) * 15
-            leads_agendados = Lead.objects.filter(nombre_asesor__isnull=False, activo=True).exclude(etapa="Desistido").order_by("-id")[page_min:page_max]
-            leads_agendados = list(leads_agendados.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion", "tipo_solicitud_verificacion", "prospecto__nombre_asesor"))
+            leads_agendados = leads.filter(nombre_asesor__isnull=False, activo=True).exclude(etapa="Desistido").order_by("-id")[page_min:page_max]
+            leads_agendados = list(leads_agendados.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__apellido_paterno",  "prospecto__apellido_materno", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion", "tipo_solicitud_verificacion", "prospecto__nombre_asesor"))
             return JsonResponse(leads_agendados, safe=False)
         if request.POST.get("filtrar_primer_contacto"):
             page_min = 0
@@ -1105,7 +1118,7 @@ class OperativoAnfitrionView(LoginRequiredMixin, TemplateView):
 
             leads_primer_contacto = leads_primer_contacto[page_min:page_max]
             
-            leads_primer_contacto = list(leads_primer_contacto.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
+            leads_primer_contacto = list(leads_primer_contacto.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__apellido_paterno",  "prospecto__apellido_materno", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             leads_primer_contacto.append(cantidad_filtrado_pag)
             print(page_min)
             print(page_max)
@@ -1151,6 +1164,7 @@ class OperativoAnfitrionView(LoginRequiredMixin, TemplateView):
             sala_agendados = request.POST.get("sala_agendados")
             desde_agendados = request.POST.get("desde_agendados")
             hasta_agendados = request.POST.get("hasta_agendados")
+            search_agendados = request.POST.get("search_agendados")
 
             leads_agendados = Lead.objects.filter(nombre_asesor__isnull=False, activo=True).exclude(etapa="Desistido").order_by("-id")
             
@@ -1173,6 +1187,8 @@ class OperativoAnfitrionView(LoginRequiredMixin, TemplateView):
             if hasta_agendados:
                 hasta_agendados = datetime.strptime(hasta_agendados, '%Y-%m-%d').date()
                 leads_agendados = leads_agendados.filter(fecha_apertura__lte=hasta_agendados)
+            if search_agendados:
+                leads_agendados = leads_agendados.filter(prospecto__nombre__icontains=search_agendados) | leads_agendados.filter(prospecto__celular__icontains=search_agendados)
 
             print(leads_agendados)
             
@@ -1183,7 +1199,7 @@ class OperativoAnfitrionView(LoginRequiredMixin, TemplateView):
 
             leads_agendados = leads_agendados[page_min:page_max]
             
-            leads_agendados = list(leads_agendados.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
+            leads_agendados = list(leads_agendados.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__apellido_paterno",  "prospecto__apellido_materno", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             leads_agendados.append(cantidad_filtrado_pag)
             print(page_min)
             print(page_max)
@@ -1287,8 +1303,6 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
         else:
             cantidad_pedido_pag = leads_pedido.count() // 15 + 1
 
-
-
         context["asesor_actual"] = asesor_actual
         context["asesores_no_contactado"] = asesores_no_contactado
         context["asesores_interaccion"] = asesores_interaccion
@@ -1361,6 +1375,7 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
         modelo_no_contactado = request.POST.get("modelo_no_contactado")
         desde_no_contactado = request.POST.get("desde_no_contactado")
         hasta_no_contactado = request.POST.get("hasta_no_contactado")
+        search_no_contactado = request.POST.get("search_no_contactado")
 
         try:
             json.loads(request.POST.get("if_filtrar_no_contactado"))
@@ -1385,6 +1400,8 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
             if hasta_no_contactado:
                 hasta_no_contactado = datetime.strptime(hasta_no_contactado, '%Y-%m-%d').date()
                 leads = leads.filter(fecha_apertura__lte=hasta_no_contactado)
+            if search_no_contactado:
+                leads = leads.filter(prospecto__nombre__icontains=search_no_contactado) | leads.filter(prospecto__celular__icontains=search_no_contactado)
 
         origen_lead_interaccion = request.POST.get("origen_lead_interaccion")
         respuesta_interaccion = request.POST.get("respuesta_interaccion")
@@ -1395,6 +1412,7 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
         modelo_interaccion = request.POST.get("modelo_interaccion")
         desde_interaccion = request.POST.get("desde_interaccion")
         hasta_interaccion = request.POST.get("hasta_interaccion")
+        search_interaccion = request.POST.get("search_interaccion")
 
         try:
             json.loads(request.POST.get("if_filtrar_interaccion"))
@@ -1419,7 +1437,8 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
             if hasta_interaccion:
                 hasta_interaccion = datetime.strptime(hasta_interaccion, '%Y-%m-%d').date()
                 leads = leads.filter(fecha_apertura__lte=hasta_interaccion)
-
+            if search_interaccion:
+                leads = leads.filter(prospecto__nombre__icontains=search_interaccion) | leads.filter(prospecto__celular__icontains=search_interaccion)
 
         origen_lead_oportunidad = request.POST.get("origen_lead_oportunidad")
         respuesta_oportunidad = request.POST.get("respuesta_oportunidad")
@@ -1430,6 +1449,7 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
         modelo_oportunidad = request.POST.get("modelo_oportunidad")
         desde_oportunidad = request.POST.get("desde_oportunidad")
         hasta_oportunidad = request.POST.get("hasta_oportunidad")
+        search_oportunidad = request.POST.get("search_oportunidad")
 
         try:
             json.loads(request.POST.get("if_filtrar_oportunidad"))
@@ -1454,6 +1474,8 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
             if hasta_oportunidad:
                 hasta_oportunidad = datetime.strptime(hasta_oportunidad, '%Y-%m-%d').date()
                 leads = leads.filter(fecha_apertura__lte=hasta_oportunidad)
+            if search_oportunidad:
+                leads = leads.filter(prospecto__nombre__icontains=search_oportunidad) | leads.filter(prospecto__celular__icontains=search_oportunidad)
 
         origen_lead_pedido = request.POST.get("origen_lead_pedido")
         respuesta_pedido = request.POST.get("respuesta_pedido")
@@ -1464,6 +1486,7 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
         modelo_pedido = request.POST.get("modelo_pedido")
         desde_pedido = request.POST.get("desde_pedido")
         hasta_pedido = request.POST.get("hasta_pedido")
+        search_pedido = request.POST.get("search_pedido")
 
         try:
             json.loads(request.POST.get("if_filtrar_pedido"))
@@ -1488,6 +1511,9 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
             if hasta_pedido:
                 hasta_pedido = datetime.strptime(hasta_pedido, '%Y-%m-%d').date()
                 leads = leads.filter(fecha_apertura__lte=hasta_pedido)
+            if search_pedido:
+                leads = leads.filter(prospecto__nombre__icontains=search_pedido) | leads.filter(prospecto__celular__icontains=search_pedido)
+
 
         if request.POST.get("pages_no_contactado"):
             page_min = (int(request.POST.get("pages_no_contactado")) - 1) * 15
@@ -1496,7 +1522,7 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
                 leads_no_contactado = leads.filter(etapa="No contactado", activo=True, nombre_asesor=functions.separar_nombre(user.username)).order_by("-id")[page_min:page_max]
             else:
                 leads_no_contactado = leads.filter(etapa="No contactado", activo=True, nombre_asesor__isnull=False).order_by("-id")[page_min:page_max]
-            leads_no_contactado = list(leads_no_contactado.values("pk", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
+            leads_no_contactado = list(leads_no_contactado.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__apellido_paterno",  "prospecto__apellido_materno", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             print(page_min)
             print(page_max)
             return JsonResponse(leads_no_contactado, safe=False)
@@ -1507,7 +1533,7 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
                 leads_interaccion = leads.filter(etapa="Interaccion", activo=True, nombre_asesor=functions.separar_nombre(user.username)).order_by("-id")[page_min:page_max]
             else:
                 leads_interaccion = leads.filter(etapa="Interaccion", activo=True, nombre_asesor__isnull=False).order_by("-id")[page_min:page_max]
-            leads_interaccion = list(leads_interaccion.values("pk", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
+            leads_interaccion = list(leads_interaccion.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__apellido_paterno",  "prospecto__apellido_materno", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             print(page_min)
             print(page_max)
             return JsonResponse(leads_interaccion, safe=False)
@@ -1518,7 +1544,7 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
                 leads_oportunidad = leads.filter(etapa="Oportunidad", activo=True, nombre_asesor=functions.separar_nombre(user.username)).order_by("-id")[page_min:page_max]
             else:
                 leads_oportunidad = leads.filter(etapa="Oportunidad", activo=True, nombre_asesor__isnull=False).order_by("-id")[page_min:page_max]
-            leads_oportunidad = list(leads_oportunidad.values("pk", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
+            leads_oportunidad = list(leads_oportunidad.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__apellido_paterno",  "prospecto__apellido_materno", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             print(page_min)
             print(page_max)
             return JsonResponse(leads_oportunidad, safe=False)
@@ -1529,7 +1555,7 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
                 leads_pedido = leads.filter(etapa="Pedido", activo=True, nombre_asesor=functions.separar_nombre(user.username)).order_by("-id")[page_min:page_max]
             else:
                 leads_pedido = leads.filter(etapa="Pedido", activo=True, nombre_asesor__isnull=False).order_by("-id")[page_min:page_max]
-            leads_pedido = list(leads_pedido.values("pk", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
+            leads_pedido = list(leads_pedido.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__apellido_paterno",  "prospecto__apellido_materno", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             print(page_min)
             print(page_max)
             return JsonResponse(leads_pedido, safe=False)
@@ -1545,6 +1571,7 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
             modelo_no_contactado = request.POST.get("modelo_no_contactado")
             desde_no_contactado = request.POST.get("desde_no_contactado")
             hasta_no_contactado = request.POST.get("hasta_no_contactado")
+            search_no_contactado = request.POST.get("search_no_contactado")
 
             if calendario_general == False:
                 leads_no_contactado = Lead.objects.filter(etapa="No contactado", activo=True, nombre_asesor=functions.separar_nombre(user.username)).order_by("-id")
@@ -1567,6 +1594,8 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
             if hasta_no_contactado:
                 hasta_no_contactado = datetime.strptime(hasta_no_contactado, '%Y-%m-%d').date()
                 leads_no_contactado = leads_no_contactado.filter(fecha_apertura__lte=hasta_no_contactado)
+            if search_no_contactado:
+                leads_no_contactado = leads_no_contactado.filter(prospecto__nombre__icontains=search_no_contactado) | leads_no_contactado.filter(prospecto__celular__icontains=search_no_contactado)
 
             if (leads_no_contactado.count() % 15) == 0:
                 cantidad_filtrado_pag = leads_no_contactado.count() // 15
@@ -1576,12 +1605,13 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
 
             leads_no_contactado = leads_no_contactado[page_min:page_max]
             
-            leads_no_contactado = list(leads_no_contactado.values("pk", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
+            leads_no_contactado = list(leads_no_contactado.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__apellido_paterno",  "prospecto__apellido_materno", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             leads_no_contactado.append(cantidad_filtrado_pag)
             print(page_min)
             print(page_max)
             print(leads_no_contactado)
             return JsonResponse(leads_no_contactado, safe=False)
+        
         if request.POST.get("filtrar_interaccion"):
             page_min = 0
             page_max = 15
@@ -1594,6 +1624,7 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
             modelo_interaccion = request.POST.get("modelo_interaccion")
             desde_interaccion = request.POST.get("desde_interaccion")
             hasta_interaccion = request.POST.get("hasta_interaccion")
+            search_interaccion = request.POST.get("search_interaccion")
 
             if calendario_general == False:
                 leads_interaccion = Lead.objects.filter(etapa="Interaccion", activo=True, nombre_asesor=functions.separar_nombre(user.username)).order_by("-id")
@@ -1616,6 +1647,8 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
             if hasta_interaccion:
                 hasta_interaccion = datetime.strptime(hasta_interaccion, '%Y-%m-%d').date()
                 leads_interaccion = leads_interaccion.filter(fecha_apertura__lte=hasta_interaccion)
+            if search_interaccion:
+                leads_interaccion = leads_interaccion.filter(prospecto__nombre__icontains=search_interaccion) | leads_interaccion.filter(prospecto__celular__icontains=search_interaccion)
 
             if (leads_interaccion.count() % 15) == 0:
                 cantidad_filtrado_pag = leads_interaccion.count() // 15
@@ -1624,7 +1657,7 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
 
             leads_interaccion = leads_interaccion[page_min:page_max]
             
-            leads_interaccion = list(leads_interaccion.values("pk", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
+            leads_interaccion = list(leads_interaccion.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__apellido_paterno",  "prospecto__apellido_materno", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             leads_interaccion.append(cantidad_filtrado_pag)
             print(page_min)
             print(page_max)
@@ -1643,6 +1676,7 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
             modelo_oportunidad = request.POST.get("modelo_oportunidad")
             desde_oportunidad = request.POST.get("desde_oportunidad")
             hasta_oportunidad = request.POST.get("hasta_oportunidad")
+            search_oportunidad = request.POST.get("search_oportunidad")
 
             if calendario_general == False:
                 leads_oportunidad = Lead.objects.filter(etapa="Oportunidad", activo=True, nombre_asesor=functions.separar_nombre(user.username)).order_by("-id")
@@ -1665,6 +1699,8 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
             if hasta_oportunidad:
                 hasta_oportunidad = datetime.strptime(hasta_oportunidad, '%Y-%m-%d').date()
                 leads_oportunidad = leads_oportunidad.filter(fecha_apertura__lte=hasta_oportunidad)
+            if search_oportunidad:
+                leads_oportunidad = leads_oportunidad.filter(prospecto__nombre__icontains=search_oportunidad) | leads_oportunidad.filter(prospecto__celular__icontains=search_oportunidad)
 
             if (leads_oportunidad.count() % 15) == 0:
                 cantidad_filtrado_pag = leads_oportunidad.count() // 15
@@ -1673,13 +1709,12 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
 
             leads_oportunidad = leads_oportunidad[page_min:page_max]
             
-            leads_oportunidad = list(leads_oportunidad.values("pk", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
+            leads_oportunidad = list(leads_oportunidad.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__apellido_paterno",  "prospecto__apellido_materno", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             leads_oportunidad.append(cantidad_filtrado_pag)
             print(page_min)
             print(page_max)
             print(leads_oportunidad)
             return JsonResponse(leads_oportunidad, safe=False)
-        
         
         if request.POST.get("filtrar_pedido"):
             page_min = 0
@@ -1693,6 +1728,7 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
             modelo_pedido = request.POST.get("modelo_pedido")
             desde_pedido = request.POST.get("desde_pedido")
             hasta_pedido = request.POST.get("hasta_pedido")
+            search_pedido = request.POST.get("search_pedido")
 
             if calendario_general == False:
                 leads_pedido = Lead.objects.filter(etapa="Pedido", activo=True, nombre_asesor=functions.separar_nombre(user.username)).order_by("-id")
@@ -1715,6 +1751,8 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
             if hasta_pedido:
                 hasta_pedido = datetime.strptime(hasta_pedido, '%Y-%m-%d').date()
                 leads_pedido = leads_pedido.filter(fecha_apertura__lte=hasta_pedido)
+            if search_pedido:
+                leads_pedido = leads_pedido.filter(prospecto__nombre__icontains=search_pedido) | leads_pedido.filter(prospecto__celular__icontains=search_pedido)
 
             if (leads_pedido.count() % 15) == 0:
                 cantidad_filtrado_pag = leads_pedido.count() // 15
@@ -1723,7 +1761,7 @@ class OperativoAsesorView(LoginRequiredMixin, TemplateView):
 
             leads_pedido = leads_pedido[page_min:page_max]
             
-            leads_pedido = list(leads_pedido.values("pk", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
+            leads_pedido = list(leads_pedido.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__apellido_paterno",  "prospecto__apellido_materno", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             leads_pedido.append(cantidad_filtrado_pag)
             print(page_min)
             print(page_max)
@@ -1871,6 +1909,7 @@ class ReportesView(LoginRequiredMixin, TemplateView):
         modelo_capturados = request.POST.get("modelo_capturados")
         desde_capturados = request.POST.get("desde_capturados")
         hasta_capturados = request.POST.get("hasta_capturados")
+        search_capturados = request.POST.get("search_capturados")
 
         try:
             json.loads(request.POST.get("if_filtrar_capturados"))
@@ -1903,7 +1942,8 @@ class ReportesView(LoginRequiredMixin, TemplateView):
             if hasta_capturados:
                 hasta_capturados = datetime.strptime(hasta_capturados, '%Y-%m-%d').date()
                 leads = leads.filter(fecha_apertura__lte=hasta_capturados)
-
+            if search_capturados:
+                leads = leads.filter(prospecto__nombre__icontains=search_capturados) | leads.filter(prospecto__celular__icontains=search_capturados)
 
         respuesta_desistidos = request.POST.get("respuesta_desistidos")
         estado_desistidos = request.POST.get("estado_desistidos")
@@ -1913,6 +1953,7 @@ class ReportesView(LoginRequiredMixin, TemplateView):
         modelo_desistidos = request.POST.get("modelo_desistidos")
         desde_desistidos = request.POST.get("desde_desistidos")
         hasta_desistidos = request.POST.get("hasta_desistidos")
+        search_desistidos = request.POST.get("search_desistidos")
 
         try:
             json.loads(request.POST.get("if_filtrar_desistidos"))
@@ -1936,11 +1977,13 @@ class ReportesView(LoginRequiredMixin, TemplateView):
             if hasta_desistidos:
                 hasta_desistidos = datetime.strptime(hasta_desistidos, '%Y-%m-%d').date()
                 leads = leads.filter(fecha_apertura__lte=hasta_desistidos)
+            if search_desistidos:
+                leads = leads.filter(prospecto__nombre__icontains=search_desistidos) | leads.filter(prospecto__celular__icontains=search_desistidos)
 
         if request.POST.get("pages_capturados"):
             page_min = (int(request.POST.get("pages_capturados")) - 1) * 15
             page_max = int(request.POST.get("pages_capturados")) * 15
-            leads_agendados = Lead.objects.filter(nombre_asesor__isnull=False, activo=True).order_by("-id")[page_min:page_max]
+            leads_agendados = leads.filter(nombre_asesor__isnull=False, activo=True).order_by("-id")[page_min:page_max]
             leads_agendados = list(leads_agendados.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             print(page_min)
             print(page_max)
@@ -1950,7 +1993,7 @@ class ReportesView(LoginRequiredMixin, TemplateView):
             page_min = (int(request.POST.get("pages_sep_y_fac")) - 1) * 15
             page_max = int(request.POST.get("pages_sep_y_fac")) * 15
             separados_y_facturados = VehiculosInteresLead.objects.filter(Q(separado=True) | Q(facturado=True)).values_list("lead").distinct()
-            leads_separados_y_facturados = Lead.objects.filter(pk__in=separados_y_facturados, activo=True).order_by("-id")[page_min:page_max]
+            leads_separados_y_facturados = leads.filter(pk__in=separados_y_facturados, activo=True).order_by("-id")[page_min:page_max]
             leads_separados_y_facturados = list(leads_separados_y_facturados.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             print(page_min)
             print(page_max)
@@ -1958,7 +2001,7 @@ class ReportesView(LoginRequiredMixin, TemplateView):
         if request.POST.get("pages_desistidos"):
             page_min = (int(request.POST.get("pages_desistidos")) - 1) * 15
             page_max = int(request.POST.get("pages_desistidos")) * 15
-            leads_desistidos = Lead.objects.filter(etapa="Desistido", activo=True).order_by("-id")[page_min:page_max]
+            leads_desistidos = leads.filter(etapa="Desistido", activo=True).order_by("-id")[page_min:page_max]
             leads_desistidos = list(leads_desistidos.values("id", "fecha_apertura", "prospecto__nombre", "prospecto__celular", "prospecto__correo", "nombre_anfitrion", "tipo_documento", "documento", "campania", "respuesta", "estado", "origen_lead", "sala", "nombre_asesor", "estado_llamada_verificacion"))
             print(page_min)
             print(page_max)
@@ -1978,6 +2021,7 @@ class ReportesView(LoginRequiredMixin, TemplateView):
             modelo_capturados = request.POST.get("modelo_capturados")
             desde_capturados = request.POST.get("desde_capturados")
             hasta_capturados = request.POST.get("hasta_capturados")
+            search_capturados = request.POST.get("search_capturados")
 
             leads_capturados = Lead.objects.filter(nombre_asesor__isnull=False, activo=True).order_by("-id")
             
@@ -2004,6 +2048,8 @@ class ReportesView(LoginRequiredMixin, TemplateView):
             if hasta_capturados:
                 hasta_capturados = datetime.strptime(hasta_capturados, '%Y-%m-%d').date()
                 leads_capturados = leads_capturados.filter(fecha_apertura__lte=hasta_capturados)
+            if search_capturados:
+                leads_capturados = leads_capturados.filter(prospecto__nombre__icontains=search_capturados) | leads_capturados.filter(prospecto__celular__icontains=search_capturados)
 
             if (leads_capturados.count() % 15) == 0:
                 cantidad_filtrado_pag = leads_capturados.count() // 15
@@ -2033,6 +2079,7 @@ class ReportesView(LoginRequiredMixin, TemplateView):
             modelo_desistidos = request.POST.get("modelo_desistidos")
             desde_desistidos = request.POST.get("desde_desistidos")
             hasta_desistidos = request.POST.get("hasta_desistidos")
+            search_desistidos = request.POST.get("search_desistidos")
 
             leads_desistidos = Lead.objects.filter(etapa="Desistido", activo=True).order_by("-id")
             
@@ -2059,6 +2106,9 @@ class ReportesView(LoginRequiredMixin, TemplateView):
             if hasta_desistidos:
                 hasta_desistidos = datetime.strptime(hasta_desistidos, '%Y-%m-%d').date()
                 leads_desistidos = leads_desistidos.filter(fecha_apertura__lte=hasta_desistidos)
+            if search_desistidos:
+                leads_desistidos = leads_desistidos.filter(prospecto__nombre__icontains=search_desistidos) | leads_desistidos.filter(prospecto__celular__icontains=search_desistidos)
+
 
             if (leads_desistidos.count() % 15) == 0:
                 cantidad_filtrado_pag = leads_desistidos.count() // 15

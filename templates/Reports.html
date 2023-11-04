@@ -223,7 +223,7 @@
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <div class="input-group mb-3">
-                                                    <input type="text" class="form-control" placeholder="Search" id="Capturados_Cadena" name="Capturados_Cadena">
+                                                    <input type="text" class="form-control" placeholder="Search" id="search_capturados" name="search_capturados">
                                                     <div class="input-group-append">
                                                         <button class="btn btn-outline-secondary" type="button" onclick="FiltrarCapturados();"><i class="tiny material-icons">search</i></button>
                                                     </div>
@@ -582,7 +582,7 @@
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <div class="input-group mb-3">
-                                                    <input type="text" class="form-control" placeholder="Search" id="Desistida_Cadena" name="Desistida_Cadena">
+                                                    <input type="text" class="form-control" placeholder="Search" id="search_desistidos" name="search_desistidos">
                                                     <div class="input-group-append">
                                                         <button class="btn btn-outline-secondary" type="button" onclick="FiltrarDesistidas();"><i class="tiny material-icons">search</i></button>
                                                     </div>
@@ -1144,6 +1144,7 @@
         var modelo_capturados = $("#modelo_capturados").val();
         var desde_capturados = $("#desde_capturados").val();
         var hasta_capturados = $("#hasta_capturados").val();
+        var search_capturados = $("#search_capturados").val();
 
         data = {}
         data.if_filtrar_capturados = if_filtrar_capturados
@@ -1159,6 +1160,7 @@
         data.modelo_capturados = modelo_capturados
         data.desde_capturados = desde_capturados
         data.hasta_capturados = hasta_capturados
+        data.search_capturados = search_capturados
 
         console.log(data)
 
@@ -1448,6 +1450,7 @@
         var modelo_capturados = $("#modelo_capturados").val();
         var desde_capturados = $("#desde_capturados").val();
         var hasta_capturados = $("#hasta_capturados").val();
+        var search_capturados = $("#search_capturados").val();
 
         data = {}
         data.if_filtrar_capturados = if_filtrar_capturados
@@ -1463,6 +1466,7 @@
         data.modelo_capturados = modelo_capturados
         data.desde_capturados = desde_capturados
         data.hasta_capturados = hasta_capturados
+        data.search_capturados = search_capturados
 
         $.ajax({
             type: "post", // "post" "get" "delete" "put"
@@ -1527,6 +1531,7 @@
         var modelo_capturados = $("#modelo_capturados").val();
         var desde_capturados = $("#desde_capturados").val();
         var hasta_capturados = $("#hasta_capturados").val();
+        var search_capturados = $("#search_capturados").val();
 
         data = {}
         data.if_filtrar_capturados = if_filtrar_capturados
@@ -1542,6 +1547,7 @@
         data.modelo_capturados = modelo_capturados
         data.desde_capturados = desde_capturados
         data.hasta_capturados = hasta_capturados
+        data.search_capturados = search_capturados
 
         $.ajax({
             type: "post", // "post" "get" "delete" "put"
@@ -1671,6 +1677,7 @@
         var modelo_capturados = $("#modelo_capturados").val();
         var desde_capturados = $("#desde_capturados").val();
         var hasta_capturados = $("#hasta_capturados").val();
+        var search_capturados = $("#search_capturados").val();
 
         data = {}
         data.if_filtrar_capturados = if_filtrar_capturados
@@ -1686,6 +1693,7 @@
         data.modelo_capturados = modelo_capturados
         data.desde_capturados = desde_capturados
         data.hasta_capturados = hasta_capturados
+        data.search_capturados = search_capturados
 
         data = {}
         data.pages_capturados = pagina
@@ -2208,6 +2216,7 @@
         var modelo_desistidos = $("#modelo_desistidos").val();
         var desde_desistidos = $("#desde_desistidos").val();
         var hasta_desistidos = $("#hasta_desistidos").val();
+        var search_desistidos = $("#search_desistidos").val();
 
         data = {}
         data.if_filtrar_desistidos = if_filtrar_desistidos
@@ -2220,6 +2229,7 @@
         data.modelo_desistidos = modelo_desistidos
         data.desde_desistidos = desde_desistidos
         data.hasta_desistidos = hasta_desistidos
+        data.search_desistidos = search_desistidos
 
         console.log(data)
 
@@ -2501,6 +2511,7 @@
         var modelo_desistidos = $("#modelo_desistidos").val();
         var desde_desistidos = $("#desde_desistidos").val();
         var hasta_desistidos = $("#hasta_desistidos").val();
+        var search_desistidos = $("#search_desistidos").val();
 
         data = {}
         data.if_filtrar_desistidos = if_filtrar_desistidos
@@ -2516,6 +2527,7 @@
         data.modelo_desistidos = modelo_desistidos
         data.desde_desistidos = desde_desistidos
         data.hasta_desistidos = hasta_desistidos
+        data.search_desistidos = search_desistidos
 
         $.ajax({
             type: "post", // "post" "get" "delete" "put"
@@ -2572,6 +2584,7 @@
         var modelo_desistidos = $("#modelo_desistidos").val();
         var desde_desistidos = $("#desde_desistidos").val();
         var hasta_desistidos = $("#hasta_desistidos").val();
+        var search_desistidos = $("#search_desistidos").val();
 
         data = {}
         data.if_filtrar_desistidos = if_filtrar_desistidos
@@ -2587,6 +2600,7 @@
         data.modelo_desistidos = modelo_desistidos
         data.desde_desistidos = desde_desistidos
         data.hasta_desistidos = hasta_desistidos
+        data.search_desistidos = search_desistidos
 
         $.ajax({
             type: "post", // "post" "get" "delete" "put"
@@ -2708,6 +2722,7 @@
         var modelo_desistidos = $("#modelo_desistidos").val();
         var desde_desistidos = $("#desde_desistidos").val();
         var hasta_desistidos = $("#hasta_desistidos").val();
+        var search_desistidos = $("#search_desistidos").val();
 
         data = {}
         data.if_filtrar_desistidos = if_filtrar_desistidos
@@ -2723,6 +2738,7 @@
         data.modelo_desistidos = modelo_desistidos
         data.desde_desistidos = desde_desistidos
         data.hasta_desistidos = hasta_desistidos
+        data.search_desistidos = search_desistidos
 
         data = {}
         data.pages_desistidos = pagina

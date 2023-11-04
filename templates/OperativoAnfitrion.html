@@ -124,10 +124,8 @@
                                                {% endif %}
                                                data-toggle="table"
                                                data-height="800"
-                                               data-search="true"
                                                data-sort-class="table-active"
                                                data-show-columns="true"
-                                               data-show-columns-search="true"
                                                data-filter-control="true"
                                                data-export-data-type="all"
                                                data-query-params="queryParams">
@@ -222,11 +220,9 @@
                                                {% endif %}
                                                data-toggle="table"
                                                data-height="800"
-                                               data-search="true"
                                                data-sort-class="table-active"
                                                data-sortable="true"
                                                data-show-columns="true"
-                                               data-show-columns-search="true"
                                                data-filter-control="true"
                                                data-export-data-type="all"
                                                data-query-params="exportVerificados"
@@ -388,7 +384,7 @@
                                             </div>
                                             <div class="form-group col-md-3">
                                                 <div class="input-group mb-3">
-                                                    <input type="text" class="form-control" placeholder="Search" id="H_Cadena" name="H_Cadena">
+                                                    <input type="text" class="form-control" placeholder="Search" id="search_agendados" name="search_agendados">
                                                     <div class="input-group-append">
                                                         <button class="btn btn-outline-secondary" type="button" onclick="FiltrarHistorial();"><i class="tiny material-icons">search</i></button>
                                                     </div>
@@ -1712,6 +1708,7 @@
         var sala_agendados = $("#sala_agendados").val();
         var desde_agendados = $("#desde_agendados").val();
         var hasta_agendados = $("#hasta_agendados").val();
+        var search_agendados = $("#search_agendados").val();
 
         data = {}
         data.if_filtrar_agendados = if_filtrar_agendados
@@ -1723,6 +1720,7 @@
         data.sala_agendados = sala_agendados
         data.desde_agendados = desde_agendados
         data.hasta_agendados = hasta_agendados
+        data.search_agendados = search_agendados
 
         console.log(data)
 
@@ -2000,6 +1998,10 @@
         var sala_agendados = $("#sala_agendados").val();
         var desde_agendados = $("#desde_agendados").val();
         var hasta_agendados = $("#hasta_agendados").val();
+        var search_agendados = $("#search_agendados").val();
+
+        console.log("search_agendados")
+        console.log(search_agendados)
 
         data = {}
         data.if_filtrar_agendados = if_filtrar_agendados
@@ -2011,6 +2013,7 @@
         data.sala_agendados = sala_agendados
         data.desde_agendados = desde_agendados
         data.hasta_agendados = hasta_agendados
+        data.search_agendados = search_agendados
 
         $.ajax({
             type: "post", // "post" "get" "delete" "put"
@@ -2063,6 +2066,7 @@
         var sala_agendados = $("#sala_agendados").val();
         var desde_agendados = $("#desde_agendados").val();
         var hasta_agendados = $("#hasta_agendados").val();
+        var search_agendados = $("#search_agendados").val();
 
         data = {}
         data.if_filtrar_agendados = if_filtrar_agendados
@@ -2074,6 +2078,7 @@
         data.sala_agendados = sala_agendados
         data.desde_agendados = desde_agendados
         data.hasta_agendados = hasta_agendados
+        data.search_agendados = search_agendados
 
         $.ajax({
             type: "post", // "post" "get" "delete" "put"
@@ -2192,6 +2197,7 @@
         var sala_agendados = $("#sala_agendados").val();
         var desde_agendados = $("#desde_agendados").val();
         var hasta_agendados = $("#hasta_agendados").val();
+        var search_agendados = $("#search_agendados").val();
 
         data = {}
         data.if_filtrar_agendados = if_filtrar_agendados
@@ -2203,6 +2209,7 @@
         data.sala_agendados = sala_agendados
         data.desde_agendados = desde_agendados
         data.hasta_agendados = hasta_agendados
+        data.search_agendados = search_agendados
 
         console.log("hola")
         console.log(data)

@@ -199,9 +199,9 @@
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <div class="input-group mb-3">
-                                                    <input type="text" class="form-control" placeholder="Search" id="ContAsesor_Cadena" name="ContAsesor_Cadena">
+                                                    <input type="text" class="form-control" placeholder="Search" id="search_no_contactado" name="search_no_contactado">
                                                     <div class="input-group-append">
-                                                        <button class="btn btn-outline-secondary" type="button" onclick="FiltrarContAsesor();"><i class="tiny material-icons">search</i></button>
+                                                        <button class="btn btn-outline-secondary" type="button" onclick=""><i class="tiny material-icons">search</i></button>
                                                     </div>
                                                 </div>
                                             </div>
@@ -375,7 +375,7 @@
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <div class="input-group mb-3">
-                                                    <input type="text" class="form-control" placeholder="Search" id="ContAsesor_Cadena" name="ContAsesor_Cadena">
+                                                    <input type="text" class="form-control" placeholder="Search" id="search_interaccion" name="search_interaccion">
                                                     <div class="input-group-append">
                                                         <button class="btn btn-outline-secondary" type="button" onclick="FiltrarContAsesor();"><i class="tiny material-icons">search</i></button>
                                                     </div>
@@ -548,7 +548,7 @@
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <div class="input-group mb-3">
-                                                    <input type="text" class="form-control" placeholder="Search" id="ContAsesor_Cadena" name="ContAsesor_Cadena">
+                                                    <input type="text" class="form-control" placeholder="Search" id="search_oportunidad" name="search_oportunidad">
                                                     <div class="input-group-append">
                                                         <button class="btn btn-outline-secondary" type="button" onclick="FiltrarContAsesor();"><i class="tiny material-icons">search</i></button>
                                                     </div>
@@ -721,7 +721,7 @@
                                             </div>
                                             <div class="form-group col-md-2">
                                                 <div class="input-group mb-3">
-                                                    <input type="text" class="form-control" placeholder="Search" id="ContAsesor_Cadena" name="ContAsesor_Cadena">
+                                                    <input type="text" class="form-control" placeholder="Search" id="search_pedido" name="search_pedido">
                                                     <div class="input-group-append">
                                                         <button class="btn btn-outline-secondary" type="button" onclick="FiltrarContAsesor();"><i class="tiny material-icons">search</i></button>
                                                     </div>
@@ -870,6 +870,7 @@
         var modelo_no_contactado = $("#modelo_no_contactado").val();
         var desde_no_contactado = $("#desde_no_contactado").val();
         var hasta_no_contactado = $("#hasta_no_contactado").val();
+        var search_no_contactado = $("#search_no_contactado").val();
 
         data = {}
         data.if_filtrar_no_contactado = if_filtrar_no_contactado
@@ -883,6 +884,7 @@
         data.modelo_no_contactado = modelo_no_contactado
         data.desde_no_contactado = desde_no_contactado
         data.hasta_no_contactado = hasta_no_contactado
+        data.search_no_contactado = search_no_contactado
 
         console.log(data)
 
@@ -901,7 +903,7 @@
                         var fecha_apertura = lead.fecha_apertura.substr(0,4)+"-"+lead.fecha_apertura.substr(5,2)+"-"+lead.fecha_apertura.substr(8,2);
                         var fila=`<tr><td><a href="{% url 'dashboards:detallenuevo' 1234 %}">Detalle</td>`.replace(/1234/, lead.id);
                             fila+=`<td>` + fecha_apertura + `</td>`;
-                            fila+=`<td>` + lead.prospecto__nombre + `</td>`;
+                            fila+=`<td>` + lead.prospecto__nombre + lead.prospecto__apellido_paterno + lead.prospecto__apellido_materno + `</td>`;
                             fila+=`<td>` + lead.prospecto__celular + `</td>`;
                             fila+=`<td>null</td>`;
                             fila+=`<td>null</td>`;
@@ -1173,6 +1175,7 @@
         var modelo_no_contactado = $("#modelo_no_contactado").val();
         var desde_no_contactado = $("#desde_no_contactado").val();
         var hasta_no_contactado = $("#hasta_no_contactado").val();
+        var search_no_contactado = $("#search_no_contactado").val();
 
         data = {}
         data.if_filtrar_no_contactado = if_filtrar_no_contactado
@@ -1186,6 +1189,7 @@
         data.modelo_no_contactado = modelo_no_contactado
         data.desde_no_contactado = desde_no_contactado
         data.hasta_no_contactado = hasta_no_contactado
+        data.search_no_contactado = search_no_contactado
         console.log("hola")
         console.log(data)
         $.ajax({
@@ -1205,7 +1209,7 @@
                     var fecha_apertura = lead.fecha_apertura.substr(0,4)+"-"+lead.fecha_apertura.substr(5,2)+"-"+lead.fecha_apertura.substr(8,2);
                     var fila=`<tr><td><a href="{% url 'dashboards:detallenuevo' 1234 %}">Detalle</td>`.replace(/1234/, lead.id);
                     fila+=`<td>` + fecha_apertura + `</td>`;
-                    fila+=`<td>` + lead.prospecto__nombre + `</td>`;
+                    fila+=`<td>` + lead.prospecto__nombre + lead.prospecto__apellido_paterno + lead.prospecto__apellido_materno + `</td>`;
                     fila+=`<td>` + lead.prospecto__celular + `</td>`;
                     fila+=`<td>null</td>`;
                     fila+=`<td>null</td>`;
@@ -1241,6 +1245,7 @@
         var modelo_no_contactado = $("#modelo_no_contactado").val();
         var desde_no_contactado = $("#desde_no_contactado").val();
         var hasta_no_contactado = $("#hasta_no_contactado").val();
+        var search_no_contactado = $("#search_no_contactado").val();
 
         data = {}
         data.pages_no_contactado = pagina
@@ -1255,6 +1260,7 @@
         data.modelo_no_contactado = modelo_no_contactado
         data.desde_no_contactado = desde_no_contactado
         data.hasta_no_contactado = hasta_no_contactado
+        data.search_no_contactado = search_no_contactado
         console.log("hola")
         console.log(data)
         $.ajax({
@@ -1272,7 +1278,7 @@
                     var fecha_apertura = lead.fecha_apertura.substr(0,4)+"-"+lead.fecha_apertura.substr(5,2)+"-"+lead.fecha_apertura.substr(8,2);
                     var fila=`<tr><td><a href="{% url 'dashboards:detallenuevo' 1234 %}">Detalle</td>`.replace(/1234/, lead.id);
                         fila+=`<td>` + fecha_apertura + `</td>`;
-                        fila+=`<td>` + lead.prospecto__nombre + `</td>`;
+                        fila+=`<td>` + lead.prospecto__nombre + lead.prospecto__apellido_paterno + lead.prospecto__apellido_materno + `</td>`;
                         fila+=`<td>` + lead.prospecto__celular + `</td>`;
                         fila+=`<td>null</td>`;
                         fila+=`<td>null</td>`;
@@ -1376,6 +1382,7 @@
         var modelo_no_contactado = $("#modelo_no_contactado").val();
         var desde_no_contactado = $("#desde_no_contactado").val();
         var hasta_no_contactado = $("#hasta_no_contactado").val();
+        var search_no_contactado = $("#search_no_contactado").val();
 
         data = {}
         data.pages_no_contactado = pagina
@@ -1390,6 +1397,7 @@
         data.modelo_no_contactado = modelo_no_contactado
         data.desde_no_contactado = desde_no_contactado
         data.hasta_no_contactado = hasta_no_contactado
+        data.search_no_contactado = search_no_contactado
         console.log("hola")
         console.log(data)
         $.ajax({
@@ -1407,7 +1415,7 @@
                     var fecha_apertura = lead.fecha_apertura.substr(0,4)+"-"+lead.fecha_apertura.substr(5,2)+"-"+lead.fecha_apertura.substr(8,2);
                     var fila=`<tr><td><a href="{% url 'dashboards:detallenuevo' 1234 %}">Detalle</td>`.replace(/1234/, lead.id);
                         fila+=`<td>` + fecha_apertura + `</td>`;
-                        fila+=`<td>` + lead.prospecto__nombre + `</td>`;
+                        fila+=`<td>` + lead.prospecto__nombre + lead.prospecto__apellido_paterno + lead.prospecto__apellido_materno + `</td>`;
                         fila+=`<td>` + lead.prospecto__celular + `</td>`;
                         fila+=`<td>null</td>`;
                         fila+=`<td>null</td>`;
@@ -1538,6 +1546,7 @@
         var modelo_interaccion = $("#modelo_interaccion").val();
         var desde_interaccion = $("#desde_interaccion").val();
         var hasta_interaccion = $("#hasta_interaccion").val();
+        var search_interaccion = $("#search_interaccion").val();
 
         data = {}
         data.if_filtrar_interaccion = if_filtrar_interaccion
@@ -1551,6 +1560,7 @@
         data.modelo_interaccion = modelo_interaccion
         data.desde_interaccion = desde_interaccion
         data.hasta_interaccion = hasta_interaccion
+        data.search_interaccion = search_interaccion
 
         console.log(data)
 
@@ -1569,7 +1579,7 @@
                         var fecha_apertura = lead.fecha_apertura.substr(0,4)+"-"+lead.fecha_apertura.substr(5,2)+"-"+lead.fecha_apertura.substr(8,2);
                         var fila=`<tr><td><a href="{% url 'dashboards:detallenuevo' 1234 %}">Detalle</td>`.replace(/1234/, lead.id);
                             fila+=`<td>` + fecha_apertura + `</td>`;
-                            fila+=`<td>` + lead.prospecto__nombre + `</td>`;
+                            fila+=`<td>` + lead.prospecto__nombre + lead.prospecto__apellido_paterno + lead.prospecto__apellido_materno + `</td>`;
                             fila+=`<td>` + lead.prospecto__celular + `</td>`;
                             fila+=`<td>null</td>`;
                             fila+=`<td>null</td>`;
@@ -1834,6 +1844,7 @@
         var modelo_interaccion = $("#modelo_interaccion").val();
         var desde_interaccion = $("#desde_interaccion").val();
         var hasta_interaccion = $("#hasta_interaccion").val();
+        var search_interaccion = $("#search_interaccion").val();
 
         data = {}
         data.if_filtrar_interaccion = if_filtrar_interaccion
@@ -1847,6 +1858,7 @@
         data.modelo_interaccion = modelo_interaccion
         data.desde_interaccion = desde_interaccion
         data.hasta_interaccion = hasta_interaccion
+        data.search_interaccion = search_interaccion
         console.log("hola")
         console.log(data)
         $.ajax({
@@ -1866,7 +1878,7 @@
                     var fecha_apertura = lead.fecha_apertura.substr(0,4)+"-"+lead.fecha_apertura.substr(5,2)+"-"+lead.fecha_apertura.substr(8,2);
                     var fila=`<tr><td><a href="{% url 'dashboards:detallenuevo' 1234 %}">Detalle</td>`.replace(/1234/, lead.id);
                     fila+=`<td>` + fecha_apertura + `</td>`;
-                    fila+=`<td>` + lead.prospecto__nombre + `</td>`;
+                    fila+=`<td>` + lead.prospecto__nombre + lead.prospecto__apellido_paterno + lead.prospecto__apellido_materno + `</td>`;
                     fila+=`<td>` + lead.prospecto__celular + `</td>`;
                     fila+=`<td>null</td>`;
                     fila+=`<td>null</td>`;
@@ -1902,6 +1914,7 @@
         var modelo_interaccion = $("#modelo_interaccion").val();
         var desde_interaccion = $("#desde_interaccion").val();
         var hasta_interaccion = $("#hasta_interaccion").val();
+        var search_interaccion = $("#search_interaccion").val();
 
         data = {}
         data.pages_interaccion = pagina
@@ -1916,6 +1929,7 @@
         data.modelo_interaccion = modelo_interaccion
         data.desde_interaccion = desde_interaccion
         data.hasta_interaccion = hasta_interaccion
+        data.search_interaccion = search_interaccion
         console.log("hola")
         console.log(data)
         $.ajax({
@@ -1933,7 +1947,7 @@
                     var fecha_apertura = lead.fecha_apertura.substr(0,4)+"-"+lead.fecha_apertura.substr(5,2)+"-"+lead.fecha_apertura.substr(8,2);
                     var fila=`<tr><td><a href="{% url 'dashboards:detallenuevo' 1234 %}">Detalle</td>`.replace(/1234/, lead.id);
                         fila+=`<td>` + fecha_apertura + `</td>`;
-                        fila+=`<td>` + lead.prospecto__nombre + `</td>`;
+                        fila+=`<td>` + lead.prospecto__nombre + lead.prospecto__apellido_paterno + lead.prospecto__apellido_materno + `</td>`;
                         fila+=`<td>` + lead.prospecto__celular + `</td>`;
                         fila+=`<td>null</td>`;
                         fila+=`<td>null</td>`;
@@ -2037,6 +2051,7 @@
         var modelo_interaccion = $("#modelo_interaccion").val();
         var desde_interaccion = $("#desde_interaccion").val();
         var hasta_interaccion = $("#hasta_interaccion").val();
+        var search_interaccion = $("#search_interaccion").val();
 
         data = {}
         data.pages_interaccion = pagina
@@ -2051,6 +2066,7 @@
         data.modelo_interaccion = modelo_interaccion
         data.desde_interaccion = desde_interaccion
         data.hasta_interaccion = hasta_interaccion
+        data.search_interaccion = search_interaccion
         console.log("hola")
         console.log(data)
         $.ajax({
@@ -2068,7 +2084,7 @@
                     var fecha_apertura = lead.fecha_apertura.substr(0,4)+"-"+lead.fecha_apertura.substr(5,2)+"-"+lead.fecha_apertura.substr(8,2);
                     var fila=`<tr><td><a href="{% url 'dashboards:detallenuevo' 1234 %}">Detalle</td>`.replace(/1234/, lead.id);
                         fila+=`<td>` + fecha_apertura + `</td>`;
-                        fila+=`<td>` + lead.prospecto__nombre + `</td>`;
+                        fila+=`<td>` + lead.prospecto__nombre + lead.prospecto__apellido_paterno + lead.prospecto__apellido_materno + `</td>`;
                         fila+=`<td>` + lead.prospecto__celular + `</td>`;
                         fila+=`<td>null</td>`;
                         fila+=`<td>null</td>`;
@@ -2194,6 +2210,7 @@
         var modelo_oportunidad = $("#modelo_oportunidad").val();
         var desde_oportunidad = $("#desde_oportunidad").val();
         var hasta_oportunidad = $("#hasta_oportunidad").val();
+        var search_oportunidad = $("#search_oportunidad").val();
 
         data = {}
         data.if_filtrar_oportunidad = if_filtrar_oportunidad
@@ -2207,6 +2224,7 @@
         data.modelo_oportunidad = modelo_oportunidad
         data.desde_oportunidad = desde_oportunidad
         data.hasta_oportunidad = hasta_oportunidad
+        data.search_oportunidad = search_oportunidad
 
         console.log(data)
 
@@ -2225,7 +2243,7 @@
                         var fecha_apertura = lead.fecha_apertura.substr(0,4)+"-"+lead.fecha_apertura.substr(5,2)+"-"+lead.fecha_apertura.substr(8,2);
                         var fila=`<tr><td><a href="{% url 'dashboards:detallenuevo' 1234 %}">Detalle</td>`.replace(/1234/, lead.id);
                             fila+=`<td>` + fecha_apertura + `</td>`;
-                            fila+=`<td>` + lead.prospecto__nombre + `</td>`;
+                            fila+=`<td>` + lead.prospecto__nombre + lead.prospecto__apellido_paterno + lead.prospecto__apellido_materno + `</td>`;
                             fila+=`<td>` + lead.prospecto__celular + `</td>`;
                             fila+=`<td>null</td>`;
                             fila+=`<td>null</td>`;
@@ -2490,6 +2508,7 @@
         var modelo_oportunidad = $("#modelo_oportunidad").val();
         var desde_oportunidad = $("#desde_oportunidad").val();
         var hasta_oportunidad = $("#hasta_oportunidad").val();
+        var search_oportunidad = $("#search_oportunidad").val();
 
         data = {}
         data.if_filtrar_oportunidad = if_filtrar_oportunidad
@@ -2503,6 +2522,7 @@
         data.modelo_oportunidad = modelo_oportunidad
         data.desde_oportunidad = desde_oportunidad
         data.hasta_oportunidad = hasta_oportunidad
+        data.search_oportunidad = search_oportunidad
         console.log("hola")
         console.log(data)
         $.ajax({
@@ -2522,7 +2542,7 @@
                     var fecha_apertura = lead.fecha_apertura.substr(0,4)+"-"+lead.fecha_apertura.substr(5,2)+"-"+lead.fecha_apertura.substr(8,2);
                     var fila=`<tr><td><a href="{% url 'dashboards:detallenuevo' 1234 %}">Detalle</td>`.replace(/1234/, lead.id);
                     fila+=`<td>` + fecha_apertura + `</td>`;
-                    fila+=`<td>` + lead.prospecto__nombre + `</td>`;
+                    fila+=`<td>` + lead.prospecto__nombre + lead.prospecto__apellido_paterno + lead.prospecto__apellido_materno + `</td>`;
                     fila+=`<td>` + lead.prospecto__celular + `</td>`;
                     fila+=`<td>null</td>`;
                     fila+=`<td>null</td>`;
@@ -2558,6 +2578,7 @@
         var modelo_oportunidad = $("#modelo_oportunidad").val();
         var desde_oportunidad = $("#desde_oportunidad").val();
         var hasta_oportunidad = $("#hasta_oportunidad").val();
+        var search_oportunidad = $("#search_oportunidad").val();
 
         data = {}
         data.pages_oportunidad = pagina
@@ -2572,6 +2593,7 @@
         data.modelo_oportunidad = modelo_oportunidad
         data.desde_oportunidad = desde_oportunidad
         data.hasta_oportunidad = hasta_oportunidad
+        data.search_oportunidad = search_oportunidad
         console.log("hola")
         console.log(data)
         $.ajax({
@@ -2589,7 +2611,7 @@
                     var fecha_apertura = lead.fecha_apertura.substr(0,4)+"-"+lead.fecha_apertura.substr(5,2)+"-"+lead.fecha_apertura.substr(8,2);
                     var fila=`<tr><td><a href="{% url 'dashboards:detallenuevo' 1234 %}">Detalle</td>`.replace(/1234/, lead.id);
                         fila+=`<td>` + fecha_apertura + `</td>`;
-                        fila+=`<td>` + lead.prospecto__nombre + `</td>`;
+                        fila+=`<td>` + lead.prospecto__nombre + lead.prospecto__apellido_paterno + lead.prospecto__apellido_materno + `</td>`;
                         fila+=`<td>` + lead.prospecto__celular + `</td>`;
                         fila+=`<td>null</td>`;
                         fila+=`<td>null</td>`;
@@ -2697,6 +2719,7 @@
         var modelo_oportunidad = $("#modelo_oportunidad").val();
         var desde_oportunidad = $("#desde_oportunidad").val();
         var hasta_oportunidad = $("#hasta_oportunidad").val();
+        var search_oportunidad = $("#search_oportunidad").val();
 
         data = {}
         data.pages_oportunidad = pagina
@@ -2711,6 +2734,7 @@
         data.modelo_oportunidad = modelo_oportunidad
         data.desde_oportunidad = desde_oportunidad
         data.hasta_oportunidad = hasta_oportunidad
+        data.search_oportunidad = search_oportunidad
         console.log("hola")
         console.log(data)
         $.ajax({
@@ -2728,7 +2752,7 @@
                     var fecha_apertura = lead.fecha_apertura.substr(0,4)+"-"+lead.fecha_apertura.substr(5,2)+"-"+lead.fecha_apertura.substr(8,2);
                     var fila=`<tr><td><a href="{% url 'dashboards:detallenuevo' 1234 %}">Detalle</td>`.replace(/1234/, lead.id);
                         fila+=`<td>` + fecha_apertura + `</td>`;
-                        fila+=`<td>` + lead.prospecto__nombre + `</td>`;
+                        fila+=`<td>` + lead.prospecto__nombre + lead.prospecto__apellido_paterno + lead.prospecto__apellido_materno + `</td>`;
                         fila+=`<td>` + lead.prospecto__celular + `</td>`;
                         fila+=`<td>null</td>`;
                         fila+=`<td>null</td>`;
@@ -2852,6 +2876,7 @@
         var modelo_pedido = $("#modelo_pedido").val();
         var desde_pedido = $("#desde_pedido").val();
         var hasta_pedido = $("#hasta_pedido").val();
+        var search_pedido = $("#search_pedido").val();
 
         data = {}
         data.if_filtrar_pedido = if_filtrar_pedido
@@ -2865,6 +2890,7 @@
         data.modelo_pedido = modelo_pedido
         data.desde_pedido = desde_pedido
         data.hasta_pedido = hasta_pedido
+        data.search_pedido = search_pedido
 
         console.log(data)
 
@@ -2883,7 +2909,7 @@
                         var fecha_apertura = lead.fecha_apertura.substr(0,4)+"-"+lead.fecha_apertura.substr(5,2)+"-"+lead.fecha_apertura.substr(8,2);
                         var fila=`<tr><td><a href="{% url 'dashboards:detallenuevo' 1234 %}">Detalle</td>`.replace(/1234/, lead.id);
                             fila+=`<td>` + fecha_apertura + `</td>`;
-                            fila+=`<td>` + lead.prospecto__nombre + `</td>`;
+                            fila+=`<td>` + lead.prospecto__nombre + lead.prospecto__apellido_paterno + lead.prospecto__apellido_materno + `</td>`;
                             fila+=`<td>` + lead.prospecto__celular + `</td>`;
                             fila+=`<td>null</td>`;
                             fila+=`<td>null</td>`;
@@ -3149,6 +3175,7 @@
         var modelo_pedido = $("#modelo_pedido").val();
         var desde_pedido = $("#desde_pedido").val();
         var hasta_pedido = $("#hasta_pedido").val();
+        var search_pedido = $("#search_pedido").val();
 
         data = {}
         data.if_filtrar_pedido = if_filtrar_pedido
@@ -3162,6 +3189,7 @@
         data.modelo_pedido = modelo_pedido
         data.desde_pedido = desde_pedido
         data.hasta_pedido = hasta_pedido
+        data.search_pedido = search_pedido
         console.log("hola")
         console.log(data)
         $.ajax({
@@ -3181,7 +3209,7 @@
                     var fecha_apertura = lead.fecha_apertura.substr(0,4)+"-"+lead.fecha_apertura.substr(5,2)+"-"+lead.fecha_apertura.substr(8,2);
                     var fila=`<tr><td><a href="{% url 'dashboards:detallenuevo' 1234 %}">Detalle</td>`.replace(/1234/, lead.id);
                     fila+=`<td>` + fecha_apertura + `</td>`;
-                    fila+=`<td>` + lead.prospecto__nombre + `</td>`;
+                    fila+=`<td>` + lead.prospecto__nombre + lead.prospecto__apellido_paterno + lead.prospecto__apellido_materno + `</td>`;
                     fila+=`<td>` + lead.prospecto__celular + `</td>`;
                     fila+=`<td>null</td>`;
                     fila+=`<td>null</td>`;
@@ -3217,6 +3245,7 @@
         var modelo_pedido = $("#modelo_pedido").val();
         var desde_pedido = $("#desde_pedido").val();
         var hasta_pedido = $("#hasta_pedido").val();
+        var search_pedido = $("#search_pedido").val();
 
         data = {}
         data.pages_pedido = pagina
@@ -3231,6 +3260,7 @@
         data.modelo_pedido = modelo_pedido
         data.desde_pedido = desde_pedido
         data.hasta_pedido = hasta_pedido
+        data.search_pedido = search_pedido
         console.log("hola")
         console.log(data)
         $.ajax({
@@ -3248,7 +3278,7 @@
                     var fecha_apertura = lead.fecha_apertura.substr(0,4)+"-"+lead.fecha_apertura.substr(5,2)+"-"+lead.fecha_apertura.substr(8,2);
                     var fila=`<tr><td><a href="{% url 'dashboards:detallenuevo' 1234 %}">Detalle</td>`.replace(/1234/, lead.id);
                         fila+=`<td>` + fecha_apertura + `</td>`;
-                        fila+=`<td>` + lead.prospecto__nombre + `</td>`;
+                        fila+=`<td>` + lead.prospecto__nombre + lead.prospecto__apellido_paterno + lead.prospecto__apellido_materno + `</td>`;
                         fila+=`<td>` + lead.prospecto__celular + `</td>`;
                         fila+=`<td>null</td>`;
                         fila+=`<td>null</td>`;
@@ -3352,6 +3382,7 @@
         var modelo_pedido = $("#modelo_pedido").val();
         var desde_pedido = $("#desde_pedido").val();
         var hasta_pedido = $("#hasta_pedido").val();
+        var search_pedido = $("#search_pedido").val();
 
         data = {}
         data.pages_pedido = pagina
@@ -3366,6 +3397,7 @@
         data.modelo_pedido = modelo_pedido
         data.desde_pedido = desde_pedido
         data.hasta_pedido = hasta_pedido
+        data.search_pedido = search_pedido
         console.log("hola")
         console.log(data)
         $.ajax({
@@ -3383,7 +3415,7 @@
                     var fecha_apertura = lead.fecha_apertura.substr(0,4)+"-"+lead.fecha_apertura.substr(5,2)+"-"+lead.fecha_apertura.substr(8,2);
                     var fila=`<tr><td><a href="{% url 'dashboards:detallenuevo' 1234 %}">Detalle</td>`.replace(/1234/, lead.id);
                         fila+=`<td>` + fecha_apertura + `</td>`;
-                        fila+=`<td>` + lead.prospecto__nombre + `</td>`;
+                        fila+=`<td>` + lead.prospecto__nombre + lead.prospecto__apellido_paterno + lead.prospecto__apellido_materno + `</td>`;
                         fila+=`<td>` + lead.prospecto__celular + `</td>`;
                         fila+=`<td>null</td>`;
                         fila+=`<td>null</td>`;

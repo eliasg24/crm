@@ -143,7 +143,7 @@ class Historial(models.Model):
     # Modelo del Historial
     lead = models.ForeignKey("Lead", on_delete=models.CASCADE)
     fecha = models.DateTimeField(null=True)
-    responsable = models.ForeignKey(User, on_delete=models.CASCADE)
+    responsable = models.CharField(max_length=100, null=True)
     operacion = models.CharField(max_length=255, null=True)
     comentarios = models.CharField(max_length=255, null=True, blank=True)
 

@@ -68,7 +68,7 @@ class ProspectoAdmin(admin.ModelAdmin):
 @admin.register(Lead)
 class LeadAdmin(admin.ModelAdmin):
     # Admin del Lead
-    list_display = ('id', 'prospecto', "nombre_asesor", "activo", "fecha_apertura")
+    list_display = ('id', 'prospecto', "nombre_asesor", "activo", "fecha_apertura", "fecha_hora_asignacion_asesor", "marcas_interes")
     list_filter = (("nombre_asesor", admin.EmptyFieldListFilter), "activo", "etapa", "respuesta", 'origen_lead', "tiempo_cambio_de_etapa")
     search_fields= ["id",]
     date_hierarchy = 'fecha_apertura'
@@ -76,7 +76,7 @@ class LeadAdmin(admin.ModelAdmin):
 @admin.register(Historial)
 class HistorialAdmin(admin.ModelAdmin):
     # Admin del Historial
-    list_display = ('id', 'responsable', "fecha")
+    list_display = ('id', "lead", 'responsable', "fecha", "operacion")
 
 @admin.register(HistorialVerificaciones)
 class HistorialVerificacionesAdmin(admin.ModelAdmin):

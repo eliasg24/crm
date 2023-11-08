@@ -70,6 +70,24 @@ class CapturaView(LoginRequiredMixin, TemplateView):
         
         leads = Lead.objects.all()
         prospectos = Prospecto.objects.all()
+        historiales = Historial.objects.all()
+
+        lista_historial = []
+
+        """for historial in historiales:
+            if historial.lead.id in lista_historial:
+                pass
+            else:
+                if historial.operacion[0:31] == "El cliente a dado una respuesta":
+                    lead = Lead.objects.get(id=historial.lead.id)
+                    lead.fecha_primer_contacto = historial.fecha
+                    try:
+                        lead.tiempo_primer_contacto = (historial.fecha - lead.fecha_hora_asignacion_asesor).total_seconds() / 60
+                        lead.save()
+                        lista_historial.append(lead.id)
+                        print(lead.id)
+                    except:
+                        pass"""
 
         """for lead in leads:
             lead.tiempo_cambio_de_etapa = None
